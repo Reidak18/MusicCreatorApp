@@ -12,6 +12,7 @@ extension UIColor {
     static var foregroundPrimary: UIColor { UIColor(named: "foregroundPrimary") ?? UIColor() }
     static var labelPrimary: UIColor { UIColor(named: "labelPrimary") ?? UIColor() }
     static var sliderThumbColor: UIColor { UIColor(named: "sliderThumbColor") ?? UIColor() }
+    static var gradientColor: UIColor { UIColor(named: "gradientColor") ?? UIColor() }
 }
 
 extension UIView {

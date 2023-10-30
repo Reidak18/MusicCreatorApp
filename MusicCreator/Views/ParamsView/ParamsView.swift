@@ -19,27 +19,39 @@ class ParamsView: UIView {
     }
 
     private func setupView() {
+        if let gradientLayer = layer as? CAGradientLayer {
+            let transparentGradientColor = UIColor.gradientColor.withAlphaComponent(0).cgColor
+            gradientLayer.colors = [transparentGradientColor, UIColor.gradientColor.cgColor]
+        }
+
         volumeSlider.setThumbLabel(label: "громкость")
+        volumeSlider.setBackgroundImage(named: "VerticalSliderBackground")
         volumeSlider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
         volumeSlider.translatesAutoresizingMaskIntoConstraints = false
         addSubview(volumeSlider)
         speedSlider.setThumbLabel(label: "скорость")
+        speedSlider.setBackgroundImage(named: "HorizontalSliderBackground")
         speedSlider.translatesAutoresizingMaskIntoConstraints = false
         addSubview(speedSlider)
     }
 
     private func setConstraints() {
-        let volumeSliderThumbHeight = (volumeSlider.getThumbHeight() ?? 15) + 5
-        let speedSliderThumbHeight = (speedSlider.getThumbHeight() ?? 15) + 5
+        let volumeSliderThumbHeight = volumeSlider.frame.width
+        let speedSliderThumbHeight = speedSlider.frame.height
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1.35),
-            volumeSlider.widthAnchor.constraint(equalTo: heightAnchor, constant: -volumeSliderThumbHeight),
-            volumeSlider.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -volumeSliderThumbHeight / 2),
-            volumeSlider.centerXAnchor.constraint(equalTo: leadingAnchor, constant: volumeSliderThumbHeight / 2),
-            speedSlider.widthAnchor.constraint(equalTo: widthAnchor, constant: -speedSliderThumbHeight),
-            speedSlider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            speedSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: speedSliderThumbHeight),
+            volumeSlider.widthAnchor.constraint(equalTo: heightAnchor, constant: -volumeSliderThumbHeight / 2),
+            volumeSlider.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -volumeSliderThumbHeight / 2 + 5),
+            volumeSlider.centerXAnchor.constraint(equalTo: leadingAnchor, constant: volumeSliderThumbHeight - 5),
+
+            speedSlider.widthAnchor.constraint(equalTo: widthAnchor, constant: -speedSliderThumbHeight / 2),
+            speedSlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: speedSliderThumbHeight + 5),
+            speedSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: speedSliderThumbHeight / 2)
         ])
+    }
+
+    override open class var layerClass: AnyClass {
+       return CAGradientLayer.classForCoder()
     }
 
     required init?(coder: NSCoder) {

@@ -8,12 +8,25 @@
 import UIKit
 
 class ThumbTextSlider: UISlider {
-    func setThumbLabel(label: String) {
-        setThumbImage(createThumbImage(label: label), for: .normal)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
 
-    func getThumbHeight() -> CGFloat? {
-        return currentThumbImage?.size.height
+    override func trackRect(forBounds bounds: CGRect) -> CGRect {
+        var newBounds = super.trackRect(forBounds: bounds)
+        newBounds.size.height = 15
+        return newBounds
+    }
+
+    func setBackgroundImage(named: String) {
+        guard let trackImage = UIImage(named: named)
+        else { return }
+        self.setMinimumTrackImage(trackImage, for:.normal)
+        self.setMaximumTrackImage(trackImage, for:.normal)
+    }
+
+    func setThumbLabel(label: String) {
+        setThumbImage(createThumbImage(label: label), for: .normal)
     }
 
     private func createThumbImage(label: String) -> UIImage {
@@ -31,6 +44,10 @@ class ThumbTextSlider: UISlider {
         thumbTextLabel.frame = thumbView.bounds
 
         return thumbView.asImage()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 }
 

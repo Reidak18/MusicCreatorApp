@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class InstrumentButton: UIStackView {
+class InstrumentButtonView: UIStackView {
     private let imageButton = UIButton()
 
     override init(frame: CGRect) {

@@ -13,7 +13,10 @@
 		0A28FB4F2AEFFFA10003EE49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FB4E2AEFFFA10003EE49 /* Assets.xcassets */; };
 		0A28FB522AEFFFA10003EE49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FB502AEFFFA10003EE49 /* LaunchScreen.storyboard */; };
 		0A28FB5B2AF005B20003EE49 /* Constants+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5A2AF005B20003EE49 /* Constants+Extensions.swift */; };
-		0A28FB5D2AF008930003EE49 /* InstrumentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5C2AF008930003EE49 /* InstrumentButton.swift */; };
+		0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */; };
+		0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */; };
+		0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB612AF026300003EE49 /* ParamsView.swift */; };
+		0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB682AF03B750003EE49 /* ThumbTextSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +28,10 @@
 		0A28FB512AEFFFA10003EE49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A28FB532AEFFFA10003EE49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A28FB5A2AF005B20003EE49 /* Constants+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Extensions.swift"; sourceTree = "<group>"; };
-		0A28FB5C2AF008930003EE49 /* InstrumentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentButton.swift; sourceTree = "<group>"; };
+		0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentButtonView.swift; sourceTree = "<group>"; };
+		0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopPanelView.swift; sourceTree = "<group>"; };
+		0A28FB612AF026300003EE49 /* ParamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
+		0A28FB682AF03B750003EE49 /* ThumbTextSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbTextSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,10 +78,29 @@
 		0A28FB592AF0058F0003EE49 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0A28FB632AF029FE0003EE49 /* ParamsView */,
+				0A28FB5E2AF025080003EE49 /* TopPanelView */,
 				0A28FB492AEFFFA00003EE49 /* MainViewController.swift */,
-				0A28FB5C2AF008930003EE49 /* InstrumentButton.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0A28FB5E2AF025080003EE49 /* TopPanelView */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */,
+				0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */,
+			);
+			path = TopPanelView;
+			sourceTree = "<group>";
+		};
+		0A28FB632AF029FE0003EE49 /* ParamsView */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FB612AF026300003EE49 /* ParamsView.swift */,
+				0A28FB682AF03B750003EE49 /* ThumbTextSlider.swift */,
+			);
+			path = ParamsView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,11 +173,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
+				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,
 				0A28FB5B2AF005B20003EE49 /* Constants+Extensions.swift in Sources */,
-				0A28FB5D2AF008930003EE49 /* InstrumentButton.swift in Sources */,
+				0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */,
 				0A28FB462AEFFFA00003EE49 /* AppDelegate.swift in Sources */,
 				0A28FB482AEFFFA00003EE49 /* SceneDelegate.swift in Sources */,
+				0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

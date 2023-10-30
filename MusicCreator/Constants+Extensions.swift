@@ -10,4 +10,15 @@ import UIKit
 extension UIColor {
     static var backgroundPrimary: UIColor { UIColor(named: "backgroundPrimary") ?? UIColor() }
     static var foregroundPrimary: UIColor { UIColor(named: "foregroundPrimary") ?? UIColor() }
+    static var labelPrimary: UIColor { UIColor(named: "labelPrimary") ?? UIColor() }
+    static var sliderThumbColor: UIColor { UIColor(named: "sliderThumbColor") ?? UIColor() }
+}
+
+extension UIView {
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }

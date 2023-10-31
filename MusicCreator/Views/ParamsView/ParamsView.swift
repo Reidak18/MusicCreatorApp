@@ -19,11 +19,6 @@ class ParamsView: UIView {
     }
 
     private func setupView() {
-        if let gradientLayer = layer as? CAGradientLayer {
-            let transparentGradientColor = UIColor.gradientColor.withAlphaComponent(0).cgColor
-            gradientLayer.colors = [transparentGradientColor, UIColor.gradientColor.cgColor]
-        }
-
         volumeSlider.setThumbLabel(label: "громкость")
         volumeSlider.setBackgroundImage(named: "VerticalSliderBackground")
         volumeSlider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
@@ -48,10 +43,6 @@ class ParamsView: UIView {
             speedSlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: speedSliderThumbHeight + 5),
             speedSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: speedSliderThumbHeight / 2)
         ])
-    }
-
-    override open class var layerClass: AnyClass {
-       return CAGradientLayer.classForCoder()
     }
 
     required init?(coder: NSCoder) {

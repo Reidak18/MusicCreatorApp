@@ -18,8 +18,12 @@ class MainViewController: UIViewController {
 
         let topPanelView = TopPanelView()
         stackView.addArrangedSubview(topPanelView)
-        let paramsView = ParamsView()
-        stackView.addArrangedSubview(paramsView)
+
+        let paramsView = LayersView()
+        let backgroundView = GradientView()
+        backgroundView.addArrangedSubview(paramsView)
+        stackView.addArrangedSubview(backgroundView)
+
         let bottomPanelView = BottomPanelView()
         stackView.addArrangedSubview(bottomPanelView)
 

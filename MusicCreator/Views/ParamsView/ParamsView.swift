@@ -34,7 +34,6 @@ class ParamsView: UIView {
         let volumeSliderThumbHeight = volumeSlider.frame.width
         let speedSliderThumbHeight = speedSlider.frame.height
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1.35),
             volumeSlider.widthAnchor.constraint(equalTo: heightAnchor, constant: -volumeSliderThumbHeight / 2),
             volumeSlider.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -volumeSliderThumbHeight / 2 + 5),
             volumeSlider.centerXAnchor.constraint(equalTo: leadingAnchor, constant: volumeSliderThumbHeight - 5),

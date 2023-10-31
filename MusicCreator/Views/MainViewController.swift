@@ -17,10 +17,12 @@ class MainViewController: UIViewController {
         view.addSubview(stackView)
 
         let topPanelView = TopPanelView()
-        stackView.addArrangedSubview(topPanelView)
+        view.addSubview(topPanelView)
 
-        let paramsView = LayersView()
+        let paramsView = ParamsView()
+//        paramsView.setSamplesNames(samples: [Sample(name: "Гитара"), Sample(name: "Ударные"), Sample(name: "Духовые")])
         let backgroundView = GradientView()
+        backgroundView.setColors(colors: [UIColor.clear, UIColor.customPurpleColor])
         backgroundView.addArrangedSubview(paramsView)
         stackView.addArrangedSubview(backgroundView)
 
@@ -28,7 +30,11 @@ class MainViewController: UIViewController {
         stackView.addArrangedSubview(bottomPanelView)
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topPanelView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topPanelView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            topPanelView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+
+            backgroundView.heightAnchor.constraint(equalTo: backgroundView.widthAnchor, multiplier: 1.35),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),

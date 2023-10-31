@@ -12,7 +12,7 @@ struct Sample {
 }
 
 class LayersView: UITableView {
-    let samples: [Sample] = [Sample(name: "Гитара"), Sample(name: "Ударные"), Sample(name: "Духовые")]
+    var samples: [Sample] = []
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -28,7 +28,12 @@ class LayersView: UITableView {
         isScrollEnabled = false
         dataSource = self
         delegate = self
+        separatorStyle = .none
         translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    func setSamplesNames(samples: [Sample]) {
+        self.samples = samples
     }
 
     required init?(coder: NSCoder) {

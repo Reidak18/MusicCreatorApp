@@ -16,7 +16,7 @@ class TopPanelView: UIStackView {
 
     private func setupView() {
         axis = .horizontal
-        alignment = .center
+        alignment = .top
         distribution = .equalSpacing
         isLayoutMarginsRelativeArrangement = true
         translatesAutoresizingMaskIntoConstraints = false

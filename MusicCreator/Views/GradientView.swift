@@ -8,20 +8,13 @@
 import UIKit
 
 class GradientView: UIStackView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
+    func setColors(colors: [UIColor]) {
         if let gradientLayer = layer as? CAGradientLayer {
-            let transparentGradientColor = UIColor.gradientColor.withAlphaComponent(0).cgColor
-            gradientLayer.colors = [transparentGradientColor, UIColor.gradientColor.cgColor]
+            gradientLayer.colors = colors.map({ $0.cgColor })
         }
     }
 
     override open class var layerClass: AnyClass {
        return CAGradientLayer.classForCoder()
-    }
-
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
     }
 }

@@ -12,7 +12,7 @@
 		0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB492AEFFFA00003EE49 /* MainViewController.swift */; };
 		0A28FB4F2AEFFFA10003EE49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FB4E2AEFFFA10003EE49 /* Assets.xcassets */; };
 		0A28FB522AEFFFA10003EE49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FB502AEFFFA10003EE49 /* LaunchScreen.storyboard */; };
-		0A28FB5B2AF005B20003EE49 /* Constants+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5A2AF005B20003EE49 /* Constants+Extensions.swift */; };
+		0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5A2AF005B20003EE49 /* Constants.swift */; };
 		0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */; };
 		0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */; };
 		0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB612AF026300003EE49 /* ParamsView.swift */; };
@@ -22,6 +22,8 @@
 		0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB702AF0E9190003EE49 /* LayersView.swift */; };
 		0A28FB732AF0E9C40003EE49 /* LayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB722AF0E9C40003EE49 /* LayerCell.swift */; };
 		0A28FB752AF10A850003EE49 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB742AF10A850003EE49 /* GradientView.swift */; };
+		0A28FB772AF123EE0003EE49 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB762AF123EE0003EE49 /* Extensions.swift */; };
+		0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +34,7 @@
 		0A28FB4E2AEFFFA10003EE49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A28FB512AEFFFA10003EE49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A28FB532AEFFFA10003EE49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0A28FB5A2AF005B20003EE49 /* Constants+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Extensions.swift"; sourceTree = "<group>"; };
+		0A28FB5A2AF005B20003EE49 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentButtonView.swift; sourceTree = "<group>"; };
 		0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopPanelView.swift; sourceTree = "<group>"; };
 		0A28FB612AF026300003EE49 /* ParamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
@@ -42,6 +44,8 @@
 		0A28FB702AF0E9190003EE49 /* LayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersView.swift; sourceTree = "<group>"; };
 		0A28FB722AF0E9C40003EE49 /* LayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerCell.swift; sourceTree = "<group>"; };
 		0A28FB742AF10A850003EE49 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		0A28FB762AF123EE0003EE49 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +81,8 @@
 				0A28FB592AF0058F0003EE49 /* Views */,
 				0A28FB452AEFFFA00003EE49 /* AppDelegate.swift */,
 				0A28FB472AEFFFA00003EE49 /* SceneDelegate.swift */,
-				0A28FB5A2AF005B20003EE49 /* Constants+Extensions.swift */,
+				0A28FB5A2AF005B20003EE49 /* Constants.swift */,
+				0A28FB762AF123EE0003EE49 /* Extensions.swift */,
 				0A28FB4E2AEFFFA10003EE49 /* Assets.xcassets */,
 				0A28FB502AEFFFA10003EE49 /* LaunchScreen.storyboard */,
 				0A28FB532AEFFFA10003EE49 /* Info.plist */,
@@ -103,6 +108,7 @@
 			children = (
 				0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */,
 				0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */,
+				0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */,
 			);
 			path = TopPanelView;
 			sourceTree = "<group>";
@@ -208,7 +214,8 @@
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
 				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,
-				0A28FB5B2AF005B20003EE49 /* Constants+Extensions.swift in Sources */,
+				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
+				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,
 				0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */,
 				0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */,
 				0A28FB732AF0E9C40003EE49 /* LayerCell.swift in Sources */,
@@ -217,6 +224,7 @@
 				0A28FB752AF10A850003EE49 /* GradientView.swift in Sources */,
 				0A28FB482AEFFFA00003EE49 /* SceneDelegate.swift in Sources */,
 				0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */,
+				0A28FB772AF123EE0003EE49 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

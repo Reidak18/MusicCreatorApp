@@ -17,9 +17,11 @@ class MainViewController: UIViewController {
         view.addSubview(stackView)
 
         let topPanelView = TopPanelView()
-        let paramsView = ParamsView()
         stackView.addArrangedSubview(topPanelView)
+        let paramsView = ParamsView()
         stackView.addArrangedSubview(paramsView)
+        let bottomPanelView = BottomPanelView()
+        stackView.addArrangedSubview(bottomPanelView)
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

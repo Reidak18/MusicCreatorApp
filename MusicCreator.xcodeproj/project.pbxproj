@@ -24,6 +24,10 @@
 		0A28FB752AF10A850003EE49 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB742AF10A850003EE49 /* GradientView.swift */; };
 		0A28FB772AF123EE0003EE49 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB762AF123EE0003EE49 /* Extensions.swift */; };
 		0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */; };
+		0A28FB7C2AF238EB0003EE49 /* WaveformCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB7B2AF238EB0003EE49 /* WaveformCreator.swift */; };
+		0A28FB7E2AF23C630003EE49 /* Taxi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FB7D2AF23C630003EE49 /* Taxi.mp3 */; };
+		0A28FB932AF241580003EE49 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A28FB852AF240B50003EE49 /* AVKit.framework */; };
+		0A28FB942AF2415C0003EE49 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A28FB832AF240B10003EE49 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		0A28FB742AF10A850003EE49 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		0A28FB762AF123EE0003EE49 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalSegmentedControl.swift; sourceTree = "<group>"; };
+		0A28FB7B2AF238EB0003EE49 /* WaveformCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformCreator.swift; sourceTree = "<group>"; };
+		0A28FB7D2AF23C630003EE49 /* Taxi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Taxi.mp3; sourceTree = "<group>"; };
+		0A28FB832AF240B10003EE49 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0A28FB852AF240B50003EE49 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A28FB942AF2415C0003EE49 /* AVFoundation.framework in Frameworks */,
+				0A28FB932AF241580003EE49 /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +74,7 @@
 			children = (
 				0A28FB442AEFFFA00003EE49 /* MusicCreator */,
 				0A28FB432AEFFFA00003EE49 /* Products */,
+				0A28FB822AF240B10003EE49 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,7 +89,9 @@
 		0A28FB442AEFFFA00003EE49 /* MusicCreator */ = {
 			isa = PBXGroup;
 			children = (
+				0A28FB812AF23D890003EE49 /* AudioSamples */,
 				0A28FB592AF0058F0003EE49 /* Views */,
+				0A28FB7A2AF238A50003EE49 /* Model */,
 				0A28FB452AEFFFA00003EE49 /* AppDelegate.swift */,
 				0A28FB472AEFFFA00003EE49 /* SceneDelegate.swift */,
 				0A28FB5A2AF005B20003EE49 /* Constants.swift */,
@@ -99,6 +112,7 @@
 				0A28FB6F2AF0E8B90003EE49 /* LayersView */,
 				0A28FB492AEFFFA00003EE49 /* MainViewController.swift */,
 				0A28FB742AF10A850003EE49 /* GradientView.swift */,
+				0A28FB7B2AF238EB0003EE49 /* WaveformCreator.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +152,30 @@
 				0A28FB722AF0E9C40003EE49 /* LayerCell.swift */,
 			);
 			path = LayersView;
+			sourceTree = "<group>";
+		};
+		0A28FB7A2AF238A50003EE49 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A28FB812AF23D890003EE49 /* AudioSamples */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FB7D2AF23C630003EE49 /* Taxi.mp3 */,
+			);
+			path = AudioSamples;
+			sourceTree = "<group>";
+		};
+		0A28FB822AF240B10003EE49 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FB852AF240B50003EE49 /* AVKit.framework */,
+				0A28FB832AF240B10003EE49 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +236,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A28FB7E2AF23C630003EE49 /* Taxi.mp3 in Resources */,
 				0A28FB522AEFFFA10003EE49 /* LaunchScreen.storyboard in Resources */,
 				0A28FB4F2AEFFFA10003EE49 /* Assets.xcassets in Resources */,
 			);
@@ -217,6 +256,7 @@
 				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
 				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,
 				0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */,
+				0A28FB7C2AF238EB0003EE49 /* WaveformCreator.swift in Sources */,
 				0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */,
 				0A28FB732AF0E9C40003EE49 /* LayerCell.swift in Sources */,
 				0A28FB462AEFFFA00003EE49 /* AppDelegate.swift in Sources */,

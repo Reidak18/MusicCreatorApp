@@ -45,6 +45,13 @@ class MainViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
         ])
     }
+
+    let w = WaveformCreator()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        w.drawWaveform()
+    }
 }
 
 extension MainViewController: StylesWindowOpener {

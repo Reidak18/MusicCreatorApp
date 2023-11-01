@@ -58,50 +58,6 @@ class MainViewController: UIViewController {
             self.bottomPanelView.setWaveformProgress(progress: playbackProgress)
         }
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        let path = Bundle.main.path(forResource: "Taxi", ofType: ".mp3")!
-        let url = URL(fileURLWithPath: path)
-        let audioFile: AVAudioFile
-        do {
-            audioFile = try AVAudioFile(forReading: url)
-        } catch(let error) {
-            print(error)
-            return
-        }
-
-        let waveformCreator = WaveformCreator()
-        waveformCreator.averagePowers(audioFile: audioFile, numberOfFrames: 75, completionHandler: { result in
-            switch result {
-            case .success(let resultArray):
-                guard let maxPower = resultArray.max(),
-                      let minPower = resultArray.min()
-                else { return }
-
-                let diff = maxPower - minPower
-                var normalized: [Float]
-                if diff != 0 {
-                    normalized = resultArray.map({ ($0 - minPower) / diff })
-                } else {
-                    normalized = resultArray
-                }
-                DispatchQueue.main.async {
-                    let img = waveformCreator.drawWaveform(frame: CGRect(x: 0, y: 0, width: 363, height: 56),
-                                                           traitsLengths: normalized)
-                    self.bottomPanelView.setWaveformParams(background: img)
-                }
-
-                self.player = try! AVAudioPlayer(contentsOf: url)
-                self.player?.play()
-                self.displayLink.add(to: .main, forMode: .common)
-            case .failure(let error):
-                print(error)
-            }
-
-        })
-    }
 }
 
 extension MainViewController: StylesWindowOpener {

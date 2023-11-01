@@ -1,5 +1,5 @@
+import UIKit
 import AVFoundation
-import Accelerate
 
 enum WaveformCreatorError: Error {
     case createPCMBufferError(String)
@@ -25,7 +25,7 @@ class WaveformCreator {
         }
 
         DispatchQueue.global(qos: .background).async {
-            var returnArray : [Float] = [Float]()
+            var returnArray = [Float]()
 
             for i in 0..<numberOfFrames {
                 audioFile.framePosition = AVAudioFramePosition(i * frameSizeToRead)
@@ -58,5 +58,33 @@ class WaveformCreator {
 
             completionHandler(.success(returnArray))
         }
+    }
+
+    func drawWaveform(frame: CGRect, traitsLengths: [Float]) -> UIImage {
+        let pencil = UIBezierPath()
+        let wfLayer = CAShapeLayer()
+        let view = UIView(frame: frame)
+        var start = CGPoint(x: 6, y: view.bounds.midY)
+        let step = (view.bounds.width - start.x * 2) / CGFloat(traitsLengths.count)
+
+        for trait in traitsLengths {
+            var length = CGFloat(trait) * view.frame.height / 4
+            length = max(2, length)
+
+            pencil.move(to: start)
+            pencil.addLine(to: CGPoint(x: start.x, y: start.y + length))
+            pencil.addLine(to: CGPoint(x: start.x, y: start.y - length))
+            start = CGPoint(x: start.x + step, y: start.y)
+        }
+
+        wfLayer.path = pencil.cgPath
+        wfLayer.strokeColor = UIColor.white.cgColor
+        wfLayer.fillColor = UIColor.black.cgColor
+        wfLayer.lineWidth = step / 2
+        wfLayer.contentsCenter = view.frame
+        view.layer.addSublayer(wfLayer)
+        view.setNeedsDisplay()
+
+        return view.asImage()
     }
 }

@@ -28,6 +28,7 @@
 		0A28FB932AF241580003EE49 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A28FB852AF240B50003EE49 /* AVKit.framework */; };
 		0A28FB942AF2415C0003EE49 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A28FB832AF240B10003EE49 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		0A28FB9A2AF2A8420003EE49 /* AudioContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB992AF2A8420003EE49 /* AudioContext.swift */; };
+		0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FB9D2AF2E0220003EE49 /* WaveformSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		0A28FB832AF240B10003EE49 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0A28FB852AF240B50003EE49 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		0A28FB992AF2A8420003EE49 /* AudioContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioContext.swift; sourceTree = "<group>"; };
+		0A28FB9D2AF2E0220003EE49 /* WaveformSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				0A28FB6B2AF0C81F0003EE49 /* BottomPanelView.swift */,
 				0A28FB6D2AF0D13C0003EE49 /* BottomControlButtonsView.swift */,
+				0A28FB9D2AF2E0220003EE49 /* WaveformSlider.swift */,
 			);
 			path = BottomPanelView;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A28FB9A2AF2A8420003EE49 /* AudioContext.swift in Sources */,
+				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,

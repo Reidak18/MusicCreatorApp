@@ -11,6 +11,7 @@ import AVFoundation
 class MainViewController: UIViewController {
     let paramsView = ParamsView()
     let layersView = LayersView()
+    let bottomPanelView = BottomPanelView()
 
     override func loadView() {
         super.loadView()
@@ -31,7 +32,6 @@ class MainViewController: UIViewController {
         backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
 
-        let bottomPanelView = BottomPanelView()
         bottomPanelView.delegate = self
         stackView.addArrangedSubview(bottomPanelView)
 
@@ -69,11 +69,11 @@ class MainViewController: UIViewController {
                 else { return }
 
                 let diff = maxPower - minPower
+                var normalized: [Float]
                 if diff != 0 {
-                    let normalized = resultArray.map({ ($0 - minPower) / diff })
-                    print(normalized)
+                    normalized = resultArray.map({ ($0 - minPower) / diff })
                 } else {
-                    print(resultArray)
+                    normalized = resultArray
                 }
             case .failure(let error):
                 print(error)

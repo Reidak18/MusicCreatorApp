@@ -19,12 +19,16 @@ class LayerCell: UITableViewCell {
 
         let mainStack = UIStackView()
         mainStack.axis = .horizontal
-        mainStack.spacing = 15
         mainStack.backgroundColor = .foregroundPrimary
         mainStack.layer.cornerRadius = 4
         mainStack.isLayoutMarginsRelativeArrangement = true
         mainStack.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
+
+        let buttonsStack = UIStackView()
+        buttonsStack.axis = .horizontal
+        buttonsStack.alignment = .fill
+        buttonsStack.distribution = .fillEqually
 
         nameLabel.font = .systemFont(ofSize: 12)
         mainStack.addArrangedSubview(nameLabel)
@@ -34,14 +38,14 @@ class LayerCell: UITableViewCell {
         playButtonConfig.baseForegroundColor = .customGray
         playButtonConfig.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         let playButton = UIButton(configuration: playButtonConfig)
-        mainStack.addArrangedSubview(playButton)
+        buttonsStack.addArrangedSubview(playButton)
 
         var setEnableButtonConfig = UIButton.Configuration.plain()
         setEnableButtonConfig.image = UIImage(systemName: "speaker.fill")
         setEnableButtonConfig.baseForegroundColor = .customGray
         setEnableButtonConfig.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         let setEnableButton = UIButton(configuration: setEnableButtonConfig)
-        mainStack.addArrangedSubview(setEnableButton)
+        buttonsStack.addArrangedSubview(setEnableButton)
 
         var removeButtonConfig = UIButton.Configuration.filled()
         removeButtonConfig.image = UIImage(systemName: "xmark",
@@ -50,14 +54,18 @@ class LayerCell: UITableViewCell {
         removeButtonConfig.baseForegroundColor = .customGray
         removeButtonConfig.baseBackgroundColor = .customLightGray
         let removeButton = UIButton(configuration: removeButtonConfig)
-        mainStack.addArrangedSubview(removeButton)
+        buttonsStack.addArrangedSubview(removeButton)
 
+        mainStack.addArrangedSubview(buttonsStack)
         contentView.addSubview(mainStack)
+
+        let constraint = mainStack.leadingAnchor.constraint(equalTo: leadingAnchor)
+        constraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             removeButton.widthAnchor.constraint(equalTo: removeButton.heightAnchor),
 
-            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            constraint,
             mainStack.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)

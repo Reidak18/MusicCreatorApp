@@ -79,6 +79,7 @@ class InstrumentButtonView: UIStackView {
         } else {
             UIView.animate(withDuration: 1) {
                 self.segmentControl.isHidden = true
+                self.segmentControl.resetSelection()
             } completion: { value in
                 self.segmentControl.isHidden = false
                 self.segmentControl.removeFromSuperview()

@@ -31,6 +31,14 @@ class VerticalSegmentedControl: UITableView {
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
 
+    func resetSelection() {
+        for cell in visibleCells {
+            cell.setSelected(false, animated: true)
+        }
+
+        reloadData()
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

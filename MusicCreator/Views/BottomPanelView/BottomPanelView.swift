@@ -7,7 +7,19 @@
 
 import UIKit
 
+enum CurrentViewType {
+    case params
+    case layers
+}
+
+protocol StylesWindowOpener {
+    func openStylesWindow(viewType: CurrentViewType)
+}
+
 class BottomPanelView: UIStackView {
+    public var delegate: StylesWindowOpener?
+    private var currentViewType: CurrentViewType = .params
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -37,10 +49,21 @@ class BottomPanelView: UIStackView {
         stylesButtonConfig.cornerStyle = .medium
 
         let stylesButton = UIButton(configuration: stylesButtonConfig)
+        stylesButton.addTarget(self, action: #selector(onStylesButtonClick), for: .touchUpInside)
         stylesButton.widthAnchor.constraint(equalTo: stylesButton.heightAnchor,
                                             multiplier: 2).isActive = true
         buttonsStackView.addArrangedSubview(stylesButton)
         buttonsStackView.addArrangedSubview(BottomControlButtonsView())
+    }
+
+    @objc private func onStylesButtonClick() {
+        switch currentViewType {
+        case .layers:
+            currentViewType = .params
+        case .params:
+            currentViewType = .layers
+        }
+        delegate?.openStylesWindow(viewType: currentViewType)
     }
 
     required init(coder: NSCoder) {

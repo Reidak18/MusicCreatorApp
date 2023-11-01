@@ -8,6 +8,9 @@
 import UIKit
 
 class MainViewController: UIViewController {
+    let paramsView = ParamsView()
+    let layersView = LayersView()
+
     override func loadView() {
         super.loadView()
         let stackView = UIStackView()
@@ -19,14 +22,16 @@ class MainViewController: UIViewController {
         let topPanelView = TopPanelView()
         view.addSubview(topPanelView)
 
-        let paramsView = ParamsView()
-//        paramsView.setSamplesNames(samples: [Sample(name: "Гитара"), Sample(name: "Ударные"), Sample(name: "Духовые")])
         let backgroundView = GradientView()
         backgroundView.setColors(colors: [UIColor.clear, UIColor.customPurpleColor])
         backgroundView.addArrangedSubview(paramsView)
+        layersView.setSamplesNames(samples: [Sample(name: "Гитара"), Sample(name: "Ударные"), Sample(name: "Духовые")])
+        layersView.isHidden = true
+        backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
 
         let bottomPanelView = BottomPanelView()
+        bottomPanelView.delegate = self
         stackView.addArrangedSubview(bottomPanelView)
 
         NSLayoutConstraint.activate([
@@ -42,3 +47,9 @@ class MainViewController: UIViewController {
     }
 }
 
+extension MainViewController: StylesWindowOpener {
+    func openStylesWindow(viewType: CurrentViewType) {
+        layersView.isHidden = viewType != .layers
+        paramsView.isHidden = viewType != .params
+    }
+}

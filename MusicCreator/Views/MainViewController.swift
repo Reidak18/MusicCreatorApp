@@ -46,41 +46,6 @@ class MainViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
         ])
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        let path = Bundle.main.path(forResource: "Taxi", ofType: ".mp3")!
-        let url = URL(fileURLWithPath: path)
-        let audioFile: AVAudioFile
-        do {
-            audioFile = try AVAudioFile(forReading: url)
-        } catch(let error) {
-            print(error)
-            return
-        }
-
-        let waveformCreator = WaveformCreator()
-        waveformCreator.averagePowers(audioFile: audioFile, numberOfFrames: 300, completionHandler: { result in
-            switch result {
-            case .success(let resultArray):
-                guard let maxPower = resultArray.max(),
-                      let minPower = resultArray.min()
-                else { return }
-
-                let diff = maxPower - minPower
-                var normalized: [Float]
-                if diff != 0 {
-                    normalized = resultArray.map({ ($0 - minPower) / diff })
-                } else {
-                    normalized = resultArray
-                }
-            case .failure(let error):
-                print(error)
-            }
-
-        })
-    }
 }
 
 extension MainViewController: StylesWindowOpener {

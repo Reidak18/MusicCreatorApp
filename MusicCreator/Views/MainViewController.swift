@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class MainViewController: UIViewController {
     let paramsView = ParamsView()
@@ -46,11 +47,21 @@ class MainViewController: UIViewController {
         ])
     }
 
-    let w = WaveformCreator()
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        w.drawWaveform()
+        let path = Bundle.main.path(forResource: "Taxi", ofType: ".mp3")!
+        let url = URL(fileURLWithPath: path)
+
+        let a = AudioContext()
+        a.averagePowers(audioFileURL: url, forChannel: 0, completionHandler: { array in
+            guard let maxPower = array.max(),
+                  let minPower = array.min()
+            else { return }
+
+            let normalized = array.map({ ($0 - minPower) / (maxPower - minPower) })
+            print(normalized)
+        })
     }
 }
 

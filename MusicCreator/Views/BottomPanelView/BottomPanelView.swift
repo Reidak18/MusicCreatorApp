@@ -20,6 +20,24 @@ class BottomPanelView: UIStackView {
     public var delegate: StylesWindowOpener?
     private var currentViewType: CurrentViewType = .params
 
+    private let stylesButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .foregroundPrimary
+        config.title = "Слои"
+        config.baseForegroundColor = .labelPrimary
+        config.image = UIImage(systemName: "chevron.up")
+        config.imagePadding = 16
+        config.imagePlacement = .trailing
+        config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(scale: .medium)
+        config.cornerStyle = .medium
+
+        let button = UIButton(configuration: config)
+        button.widthAnchor.constraint(equalTo: button.heightAnchor,
+                                            multiplier: 2).isActive = true
+
+        return button
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -38,31 +56,24 @@ class BottomPanelView: UIStackView {
         buttonsStackView.spacing = 104
         addArrangedSubview(buttonsStackView)
 
-        var stylesButtonConfig = UIButton.Configuration.filled()
-        stylesButtonConfig.baseBackgroundColor = .foregroundPrimary
-        stylesButtonConfig.title = "Слои"
-        stylesButtonConfig.baseForegroundColor = .labelPrimary
-        stylesButtonConfig.image = UIImage(systemName: "chevron.up")
-        stylesButtonConfig.imagePadding = 16
-        stylesButtonConfig.imagePlacement = .trailing
-        stylesButtonConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(scale: .medium)
-        stylesButtonConfig.cornerStyle = .medium
-
-        let stylesButton = UIButton(configuration: stylesButtonConfig)
         stylesButton.addTarget(self, action: #selector(onStylesButtonClick), for: .touchUpInside)
-        stylesButton.widthAnchor.constraint(equalTo: stylesButton.heightAnchor,
-                                            multiplier: 2).isActive = true
         buttonsStackView.addArrangedSubview(stylesButton)
         buttonsStackView.addArrangedSubview(BottomControlButtonsView())
     }
 
     @objc private func onStylesButtonClick() {
+        var config = stylesButton.configuration ?? UIButton.Configuration.filled()
         switch currentViewType {
         case .layers:
             currentViewType = .params
+            config.baseBackgroundColor = .foregroundPrimary
+            config.image = UIImage(systemName: "chevron.up")
         case .params:
             currentViewType = .layers
+            config.baseBackgroundColor = .customLightGreen
+            config.image = UIImage(systemName: "chevron.down")
         }
+        stylesButton.configuration = config
         delegate?.openStylesWindow(viewType: currentViewType)
     }
 

@@ -63,6 +63,8 @@ class LayerCell: UITableViewCell {
         constraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
+            playButton.widthAnchor.constraint(equalTo: playButton.heightAnchor),
+            setEnableButton.widthAnchor.constraint(equalTo: setEnableButton.heightAnchor),
             removeButton.widthAnchor.constraint(equalTo: removeButton.heightAnchor),
 
             constraint,

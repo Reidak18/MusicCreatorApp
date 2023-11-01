@@ -47,6 +47,18 @@ class MainViewController: UIViewController {
         ])
     }
 
+    var player: AVAudioPlayer?
+    lazy var displayLink: CADisplayLink = CADisplayLink(target: self, selector: #selector(updatePlaybackStatus))
+
+    @objc func updatePlaybackStatus() {
+        guard let player = player
+        else { return }
+        let playbackProgress = Float(player.currentTime / player.duration)
+        DispatchQueue.main.async {
+            self.bottomPanelView.setWaveformProgress(progress: playbackProgress)
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -61,7 +73,7 @@ class MainViewController: UIViewController {
         }
 
         let waveformCreator = WaveformCreator()
-        waveformCreator.averagePowers(audioFile: audioFile, numberOfFrames: 300, completionHandler: { result in
+        waveformCreator.averagePowers(audioFile: audioFile, numberOfFrames: 75, completionHandler: { result in
             switch result {
             case .success(let resultArray):
                 guard let maxPower = resultArray.max(),
@@ -75,6 +87,15 @@ class MainViewController: UIViewController {
                 } else {
                     normalized = resultArray
                 }
+                DispatchQueue.main.async {
+                    let img = waveformCreator.drawWaveform(frame: CGRect(x: 0, y: 0, width: 363, height: 56),
+                                                           traitsLengths: normalized)
+                    self.bottomPanelView.setWaveformParams(background: img)
+                }
+
+                self.player = try! AVAudioPlayer(contentsOf: url)
+                self.player?.play()
+                self.displayLink.add(to: .main, forMode: .common)
             case .failure(let error):
                 print(error)
             }

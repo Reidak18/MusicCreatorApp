@@ -1,22 +1,28 @@
 import AVFoundation
 import Accelerate
 
-final class AudioContext {
-    // добавить fail замыкание
-    func averagePowers(audioFileURL: URL,
-                       forChannel channelNumber: Int,
-                       completionHandler: @escaping(_ success: [Float]) -> ()) {
-        let audioFile = try! AVAudioFile(forReading: audioFileURL)
+enum WaveformCreatorError: Error {
+    case createPCMBufferError(String)
+    case readAudioFileError(String)
+    case getAudioChannelDataError(String)
+}
+
+class WaveformCreator {
+    func averagePowers(audioFile: AVAudioFile,
+                       numberOfFrames: Int,
+                       completionHandler: @escaping(_ result: Result<[Float], WaveformCreatorError>) -> ()) {
         let audioFilePFormat = audioFile.processingFormat
         let audioFileLength = audioFile.length
 
-        let numberOfFrames = 300
         let frameSizeToRead = Int(audioFileLength) / numberOfFrames
 
-        //Create a pcm buffer the size of a frame
         guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFilePFormat,
                                                  frameCapacity: AVAudioFrameCount(frameSizeToRead))
-        else { return }
+        else {
+            let error = WaveformCreatorError.createPCMBufferError("Can't create AVAudioPCMBuffer")
+            completionHandler(.failure(error))
+            return
+        }
 
         DispatchQueue.global(qos: .background).async {
             var returnArray : [Float] = [Float]()
@@ -26,23 +32,31 @@ final class AudioContext {
 
                 do {
                     try audioFile.read(into: audioBuffer, frameCount: AVAudioFrameCount(frameSizeToRead))
-                } catch(let error) {
-                    print(error)
+                } catch(let catchedError) {
+                    let error = WaveformCreatorError.readAudioFileError(catchedError.localizedDescription)
+                    completionHandler(.failure(error))
                     return
                 }
 
-                // тут надо смотреть все каналы!
-                //Get the data from the chosen channel
-                let channelData = audioBuffer.floatChannelData![channelNumber]
+                var channelIndex = 0
+                var dbPower: Float = 0
+                while let channelData = audioBuffer.floatChannelData?[channelIndex] {
+                    let arr = Array(UnsafeBufferPointer(start: channelData, count: frameSizeToRead))
+                    let meanValue = arr.reduce(0, {$0 + abs($1)}) / Float(arr.count)
+                    dbPower += meanValue > 0.000_000_01 ? 20 * log10(meanValue) : -160.0
+                    channelIndex += 1
+                }
 
-                let arr = Array(UnsafeBufferPointer(start: channelData, count: frameSizeToRead))
-                let meanValue = arr.reduce(0, {$0 + abs($1)}) / Float(arr.count)
-                let dbPower: Float = meanValue > 0.000_000_01 ? 20 * log10(meanValue) : -160.0
+                if channelIndex == 0 {
+                    let error = WaveformCreatorError.getAudioChannelDataError("Can't get audio channel data")
+                    completionHandler(.failure(error))
+                    return
+                }
 
-                returnArray.append(dbPower)
+                returnArray.append(dbPower / Float(channelIndex))
             }
 
-            completionHandler(returnArray)
+            completionHandler(.success(returnArray))
         }
     }
 }

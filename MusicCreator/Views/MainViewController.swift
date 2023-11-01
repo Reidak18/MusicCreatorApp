@@ -52,15 +52,33 @@ class MainViewController: UIViewController {
 
         let path = Bundle.main.path(forResource: "Taxi", ofType: ".mp3")!
         let url = URL(fileURLWithPath: path)
+        let audioFile: AVAudioFile
+        do {
+            audioFile = try AVAudioFile(forReading: url)
+        } catch(let error) {
+            print(error)
+            return
+        }
 
-        let a = AudioContext()
-        a.averagePowers(audioFileURL: url, forChannel: 0, completionHandler: { array in
-            guard let maxPower = array.max(),
-                  let minPower = array.min()
-            else { return }
+        let waveformCreator = WaveformCreator()
+        waveformCreator.averagePowers(audioFile: audioFile, numberOfFrames: 300, completionHandler: { result in
+            switch result {
+            case .success(let resultArray):
+                guard let maxPower = resultArray.max(),
+                      let minPower = resultArray.min()
+                else { return }
 
-            let normalized = array.map({ ($0 - minPower) / (maxPower - minPower) })
-            print(normalized)
+                let diff = maxPower - minPower
+                if diff != 0 {
+                    let normalized = resultArray.map({ ($0 - minPower) / diff })
+                    print(normalized)
+                } else {
+                    print(resultArray)
+                }
+            case .failure(let error):
+                print(error)
+            }
+
         })
     }
 }

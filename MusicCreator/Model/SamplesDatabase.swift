@@ -14,13 +14,13 @@ enum MusicInstrument {
 }
 
 protocol SamplesDatabase {
-    func getSample(instrument: MusicInstrument, index: Int) -> URL?
+    func getSample(instrument: MusicInstrument, index: Int) -> AudioSample?
 }
 
 class SoundsDatabase: SamplesDatabase {
-    private lazy var availableSounds: Dictionary<MusicInstrument, [URL]> = loadFromLocal()
+    private lazy var availableSounds: Dictionary<MusicInstrument, [AudioSample]> = loadFromLocal()
 
-    func getSample(instrument: MusicInstrument, index: Int) -> URL? {
+    func getSample(instrument: MusicInstrument, index: Int) -> AudioSample? {
         guard let sounds = availableSounds[instrument],
               index < sounds.count
         else { return nil }
@@ -28,17 +28,36 @@ class SoundsDatabase: SamplesDatabase {
         return sounds[index]
     }
 
-    private func loadFromLocal() -> Dictionary<MusicInstrument, [URL]> {
-        var sounds = Dictionary<MusicInstrument, [URL]>()
+    private func loadFromLocal() -> Dictionary<MusicInstrument, [AudioSample]> {
+        var sounds = Dictionary<MusicInstrument, [AudioSample]>()
 
-        let guitarSounds = ["GuitarChordLoop", "GuitarMelodyLoop", "GuitarMoonlightLoop"].compactMap ({ Bundle.main.url(forResource: $0, withExtension: "wav") })
-        let drumsSounds = ["DrumsFutureLoop", "DrumsHeaterLoop", "DrumsTitanLoop"].compactMap({ Bundle.main.url(forResource: $0, withExtension: "wav") })
-        let windSounds = ["WindEmpireMelody1", "WindEmpireMelody2", "WindEmpireMelody3"].compactMap({ Bundle.main.url(forResource: $0, withExtension: "wav") })
-
-        sounds[.guitar] = guitarSounds
-        sounds[.drums] = drumsSounds
-        sounds[.wind] = windSounds
+        sounds[.guitar] = ["GuitarChordLoop",
+                           "GuitarMelodyLoop",
+                           "GuitarMoonlightLoop"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .guitar) })
+        sounds[.drums] = ["DrumsFutureLoop",
+                          "DrumsHeaterLoop",
+                          "DrumsTitanLoop"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .drums) })
+        sounds[.wind] = ["WindEmpireMelody1",
+                         "WindEmpireMelody2",
+                         "WindEmpireMelody3"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .wind) })
 
         return sounds
+    }
+
+    private func createAudioSample(_ fileName: String, _ index: Int, _ type: MusicInstrument) -> AudioSample? {
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "wav")
+        else { return nil }
+
+        var name = ""
+        switch type {
+        case .guitar:
+            name = "Гитара \(index + 1)"
+        case .drums:
+            name = "Ударные \(index + 1)"
+        case .wind:
+            name = "Духовые \(index + 1)"
+        }
+
+        return AudioSample(name: name, audioUrl: url)
     }
 }

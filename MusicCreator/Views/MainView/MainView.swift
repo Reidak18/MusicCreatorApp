@@ -36,7 +36,7 @@ class MainView: UIView {
         setConstraints()
     }
 
-    func setupView() {
+    private func setupView() {
         stackView.axis = .vertical
         stackView.backgroundColor = .backgroundPrimary
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +46,6 @@ class MainView: UIView {
 
         backgroundView.setColors(colors: [UIColor.clear, UIColor.customPurpleColor])
         backgroundView.addArrangedSubview(paramsView)
-        layersView.setSamplesNames(samples: [Sample(name: "Гитара"), Sample(name: "Ударные"), Sample(name: "Духовые")])
         layersView.isHidden = true
         backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
@@ -55,7 +54,7 @@ class MainView: UIView {
         stackView.addArrangedSubview(bottomPanelView)
     }
 
-    func setConstraints() {
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             topPanelView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             topPanelView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
@@ -82,6 +81,10 @@ class MainView: UIView {
         DispatchQueue.main.async {
             self.bottomPanelView.setWaveformProgress(progress: progress)
         }
+    }
+
+    func setCurrentSession(session: some Session) {
+        layersView.setCurrentSession(session: session)
     }
 
     required init?(coder: NSCoder) {

@@ -7,12 +7,9 @@
 
 import UIKit
 
-struct Sample {
-    let name: String
-}
-
 class LayersView: UITableView {
-    var samples: [Sample] = []
+//    private var samples: [AudioSample] = []
+    private var session: Session?
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -32,8 +29,14 @@ class LayersView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setSamplesNames(samples: [Sample]) {
-        self.samples = samples
+//    func setSamplesNames(samples: [AudioSample]) {
+//        self.samples = samples
+//    }
+
+    func setCurrentSession(session: some Session) {
+        var session = session
+        session.updateListener = self
+        self.session = session
     }
 
     required init?(coder: NSCoder) {
@@ -43,14 +46,19 @@ class LayersView: UITableView {
 
 extension LayersView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        samples.count
+        guard let samples = session?.getSamples()
+        else { return 0 }
+
+        return samples.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "LayerCell", for: indexPath) as? LayerCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "LayerCell", for: indexPath) as? LayerCell,
+              let sample = session?.getSamples()[indexPath.row]
         else { return LayerCell() }
 
-        cell.setName(name: samples[indexPath.row].name)
+        cell.setLayerParams(id: sample.id, name: sample.name, isMute: sample.isMute)
+        cell.listener = self
         return cell
     }
 }
@@ -58,5 +66,31 @@ extension LayersView: UITableViewDataSource {
 extension LayersView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         50 + 10
+    }
+}
+
+extension LayersView: LayerCellListener {
+    func playLayer(id: String) {
+        session?.playSample(id: id)
+    }
+
+    func muteLayer(id: String) {
+        guard var sample = session?.getSample(id: id)
+        else { return }
+
+        sample.setMute(isMute: !sample.isMute)
+        session?.updateSample(sample: sample)
+        reloadData()
+    }
+
+    func removeLayer(id: String) {
+        session?.removeSample(id: id)
+        reloadData()
+    }
+}
+
+extension LayersView: SessionUpdateListener {
+    func update(samples: [AudioSample]) {
+        reloadData()
     }
 }

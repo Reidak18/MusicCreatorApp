@@ -38,6 +38,8 @@
 		0A28FBD22AF325E70003EE49 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */; };
 		0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBD62AF37FF60003EE49 /* MainView.swift */; };
 		0A28FBDC2AF3845D0003EE49 /* SamplesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */; };
+		0A28FBE22AF40D330003EE49 /* AudioSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBE12AF40D330003EE49 /* AudioSample.swift */; };
+		0A28FBE52AF40F410003EE49 /* WorkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBE42AF40F410003EE49 /* WorkSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +76,8 @@
 		0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		0A28FBD62AF37FF60003EE49 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesDatabase.swift; sourceTree = "<group>"; };
+		0A28FBE12AF40D330003EE49 /* AudioSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSample.swift; sourceTree = "<group>"; };
+		0A28FBE42AF40F410003EE49 /* WorkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,9 +178,11 @@
 		0A28FB7A2AF238A50003EE49 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
+				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,6 +250,14 @@
 				0A28FBC62AF325810003EE49 /* WindEmpireMelody3.wav */,
 			);
 			path = Wind;
+			sourceTree = "<group>";
+		};
+		0A28FBE32AF40D3C0003EE49 /* DataStructs */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FBE12AF40D330003EE49 /* AudioSample.swift */,
+			);
+			path = DataStructs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +346,7 @@
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
 				0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */,
 				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,
+				0A28FBE22AF40D330003EE49 /* AudioSample.swift in Sources */,
 				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
 				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,
 				0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */,
@@ -345,6 +360,7 @@
 				0A28FB482AEFFFA00003EE49 /* SceneDelegate.swift in Sources */,
 				0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */,
 				0A28FB772AF123EE0003EE49 /* Extensions.swift in Sources */,
+				0A28FBE52AF40F410003EE49 /* WorkSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

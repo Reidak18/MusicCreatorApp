@@ -7,23 +7,38 @@
 
 import AVFoundation
 
-protocol AudioProgressSubscriber {
+protocol AudioProgressListener {
     func updateProgress(progress: Float)
 }
 
 protocol AudioPlayer {
-    func play(clipUrl: URL)
+    func play(sample: AudioSample, loop: Bool)
     func stop()
-    func setVolume(volume: Float)
-    func setSpeed(speed: Float)
-    var audioProgressSubscriber: AudioProgressSubscriber? { get set }
+    var volume: Float { get set }
+    var speed: Float { get set }
+    func getPlayingClipId() -> String?
+    func updateSample(sample: AudioSample)
+    var audioProgressSubscriber: AudioProgressListener? { get set }
 }
 
 class SimpleAudioPlayer: AudioPlayer {
-    var audioProgressSubscriber: AudioProgressSubscriber?
+    var audioProgressSubscriber: AudioProgressListener?
     private var playerInstance: AVAudioPlayer?
-    private var volume: Float
-    private var speed: Float
+    var volume: Float {
+        didSet {
+            if let player = playerInstance {
+                player.volume = volume
+            }
+        }
+    }
+    var speed: Float {
+        didSet {
+            if let player = playerInstance {
+                player.rate = speed
+            }
+        }
+    }
+    private var playingId: String?
 
     lazy var displayLink: CADisplayLink = CADisplayLink(target: self, selector: #selector(updateAudioProgress))
 
@@ -32,46 +47,53 @@ class SimpleAudioPlayer: AudioPlayer {
         speed = defaultSpeed
     }
 
-    func play(clipUrl: URL) {
-        guard let player = try? AVAudioPlayer(contentsOf: clipUrl)
+    func play(sample: AudioSample, loop: Bool) {
+        guard let player = try? AVAudioPlayer(contentsOf: sample.audioUrl)
         else {
-            print("Can't create AVAudioPlayer with clip \(clipUrl)")
+            print("Can't create AVAudioPlayer with clip \(sample.audioUrl)")
             return
         }
 
-        playerInstance = player
+        playingId = sample.id
+
         player.enableRate = true
-        player.numberOfLoops = -1
+        player.numberOfLoops = loop ? -1 : 0
         player.play()
-        player.volume = volume
-        player.rate = speed
+        player.volume = sample.isMute ? 0 : sample.volume
+        player.rate = sample.speed
+        playerInstance = player
         displayLink.add(to: .main, forMode: .common)
     }
 
     func stop() {
+        playingId = nil
         playerInstance?.stop()
         playerInstance = nil
-        displayLink.invalidate()
+        displayLink.remove(from: .main, forMode: .common)
+        audioProgressSubscriber?.updateProgress(progress: 0)
     }
 
-    func setVolume(volume: Float) {
-        self.volume = min(max(0, volume), 1.0)
-        if let player = playerInstance {
-            player.volume = volume
-        }
+    func getPlayingClipId() -> String? {
+        return playingId
     }
 
-    func setSpeed(speed: Float) {
-        self.speed = min(max(0.5, volume), 2.0)
-        if let player = playerInstance {
-            player.rate = speed
-        }
+    func updateSample(sample: AudioSample) {
+        guard playingId == sample.id
+        else { return }
+
+        volume = sample.isMute ? 0 : sample.volume
+        speed = sample.speed
     }
 
     @objc private func updateAudioProgress() {
         guard let player = playerInstance
         else { return }
 
-        audioProgressSubscriber?.updateProgress(progress: Float(player.currentTime / player.duration))
+        let progress = Float(player.currentTime / player.duration)
+        audioProgressSubscriber?.updateProgress(progress: progress)
+
+        if !player.isPlaying {
+            stop()
+        }
     }
 }

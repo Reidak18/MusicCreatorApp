@@ -12,7 +12,7 @@ protocol AudioProgressSubscriber {
 }
 
 protocol AudioPlayer {
-    func play(clipUrl: URL, loop: Bool)
+    func play(clipUrl: URL)
     func stop()
     func setVolume(volume: Float)
     func setSpeed(speed: Float)
@@ -32,7 +32,7 @@ class SimpleAudioPlayer: AudioPlayer {
         speed = defaultSpeed
     }
 
-    func play(clipUrl: URL, loop: Bool) {
+    func play(clipUrl: URL) {
         guard let player = try? AVAudioPlayer(contentsOf: clipUrl)
         else {
             print("Can't create AVAudioPlayer with clip \(clipUrl)")
@@ -41,7 +41,7 @@ class SimpleAudioPlayer: AudioPlayer {
 
         playerInstance = player
         player.enableRate = true
-        player.numberOfLoops = loop ? -1 : 1
+        player.numberOfLoops = -1
         player.play()
         player.volume = volume
         player.rate = speed
@@ -56,10 +56,16 @@ class SimpleAudioPlayer: AudioPlayer {
 
     func setVolume(volume: Float) {
         self.volume = min(max(0, volume), 1.0)
+        if let player = playerInstance {
+            player.volume = volume
+        }
     }
 
     func setSpeed(speed: Float) {
         self.speed = min(max(0.5, volume), 2.0)
+        if let player = playerInstance {
+            player.rate = speed
+        }
     }
 
     @objc private func updateAudioProgress() {

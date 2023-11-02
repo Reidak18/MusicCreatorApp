@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SlidersChangesListener {
+    func volumeValueUpdated(volume: Float)
+    func speedValueUpdated(speed: Float)
+}
+
 class ParamsView: UIView {
+    public var slidersChangesListener: SlidersChangesListener?
     private let volumeSlider = ThumbTextSlider()
     private let speedSlider = ThumbTextSlider()
 
@@ -23,10 +29,18 @@ class ParamsView: UIView {
         volumeSlider.setBackgroundImage(named: "VerticalSliderBackground")
         volumeSlider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
         volumeSlider.translatesAutoresizingMaskIntoConstraints = false
+        volumeSlider.minimumValue = 0
+        volumeSlider.maximumValue = 1
+        volumeSlider.value = 1
+        volumeSlider.addTarget(self, action: #selector(volumeValueChanged), for: .valueChanged)
         addSubview(volumeSlider)
         speedSlider.setThumbLabel(label: "скорость")
         speedSlider.setBackgroundImage(named: "HorizontalSliderBackground")
         speedSlider.translatesAutoresizingMaskIntoConstraints = false
+        speedSlider.minimumValue = 0.5
+        speedSlider.maximumValue = 2
+        speedSlider.value = 1
+        speedSlider.addTarget(self, action: #selector(speedValueChanged), for: .valueChanged)
         addSubview(speedSlider)
     }
 
@@ -42,6 +56,14 @@ class ParamsView: UIView {
             speedSlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: speedSliderThumbHeight + 5),
             speedSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: speedSliderThumbHeight / 2)
         ])
+    }
+
+    @objc private func volumeValueChanged() {
+        slidersChangesListener?.volumeValueUpdated(volume: volumeSlider.value)
+    }
+
+    @objc private func speedValueChanged() {
+        slidersChangesListener?.speedValueUpdated(speed: speedSlider.value)
     }
 
     required init?(coder: NSCoder) {

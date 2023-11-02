@@ -8,7 +8,16 @@
 import UIKit
 
 class MainView: UIView {
-    public var selectDelegate: SampleTrackSelector?
+    public var selectSampleDelegate: SampleTrackSelector? {
+        didSet {
+            topPanelView.selectDelegate = selectSampleDelegate
+        }
+    }
+    public var slidersChangesListener: SlidersChangesListener? {
+        didSet {
+            paramsView.slidersChangesListener = slidersChangesListener
+        }
+    }
 
     private let stackView = UIStackView()
 
@@ -33,7 +42,6 @@ class MainView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
 
-        topPanelView.selectDelegate = self
         addSubview(topPanelView)
 
         backgroundView.setColors(colors: [UIColor.clear, UIColor.customPurpleColor])
@@ -85,11 +93,5 @@ extension MainView: StylesWindowOpener {
     func openStylesWindow(viewType: CurrentViewType) {
         layersView.isHidden = viewType != .layers
         paramsView.isHidden = viewType != .params
-    }
-}
-
-extension MainView: SampleTrackSelector {
-    func selectSample(instrument: MusicInstrument, index: Int) {
-        selectDelegate?.selectSample(instrument: instrument, index: index)
     }
 }

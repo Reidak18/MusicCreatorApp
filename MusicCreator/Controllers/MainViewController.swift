@@ -16,7 +16,8 @@ class MainViewController: UIViewController {
 
     override func loadView() {
         audioPlayer.audioProgressSubscriber = self
-        mainView.selectDelegate = self
+        mainView.selectSampleDelegate = self
+        mainView.slidersChangesListener = self
         view = mainView
     }
 }
@@ -36,12 +37,22 @@ extension MainViewController: SampleTrackSelector {
                 self.mainView.setWaveformParams(background: resultImage)
             }
         }
-        audioPlayer.play(clipUrl: sampleUrl, loop: true)
+        audioPlayer.play(clipUrl: sampleUrl)
     }
 }
 
 extension MainViewController: AudioProgressSubscriber {
     func updateProgress(progress: Float) {
         mainView.setWaveformProgress(progress: progress)
+    }
+}
+
+extension MainViewController: SlidersChangesListener {
+    func volumeValueUpdated(volume: Float) {
+        audioPlayer.setVolume(volume: volume)
+    }
+
+    func speedValueUpdated(speed: Float) {
+        audioPlayer.setSpeed(speed: speed)
     }
 }

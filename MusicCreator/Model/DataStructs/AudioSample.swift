@@ -13,14 +13,14 @@ struct AudioSample {
     let audioUrl: URL
 
     var volume: Float
-    var speed: Float
+    var frequency: Float
     var isMute: Bool
 
-    init(name: String, audioUrl: URL, volume: Float = 1, speed: Float = 1, isMute: Bool = false) {
+    init(name: String, audioUrl: URL, volume: Float = 1, frequency: Float = 1, isMute: Bool = false) {
         self.name = name
         self.audioUrl = audioUrl
         self.volume = volume
-        self.speed = speed
+        self.frequency = frequency
         self.isMute = isMute
     }
 
@@ -28,8 +28,8 @@ struct AudioSample {
         self.volume = volume
     }
 
-    mutating func setSpeed(speed: Float) {
-        self.speed = speed
+    mutating func setFrequency(frequency: Float) {
+        self.frequency = frequency
     }
 
     mutating func setMute(isMute: Bool) {

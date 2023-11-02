@@ -61,6 +61,6 @@ class WorkSession: Session {
         guard let sample = samples[id]
         else { return }
         
-        player.play(sample: sample, loop: false)
+        player.play(sample: sample)
     }
 }

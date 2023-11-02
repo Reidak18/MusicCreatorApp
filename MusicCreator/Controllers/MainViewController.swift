@@ -54,9 +54,9 @@ extension MainViewController: SampleTrackSelector {
         }
 
         sample.setVolume(volume: audioPlayer.volume)
-        sample.setSpeed(speed: audioPlayer.speed)
+        sample.setFrequency(frequency: audioPlayer.frequency)
         session.addSample(sample: sample)
-        audioPlayer.play(sample: sample, loop: true)
+        audioPlayer.play(sample: sample)
     }
 }
 
@@ -71,7 +71,7 @@ extension MainViewController: SlidersChangesListener {
         audioPlayer.volume = volume
     }
 
-    func speedValueUpdated(speed: Float) {
-        audioPlayer.speed = speed
+    func frequencyValueUpdated(frequency: Float) {
+        audioPlayer.frequency = frequency
     }
 }

@@ -9,13 +9,13 @@ import UIKit
 
 protocol SlidersChangesListener {
     func volumeValueUpdated(volume: Float)
-    func speedValueUpdated(speed: Float)
+    func frequencyValueUpdated(frequency: Float)
 }
 
 class ParamsView: UIView {
     public var slidersChangesListener: SlidersChangesListener?
     private let volumeSlider = ThumbTextSlider()
-    private let speedSlider = ThumbTextSlider()
+    private let frequencySlider = ThumbTextSlider()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,27 +34,27 @@ class ParamsView: UIView {
         volumeSlider.value = 1
         volumeSlider.addTarget(self, action: #selector(volumeValueChanged), for: .valueChanged)
         addSubview(volumeSlider)
-        speedSlider.setThumbLabel(label: "скорость")
-        speedSlider.setBackgroundImage(named: "HorizontalSliderBackground")
-        speedSlider.translatesAutoresizingMaskIntoConstraints = false
-        speedSlider.minimumValue = 0.5
-        speedSlider.maximumValue = 2
-        speedSlider.value = 1
-        speedSlider.addTarget(self, action: #selector(speedValueChanged), for: .valueChanged)
-        addSubview(speedSlider)
+        frequencySlider.setThumbLabel(label: "скорость")
+        frequencySlider.setBackgroundImage(named: "HorizontalSliderBackground")
+        frequencySlider.translatesAutoresizingMaskIntoConstraints = false
+        frequencySlider.minimumValue = 0.1
+        frequencySlider.maximumValue = 10
+        frequencySlider.value = 1
+        frequencySlider.addTarget(self, action: #selector(speedValueChanged), for: .valueChanged)
+        addSubview(frequencySlider)
     }
 
     private func setConstraints() {
         let volumeSliderThumbHeight = volumeSlider.frame.width
-        let speedSliderThumbHeight = speedSlider.frame.height
+        let frequencySliderThumbHeight = frequencySlider.frame.height
         NSLayoutConstraint.activate([
             volumeSlider.widthAnchor.constraint(equalTo: heightAnchor, constant: -volumeSliderThumbHeight / 2),
             volumeSlider.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -volumeSliderThumbHeight / 2 + 5),
             volumeSlider.centerXAnchor.constraint(equalTo: leadingAnchor, constant: volumeSliderThumbHeight - 5),
 
-            speedSlider.widthAnchor.constraint(equalTo: widthAnchor, constant: -speedSliderThumbHeight / 2),
-            speedSlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: speedSliderThumbHeight + 5),
-            speedSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: speedSliderThumbHeight / 2)
+            frequencySlider.widthAnchor.constraint(equalTo: widthAnchor, constant: -frequencySliderThumbHeight / 2),
+            frequencySlider.bottomAnchor.constraint(equalTo: bottomAnchor, constant: frequencySliderThumbHeight + 5),
+            frequencySlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: frequencySliderThumbHeight / 2)
         ])
     }
 
@@ -63,7 +63,7 @@ class ParamsView: UIView {
     }
 
     @objc private func speedValueChanged() {
-        slidersChangesListener?.speedValueUpdated(speed: speedSlider.value)
+        slidersChangesListener?.frequencyValueUpdated(frequency: frequencySlider.value)
     }
 
     required init?(coder: NSCoder) {

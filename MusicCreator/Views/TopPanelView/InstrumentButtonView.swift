@@ -21,6 +21,8 @@ class InstrumentButtonView: UIStackView {
     private let segmentControl = VerticalSegmentedControl()
     private var isOpened = false
 
+    private let buttonImage = UIImage(named: "Ellipse")
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -36,10 +38,13 @@ class InstrumentButtonView: UIStackView {
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
 
-        imageButton.setBackgroundImage(UIImage(systemName: "circle.fill"), for: .normal)
+        imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
 
         imageButton.tintColor = .foregroundPrimary
-        imageButton.addTarget(self, action: #selector(instrumentButtonClicked), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector (playDefaultSample))
+        imageButton.addGestureRecognizer(tapGesture)
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(openInstrumentsList))
+        imageButton.addGestureRecognizer(longGesture)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         addArrangedSubview(imageButton)
     }
@@ -67,16 +72,62 @@ class InstrumentButtonView: UIStackView {
         addArrangedSubview(nameLabel)
     }
 
-    @objc private func instrumentButtonClicked() {
-        isOpened.toggle()
-        isOpened ? openSampleList() : closeSampleList()
+    @objc private func playDefaultSample() {
+        if isOpened {
+            closeSampleList()
+            return
+        }
+
+        preopenSampleList()
+
+        guard let instrument = associatedInstrument
+        else { return }
+        selectDelegate?.selectSample(instrument: instrument, index: 0)
+    }
+
+    @objc private func openInstrumentsList() {
+        if !isOpened {
+            openSampleList()
+        }
+    }
+
+    private func preopenSampleList() {
+        layer.cornerRadius = bounds.width / 2
+        backgroundColor = .customLightGreen
+        imageButton.setBackgroundImage(buttonImage?.withTintColor(.customLightGreen), for: .normal)
+
+        let labelHeight = nameLabel.frame.height
+        let heightConstraint = nameLabel.heightAnchor.constraint(equalToConstant: labelHeight * 2)
+        nameLabel.textColor = .clear
+        heightConstraint.isActive = true
+
+        let oldFrame = frame
+        let newFrame = CGRect(x: frame.minX,
+                              y: frame.minY,
+                              width: frame.width,
+                              height: frame.height + labelHeight)
+        UIView.animate(withDuration: 0.25) {
+            self.frame = newFrame
+            self.layoutIfNeeded()
+        } completion: { _ in
+            self.nameLabel.removeConstraint(heightConstraint)
+            UIView.animate(withDuration: 0.25) {
+                self.frame = oldFrame
+                self.layoutIfNeeded()
+            } completion: { _ in
+                self.backgroundColor = .clear
+                self.imageButton.setBackgroundImage(self.buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
+                self.nameLabel.textColor = .foregroundPrimary
+            }
+        }
     }
 
     private func openSampleList() {
+        isOpened = true
         layer.cornerRadius = bounds.width / 2
         nameLabel.isHidden = true
         backgroundColor = .customLightGreen
-        imageButton.tintColor = .clear
+        imageButton.setBackgroundImage(buttonImage?.withTintColor(.customLightGreen), for: .normal)
         segmentControl.setSamples(samples: ["cемпл 1", "cемпл 2", "cемпл 3"], width: self.bounds.width)
         segmentControl.selectDelegate = self
         addArrangedSubview(self.segmentControl)
@@ -93,6 +144,7 @@ class InstrumentButtonView: UIStackView {
     }
 
     private func closeSampleList() {
+        isOpened = false
         UIView.animate(withDuration: 1) {
             self.segmentControl.isHidden = true
             self.segmentControl.resetSelection()
@@ -101,7 +153,7 @@ class InstrumentButtonView: UIStackView {
             self.segmentControl.removeFromSuperview()
 
             self.backgroundColor = .clear
-            self.imageButton.tintColor = .foregroundPrimary
+            self.imageButton.setBackgroundImage(self.buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
             self.nameLabel.isHidden = false
         }
     }

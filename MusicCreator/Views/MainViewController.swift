@@ -10,6 +10,7 @@ import UIKit
 class MainViewController: UIViewController {
     let paramsView = ParamsView()
     let layersView = LayersView()
+    let bottomPanelView = BottomPanelView()
 
     override func loadView() {
         super.loadView()
@@ -30,7 +31,6 @@ class MainViewController: UIViewController {
         backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
 
-        let bottomPanelView = BottomPanelView()
         bottomPanelView.delegate = self
         stackView.addArrangedSubview(bottomPanelView)
 

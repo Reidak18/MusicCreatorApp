@@ -19,6 +19,7 @@ protocol StylesWindowOpener {
 class BottomPanelView: UIStackView {
     public var delegate: StylesWindowOpener?
     private var currentViewType: CurrentViewType = .params
+    private let waveformSlider = WaveformSlider()
 
     private let stylesButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -33,7 +34,7 @@ class BottomPanelView: UIStackView {
 
         let button = UIButton(configuration: config)
         button.widthAnchor.constraint(equalTo: button.heightAnchor,
-                                            multiplier: 2).isActive = true
+                                      multiplier: 2).isActive = true
 
         return button
     }()
@@ -48,8 +49,7 @@ class BottomPanelView: UIStackView {
         axis = .vertical
         spacing = 10
 
-        let waveformImage = UIImageView(image: UIImage(named: "HorizontalSliderBackground"))
-        addArrangedSubview(waveformImage)
+        addArrangedSubview(waveformSlider)
 
         let buttonsStackView = UIStackView()
         buttonsStackView.axis = .horizontal
@@ -75,6 +75,14 @@ class BottomPanelView: UIStackView {
         }
         stylesButton.configuration = config
         delegate?.openStylesWindow(viewType: currentViewType)
+    }
+
+    func setWaveformParams(background: UIImage) {
+        waveformSlider.setParams(background: background)
+    }
+
+    func setWaveformProgress(progress: Float) {
+        waveformSlider.value = progress
     }
 
     required init(coder: NSCoder) {

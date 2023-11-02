@@ -31,15 +31,15 @@ class SoundsDatabase: SamplesDatabase {
     private func loadFromLocal() -> Dictionary<MusicInstrument, [AudioSample]> {
         var sounds = Dictionary<MusicInstrument, [AudioSample]>()
 
-        sounds[.guitar] = ["GuitarChordLoop",
-                           "GuitarMelodyLoop",
-                           "GuitarMoonlightLoop"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .guitar) })
-        sounds[.drums] = ["DrumsFutureLoop",
-                          "DrumsHeaterLoop",
-                          "DrumsTitanLoop"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .drums) })
-        sounds[.wind] = ["WindEmpireMelody1",
-                         "WindEmpireMelody2",
-                         "WindEmpireMelody3"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .wind) })
+        sounds[.guitar] = ["Electric",
+                           "Goldkind",
+                           "Kaponja"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .guitar) })
+        sounds[.drums] = ["Hihats",
+                          "Kick",
+                          "Snare"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .drums) })
+        sounds[.wind] = ["FluteA4",
+                         "FluteD2",
+                         "FluteF3"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .wind) })
 
         return sounds
     }

@@ -13,13 +13,11 @@ class MainViewController: UIViewController {
 
     private var database: SamplesDatabase
     private var audioPlayer: AudioPlayer
-    private var waveformCreator: WaveformCreator
     private var session: Session
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SoundsDatabase()
         audioPlayer = SimpleAudioPlayer()
-        waveformCreator = CustomWaveformCreator()
         session = WorkSession(player: audioPlayer)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -42,16 +40,7 @@ extension MainViewController: SampleTrackSelector {
         guard var sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
-        waveformCreator.drawWaveform(fileUrl: sample.audioUrl,
-                                     numberOfFrames: 75,
-                                     frame: mainView.getWaveformFrame()) { result in
-            switch(result) {
-            case .failure(let error):
-                print(error)
-            case .success(let resultImage):
-                self.mainView.setWaveformParams(background: resultImage)
-            }
-        }
+        self.mainView.setWaveform(url: sample.audioUrl)
 
         sample.setVolume(volume: audioPlayer.volume)
         sample.setFrequency(frequency: audioPlayer.frequency)

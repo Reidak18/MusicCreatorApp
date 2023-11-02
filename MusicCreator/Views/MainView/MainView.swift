@@ -67,14 +67,8 @@ class MainView: UIView {
         ])
     }
 
-    func getWaveformFrame() -> CGRect {
-        return bottomPanelView.getWaveformFrame()
-    }
-
-    func setWaveformParams(background: UIImage) {
-        DispatchQueue.main.async {
-            self.bottomPanelView.setWaveformParams(background: background)
-        }
+    func setWaveform(url: URL) {
+        self.bottomPanelView.setWaveform(url: url)
     }
 
     func setWaveformProgress(progress: Float) {

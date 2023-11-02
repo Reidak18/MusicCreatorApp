@@ -77,12 +77,8 @@ class BottomPanelView: UIStackView {
         switchViewDelegate?.openStylesWindow(viewType: currentViewType)
     }
 
-    func getWaveformFrame() -> CGRect {
-        return waveformSlider.frame
-    }
-
-    func setWaveformParams(background: UIImage) {
-        waveformSlider.setParams(background: background)
+    func setWaveform(url: URL) {
+        waveformSlider.setWaveform(url: url)
     }
 
     func setWaveformProgress(progress: Float) {

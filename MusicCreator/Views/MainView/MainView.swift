@@ -8,6 +8,8 @@
 import UIKit
 
 class MainView: UIView {
+    public var selectDelegate: SampleTrackSelector?
+
     private let stackView = UIStackView()
 
     private let topPanelView = TopPanelView()
@@ -15,6 +17,8 @@ class MainView: UIView {
     private let backgroundView = GradientView()
     private let paramsView = ParamsView()
     private let layersView = LayersView()
+
+    private let bottomPanelView = BottomPanelView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,6 +33,7 @@ class MainView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
 
+        topPanelView.selectDelegate = self
         addSubview(topPanelView)
 
         backgroundView.setColors(colors: [UIColor.clear, UIColor.customPurpleColor])
@@ -38,8 +43,7 @@ class MainView: UIView {
         backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
 
-        let bottomPanelView = BottomPanelView()
-        bottomPanelView.delegate = self
+        bottomPanelView.switchViewDelegate = self
         stackView.addArrangedSubview(bottomPanelView)
     }
 
@@ -56,6 +60,22 @@ class MainView: UIView {
         ])
     }
 
+    func getWaveformFrame() -> CGRect {
+        return bottomPanelView.getWaveformFrame()
+    }
+
+    func setWaveformParams(background: UIImage) {
+        DispatchQueue.main.async {
+            self.bottomPanelView.setWaveformParams(background: background)
+        }
+    }
+
+    func setWaveformProgress(progress: Float) {
+        DispatchQueue.main.async {
+            self.bottomPanelView.setWaveformProgress(progress: progress)
+        }
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -68,3 +88,8 @@ extension MainView: StylesWindowOpener {
     }
 }
 
+extension MainView: SampleTrackSelector {
+    func selectSample(instrument: MusicInstrument, index: Int) {
+        selectDelegate?.selectSample(instrument: instrument, index: index)
+    }
+}

@@ -17,7 +17,7 @@ protocol StylesWindowOpener {
 }
 
 class BottomPanelView: UIStackView {
-    public var delegate: StylesWindowOpener?
+    public var switchViewDelegate: StylesWindowOpener?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
 
@@ -74,7 +74,11 @@ class BottomPanelView: UIStackView {
             config.image = UIImage(systemName: "chevron.down")
         }
         stylesButton.configuration = config
-        delegate?.openStylesWindow(viewType: currentViewType)
+        switchViewDelegate?.openStylesWindow(viewType: currentViewType)
+    }
+
+    func getWaveformFrame() -> CGRect {
+        return waveformSlider.frame
     }
 
     func setWaveformParams(background: UIImage) {

@@ -37,6 +37,7 @@
 		0A28FBD02AF325810003EE49 /* DrumsHeaterLoop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBC72AF325810003EE49 /* DrumsHeaterLoop.wav */; };
 		0A28FBD22AF325E70003EE49 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */; };
 		0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBD62AF37FF60003EE49 /* MainView.swift */; };
+		0A28FBDC2AF3845D0003EE49 /* SamplesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		0A28FBC72AF325810003EE49 /* DrumsHeaterLoop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DrumsHeaterLoop.wav; sourceTree = "<group>"; };
 		0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		0A28FBD62AF37FF60003EE49 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +126,8 @@
 				0A28FBD52AF37FE20003EE49 /* MainView */,
 				0A28FB5E2AF025080003EE49 /* TopPanelView */,
 				0A28FB632AF029FE0003EE49 /* ParamsView */,
-				0A28FB6A2AF0C7EF0003EE49 /* BottomPanelView */,
 				0A28FB6F2AF0E8B90003EE49 /* LayersView */,
+				0A28FB6A2AF0C7EF0003EE49 /* BottomPanelView */,
 				0A28FB742AF10A850003EE49 /* GradientView.swift */,
 			);
 			path = Views;
@@ -174,6 +176,7 @@
 			children = (
 				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
+				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,15 +184,9 @@
 		0A28FB812AF23D890003EE49 /* AudioSamples */ = {
 			isa = PBXGroup;
 			children = (
-				0A28FBC32AF325810003EE49 /* DrumsFutureLoop.wav */,
-				0A28FBC72AF325810003EE49 /* DrumsHeaterLoop.wav */,
-				0A28FBBF2AF325810003EE49 /* DrumsTitanLoop.wav */,
-				0A28FBC42AF325810003EE49 /* GuitarChordLoop.wav */,
-				0A28FBC02AF325810003EE49 /* GuitarMelodyLoop.wav */,
-				0A28FBC52AF325810003EE49 /* GuitarMoonlightLoop.wav */,
-				0A28FBC12AF325810003EE49 /* WindEmpireMelody1.wav */,
-				0A28FBC22AF325810003EE49 /* WindEmpireMelody2.wav */,
-				0A28FBC62AF325810003EE49 /* WindEmpireMelody3.wav */,
+				0A28FBD82AF3841E0003EE49 /* Guitar */,
+				0A28FBD92AF384250003EE49 /* Drums */,
+				0A28FBDA2AF3842C0003EE49 /* Wind */,
 			);
 			path = AudioSamples;
 			sourceTree = "<group>";
@@ -217,6 +214,36 @@
 				0A28FBD62AF37FF60003EE49 /* MainView.swift */,
 			);
 			path = MainView;
+			sourceTree = "<group>";
+		};
+		0A28FBD82AF3841E0003EE49 /* Guitar */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FBC42AF325810003EE49 /* GuitarChordLoop.wav */,
+				0A28FBC02AF325810003EE49 /* GuitarMelodyLoop.wav */,
+				0A28FBC52AF325810003EE49 /* GuitarMoonlightLoop.wav */,
+			);
+			path = Guitar;
+			sourceTree = "<group>";
+		};
+		0A28FBD92AF384250003EE49 /* Drums */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FBC32AF325810003EE49 /* DrumsFutureLoop.wav */,
+				0A28FBC72AF325810003EE49 /* DrumsHeaterLoop.wav */,
+				0A28FBBF2AF325810003EE49 /* DrumsTitanLoop.wav */,
+			);
+			path = Drums;
+			sourceTree = "<group>";
+		};
+		0A28FBDA2AF3842C0003EE49 /* Wind */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FBC12AF325810003EE49 /* WindEmpireMelody1.wav */,
+				0A28FBC22AF325810003EE49 /* WindEmpireMelody2.wav */,
+				0A28FBC62AF325810003EE49 /* WindEmpireMelody3.wav */,
+			);
+			path = Wind;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,6 +335,7 @@
 				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
 				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,
 				0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */,
+				0A28FBDC2AF3845D0003EE49 /* SamplesDatabase.swift in Sources */,
 				0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */,
 				0A28FB732AF0E9C40003EE49 /* LayerCell.swift in Sources */,
 				0A28FBD22AF325E70003EE49 /* AudioPlayer.swift in Sources */,

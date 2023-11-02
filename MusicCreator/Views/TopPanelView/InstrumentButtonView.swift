@@ -8,8 +8,14 @@
 import Foundation
 import UIKit
 
+protocol SampleTrackSelector {
+    func selectSample(instrument: MusicInstrument, index: Int)
+}
+
 class InstrumentButtonView: UIStackView {
-    // ToDo: сделать ленивыми?
+    public var selectDelegate: SampleTrackSelector?
+
+    private var associatedInstrument: MusicInstrument?
     private let imageButton = UIButton()
     private let nameLabel = UILabel()
     private let segmentControl = VerticalSegmentedControl()
@@ -33,7 +39,7 @@ class InstrumentButtonView: UIStackView {
         imageButton.setBackgroundImage(UIImage(systemName: "circle.fill"), for: .normal)
 
         imageButton.tintColor = .foregroundPrimary
-        imageButton.addTarget(self, action: #selector(openSampleList), for: .touchUpInside)
+        imageButton.addTarget(self, action: #selector(instrumentButtonClicked), for: .touchUpInside)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         addArrangedSubview(imageButton)
     }
@@ -43,6 +49,10 @@ class InstrumentButtonView: UIStackView {
             imageButton.heightAnchor.constraint(equalToConstant: 80),
             imageButton.widthAnchor.constraint(equalTo: imageButton.heightAnchor)
         ])
+    }
+
+    func setInstrument(_ instrument: MusicInstrument) {
+        associatedInstrument = instrument
     }
 
     func setImage(named: String, insets: UIEdgeInsets) {
@@ -57,41 +67,57 @@ class InstrumentButtonView: UIStackView {
         addArrangedSubview(nameLabel)
     }
 
-    @objc private func openSampleList() {
+    @objc private func instrumentButtonClicked() {
         isOpened.toggle()
-        if isOpened {
-            layer.cornerRadius = bounds.width / 2
-            nameLabel.isHidden = true
-            backgroundColor = .customLightGreen
-            imageButton.tintColor = .clear
-            segmentControl.setSamples(samples: ["cемпл 1", "cемпл 2", "cемпл 3"], width: self.bounds.width)
-            addArrangedSubview(self.segmentControl)
-            layoutIfNeeded()
-            
-            let newFrame = CGRect(x: frame.minX,
-                                  y: frame.minY,
-                                  width: frame.width,
-                                  height: frame.height + segmentControl.frame.height)
-            UIView.animate(withDuration: 1) {
-                self.frame = newFrame
-                self.layoutIfNeeded()
-            }
-        } else {
-            UIView.animate(withDuration: 1) {
-                self.segmentControl.isHidden = true
-                self.segmentControl.resetSelection()
-            } completion: { value in
-                self.segmentControl.isHidden = false
-                self.segmentControl.removeFromSuperview()
+        isOpened ? openSampleList() : closeSampleList()
+    }
 
-                self.backgroundColor = .clear
-                self.imageButton.tintColor = .foregroundPrimary
-                self.nameLabel.isHidden = false
-            }
+    private func openSampleList() {
+        layer.cornerRadius = bounds.width / 2
+        nameLabel.isHidden = true
+        backgroundColor = .customLightGreen
+        imageButton.tintColor = .clear
+        segmentControl.setSamples(samples: ["cемпл 1", "cемпл 2", "cемпл 3"], width: self.bounds.width)
+        segmentControl.selectDelegate = self
+        addArrangedSubview(self.segmentControl)
+        layoutIfNeeded()
+
+        let newFrame = CGRect(x: frame.minX,
+                              y: frame.minY,
+                              width: frame.width,
+                              height: frame.height + segmentControl.frame.height)
+        UIView.animate(withDuration: 1) {
+            self.frame = newFrame
+            self.layoutIfNeeded()
+        }
+    }
+
+    private func closeSampleList() {
+        UIView.animate(withDuration: 1) {
+            self.segmentControl.isHidden = true
+            self.segmentControl.resetSelection()
+        } completion: { value in
+            self.segmentControl.isHidden = false
+            self.segmentControl.removeFromSuperview()
+
+            self.backgroundColor = .clear
+            self.imageButton.tintColor = .foregroundPrimary
+            self.nameLabel.isHidden = false
         }
     }
 
     required init(coder: NSCoder) {
         super.init(coder: coder)
+    }
+}
+
+extension InstrumentButtonView: ItemSelector {
+    func select(index: Int) {
+        closeSampleList()
+
+        guard let instrument = associatedInstrument
+        else { return }
+
+        selectDelegate?.selectSample(instrument: instrument, index: index)
     }
 }

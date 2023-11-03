@@ -12,12 +12,12 @@ enum CurrentViewType {
     case layers
 }
 
-protocol StylesWindowOpener {
-    func openStylesWindow(viewType: CurrentViewType)
+protocol MiddleViewsSwitcher {
+    func switchButtonClicked(to viewType: CurrentViewType)
 }
 
 class BottomPanelView: UIStackView {
-    public var delegate: StylesWindowOpener?
+    public var switchViewDelegate: MiddleViewsSwitcher?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
 
@@ -62,27 +62,34 @@ class BottomPanelView: UIStackView {
     }
 
     @objc private func onStylesButtonClick() {
-        var config = stylesButton.configuration ?? UIButton.Configuration.filled()
         switch currentViewType {
         case .layers:
-            currentViewType = .params
-            config.baseBackgroundColor = .foregroundPrimary
-            config.image = UIImage(systemName: "chevron.up")
+            switchViewDelegate?.switchButtonClicked(to: .params)
         case .params:
-            currentViewType = .layers
-            config.baseBackgroundColor = .customLightGreen
-            config.image = UIImage(systemName: "chevron.down")
+            switchViewDelegate?.switchButtonClicked(to: .layers)
         }
-        stylesButton.configuration = config
-        delegate?.openStylesWindow(viewType: currentViewType)
     }
 
-    func setWaveformParams(background: UIImage) {
-        waveformSlider.setParams(background: background)
+    func setWaveform(url: URL?) {
+        waveformSlider.setWaveform(url: url)
     }
 
     func setWaveformProgress(progress: Float) {
         waveformSlider.value = progress
+    }
+
+    func switchView(viewType: CurrentViewType) {
+        var config = stylesButton.configuration ?? UIButton.Configuration.filled()
+        currentViewType = viewType
+        switch currentViewType {
+        case .params:
+            config.baseBackgroundColor = .foregroundPrimary
+            config.image = UIImage(systemName: "chevron.up")
+        case .layers:
+            config.baseBackgroundColor = .customLightGreen
+            config.image = UIImage(systemName: "chevron.down")
+        }
+        stylesButton.configuration = config
     }
 
     required init(coder: NSCoder) {

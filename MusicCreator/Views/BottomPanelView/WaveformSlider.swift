@@ -8,6 +8,8 @@
 import UIKit
 
 class WaveformSlider: UISlider {
+    private var waveformCreator: WaveformCreator = CustomWaveformCreator()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -26,9 +28,28 @@ class WaveformSlider: UISlider {
         heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
 
-    func setParams(background: UIImage) {
-        setMinimumTrackImage(background.withTintColor(.customLightGreen), for: .normal)
-        setMaximumTrackImage(background.withTintColor(.white), for: .normal)
+    func setWaveform(url: URL?) {
+        guard let url = url
+        else {
+            DispatchQueue.main.async {
+                self.setMinimumTrackImage(nil, for: .normal)
+                self.setMaximumTrackImage(nil, for: .normal)
+            }
+            return
+        }
+        waveformCreator.drawWaveform(fileUrl: url,
+                                     numberOfFrames: 75,
+                                     frame: frame) { result in
+            switch(result) {
+            case .failure(let error):
+                print(error)
+            case .success(let resultImage):
+                DispatchQueue.main.async {
+                    self.setMinimumTrackImage(resultImage.withTintColor(.customLightGreen), for: .normal)
+                    self.setMaximumTrackImage(resultImage.withTintColor(.white), for: .normal)
+                }
+            }
+        }
     }
 
     required init?(coder: NSCoder) {

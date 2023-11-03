@@ -7,12 +7,14 @@
 
 import UIKit
 
-struct Sample {
-    let name: String
+protocol SampleSelectListener {
+    func sampleSelected(id: String?)
 }
 
 class LayersView: UITableView {
-    var samples: [Sample] = []
+    public var sampleSelectListener: SampleSelectListener?
+//    private var samples: [AudioSample] = []
+    private var session: Session?
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -25,15 +27,20 @@ class LayersView: UITableView {
         transform = CGAffineTransformMakeScale(1, -1)
         register(LayerCell.self, forCellReuseIdentifier: "LayerCell")
         alwaysBounceVertical = false
-        isScrollEnabled = false
         dataSource = self
         delegate = self
         separatorStyle = .none
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setSamplesNames(samples: [Sample]) {
-        self.samples = samples
+//    func setSamplesNames(samples: [AudioSample]) {
+//        self.samples = samples
+//    }
+
+    func setCurrentSession(session: some Session) {
+        var session = session
+        session.updateListener = self
+        self.session = session
     }
 
     required init?(coder: NSCoder) {
@@ -43,14 +50,19 @@ class LayersView: UITableView {
 
 extension LayersView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        samples.count
+        guard let samples = session?.getSamples()
+        else { return 0 }
+
+        return samples.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "LayerCell", for: indexPath) as? LayerCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "LayerCell", for: indexPath) as? LayerCell,
+              let sample = session?.getSamples().reversed()[indexPath.row]
         else { return LayerCell() }
 
-        cell.setName(name: samples[indexPath.row].name)
+        cell.setLayerSample(sample: sample)
+        cell.listener = self
         return cell
     }
 }
@@ -58,5 +70,38 @@ extension LayersView: UITableViewDataSource {
 extension LayersView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         50 + 10
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell
+        else { return }
+
+        sampleSelectListener?.sampleSelected(id: cell.getId())
+    }
+}
+
+extension LayersView: LayerCellListener {
+    func playLayer(id: String, play: Bool) {
+        session?.playSample(id: id, play: play)
+    }
+
+    func muteLayer(id: String) {
+        guard var sample = session?.getSample(id: id)
+        else { return }
+
+        sample.setMute(isMute: !sample.isMute)
+        session?.updateSample(sample: sample)
+        reloadData()
+    }
+
+    func removeLayer(id: String) {
+        session?.removeSample(id: id)
+        reloadData()
+    }
+}
+
+extension LayersView: SessionUpdateListener {
+    func update(samples: [AudioSample]) {
+        reloadData()
     }
 }

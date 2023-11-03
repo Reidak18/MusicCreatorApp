@@ -13,6 +13,10 @@ class AudioSampleEditor {
     func setAudioSample(_ sample: AudioSample?) {
         current = sample
     }
+
+    func setIsPlaying(isPlaying: Bool) {
+        current?.setIsPlaying(isPlaying)
+    }
     
     func setVolume(volume: Float) {
         current?.setVolume(volume: volume)

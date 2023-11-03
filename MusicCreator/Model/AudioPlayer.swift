@@ -55,7 +55,7 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         player.delegate = self
         player.numberOfLoops = 0
         player.play()
-        player.volume = sample.isMute ? 0 : sample.volume
+        player.volume = sample.volume
         frequency = sample.frequency
         playerInstance = player
 

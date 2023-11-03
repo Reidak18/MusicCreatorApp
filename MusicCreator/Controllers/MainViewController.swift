@@ -57,6 +57,7 @@ extension MainViewController: SampleTrackSelector {
 
         sample.setVolume(volume: audioPlayer.volume)
         sample.setFrequency(frequency: audioPlayer.frequency)
+        sample.setIsPlaying(true)
         sampleEditor.setAudioSample(sample)
 
         session.addSample(sample: sample)
@@ -69,7 +70,6 @@ extension MainViewController: MiddleViewsSwitcher {
         if viewType == .layers {
             saveSample()
         }
-        session.stop()
         mainView.switchView(viewType: viewType)
     }
 }
@@ -96,10 +96,11 @@ extension MainViewController: SampleSelectListener {
     func sampleSelected(id: String?) {
         mainView.switchView(viewType: .params)
         guard let id = id,
-              let sample = session.getSample(id: id)
+              var sample = session.getSample(id: id)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
+        sample.setIsPlaying(true)
         session.playSample(id: id, play: true)
         sampleEditor.setAudioSample(sample)
     }

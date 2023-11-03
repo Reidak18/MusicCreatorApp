@@ -13,7 +13,6 @@ protocol SessionUpdateListener {
 
 protocol Session {
     func updateSample(sample: AudioSample)
-    func addSample(sample: AudioSample)
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
     func getSamples() -> [AudioSample]
@@ -24,7 +23,7 @@ protocol Session {
 
 class WorkSession: Session {
     var updateListener: SessionUpdateListener?
-    private var samples: Dictionary<String, AudioSample> = [:]
+    private var samples: [AudioSample] = []
     private let player: AudioPlayer
 
     init(player: AudioPlayer) {
@@ -32,30 +31,39 @@ class WorkSession: Session {
     }
 
     func updateSample(sample: AudioSample) {
-        samples[sample.id] = sample
-        player.updateSample(sample: sample)
-        updateListener?.update(samples: getSamples())
-    }
+        defer {
+            updateListener?.update(samples: getSamples())
+        }
 
-    func addSample(sample: AudioSample) {
-        samples[sample.id] = sample
-        updateListener?.update(samples: getSamples())
+        guard let index = samples.firstIndex(where: { $0.id == sample.id })
+        else {
+            samples.append(sample)
+            return
+        }
+        samples[index] = sample
+        player.updateSample(sample: sample)
     }
 
     func removeSample(id: String) {
+        guard let index = samples.firstIndex(where: { $0.id == id })
+        else { return }
+
         if player.getPlayingClipId() == id {
             player.stop()
         }
-        samples[id] = nil
+        samples.remove(at: index)
         updateListener?.update(samples: getSamples())
     }
 
     func getSample(id: String) -> AudioSample? {
-        return samples[id]
+        guard let index = samples.firstIndex(where: { $0.id == id })
+        else { return nil }
+
+        return samples[index]
     }
 
     func getSamples() -> [AudioSample] {
-        return Array(samples.values)
+        return samples
     }
 
     func playSample(id: String, play: Bool) {
@@ -68,18 +76,17 @@ class WorkSession: Session {
     }
 
     func stop() {
-        guard let playingId = player.getPlayingClipId()
+        guard let playingId = player.getPlayingClipId(),
+              let index = samples.firstIndex(where: { $0.id == playingId })
         else { return }
 
-        if var playingSample = samples[playingId] {
-            playingSample.setIsPlaying(false)
-            updateSample(sample: playingSample)
-            player.stop()
-        }
+        samples[index].setIsPlaying(false)
+        updateSample(sample: samples[index])
+        player.stop()
     }
 
     private func startPlay(id: String) {
-        guard var sample = samples[id]
+        guard let index = samples.firstIndex(where: { $0.id == id })
         else { return }
 
         // уже проигрывается этот семпл - ничего не делать
@@ -88,16 +95,16 @@ class WorkSession: Session {
         } else {
             // если что-то другое проигрывается - выключаем
             if let plaingId = player.getPlayingClipId(),
-               var playingSample = samples[plaingId] {
-                playingSample.setIsPlaying(false)
-                updateSample(sample: playingSample)
+               let playingIndex = samples.firstIndex(where: { $0.id == plaingId }) {
+                samples[playingIndex].setIsPlaying(false)
+                updateSample(sample: samples[playingIndex])
                 player.stop()
             }
 
             // включаем семпл
-            sample.setIsPlaying(true)
-            updateSample(sample: sample)
-            player.play(sample: sample)
+            samples[index].setIsPlaying(true)
+            updateSample(sample: samples[index])
+            player.play(sample: samples[index])
         }
 
         updateListener?.update(samples: getSamples())
@@ -105,18 +112,20 @@ class WorkSession: Session {
 
     private func stopPlay(id: String) {
         // ничего не проигрывается - ничего не делать
-        guard let playingId = player.getPlayingClipId()
+        guard let index = samples.firstIndex(where: { $0.id == id }),
+              let playingId = player.getPlayingClipId()
         else { return }
+
         // если проигрывается другое - ничего не делать
         if id != playingId {
             return
         } else {
             // выключаем семпл
-            if var playingSample = samples[id] {
-                playingSample.setIsPlaying(false)
-                updateSample(sample: playingSample)
-                player.stop()
-            }
+            guard let playingIndex = samples.firstIndex(where: { $0.id == playingId })
+            else { return }
+            samples[playingIndex].setIsPlaying(false)
+            updateSample(sample: samples[playingIndex])
+            player.stop()
         }
 
         updateListener?.update(samples: getSamples())

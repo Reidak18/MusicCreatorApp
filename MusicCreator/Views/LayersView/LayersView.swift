@@ -27,7 +27,6 @@ class LayersView: UITableView {
         transform = CGAffineTransformMakeScale(1, -1)
         register(LayerCell.self, forCellReuseIdentifier: "LayerCell")
         alwaysBounceVertical = false
-        isScrollEnabled = false
         dataSource = self
         delegate = self
         separatorStyle = .none
@@ -59,7 +58,7 @@ extension LayersView: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "LayerCell", for: indexPath) as? LayerCell,
-              let sample = session?.getSamples()[indexPath.row]
+              let sample = session?.getSamples().reversed()[indexPath.row]
         else { return LayerCell() }
 
         cell.setLayerSample(sample: sample)

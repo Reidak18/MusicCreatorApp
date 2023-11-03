@@ -79,7 +79,7 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         guard playingId == sample.id
         else { return }
 
-        volume = sample.isMute ? 0 : sample.volume
+        volume = sample.volume
         frequency = sample.frequency
     }
 

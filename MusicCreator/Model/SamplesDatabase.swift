@@ -18,46 +18,37 @@ protocol SamplesDatabase {
 }
 
 class SoundsDatabase: SamplesDatabase {
-    private lazy var availableSounds: Dictionary<MusicInstrument, [AudioSample]> = loadFromLocal()
+    private var sounds: Dictionary<MusicInstrument, [String]> = [:]
 
-    func getSample(instrument: MusicInstrument, index: Int) -> AudioSample? {
-        guard let sounds = availableSounds[instrument],
-              index < sounds.count
-        else { return nil }
-
-        return sounds[index]
+    init() {
+        loadFromLocal()
     }
 
-    private func loadFromLocal() -> Dictionary<MusicInstrument, [AudioSample]> {
-        var sounds = Dictionary<MusicInstrument, [AudioSample]>()
-
+    private func loadFromLocal() {
         sounds[.guitar] = ["Electric",
                            "Goldkind",
-                           "Kaponja"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .guitar) })
+                           "Kaponja"]
         sounds[.drums] = ["Hihats",
                           "Kick",
-                          "Snare"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .drums) })
+                          "Snare"]
         sounds[.wind] = ["FluteA4",
                          "FluteD2",
-                         "FluteF3"].enumerated().compactMap({ createAudioSample($0.element, $0.offset, .wind) })
-
-        return sounds
+                         "FluteF3"]
     }
 
-    private func createAudioSample(_ fileName: String, _ index: Int, _ type: MusicInstrument) -> AudioSample? {
+    func getSample(instrument: MusicInstrument, index: Int) -> AudioSample? {
+        guard let instrumentSounds = sounds[instrument],
+              index < sounds.count
+        else {
+            return nil }
+
+        return createAudioSample(instrumentSounds[index], instrument)
+    }
+
+    private func createAudioSample(_ fileName: String, _ type: MusicInstrument) -> AudioSample? {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "wav")
         else { return nil }
 
-        var name = ""
-        switch type {
-        case .guitar:
-            name = "Гитара \(index + 1)"
-        case .drums:
-            name = "Ударные \(index + 1)"
-        case .wind:
-            name = "Духовые \(index + 1)"
-        }
-
-        return AudioSample(name: name, audioUrl: url)
+        return AudioSample(name: fileName, audioUrl: url)
     }
 }

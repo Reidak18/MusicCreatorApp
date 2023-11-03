@@ -36,7 +36,7 @@ class MainViewController: UIViewController {
 
     private func saveSample() {
         if let oldSample = sampleEditor.getAudioSample() {
-            session.addSample(sample: oldSample)
+            session.updateSample(sample: oldSample)
             sampleEditor.setAudioSample(nil)
         }
     }
@@ -60,7 +60,7 @@ extension MainViewController: SampleTrackSelector {
         sample.setIsPlaying(true)
         sampleEditor.setAudioSample(sample)
 
-        session.addSample(sample: sample)
+        session.updateSample(sample: sample)
         session.playSample(id: sample.id, play: true)
     }
 }

@@ -40,7 +40,7 @@
 		0A28FBF52AF45C2A0003EE49 /* Hihats.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF22AF45C2A0003EE49 /* Hihats.wav */; };
 		0A28FBF62AF45C2A0003EE49 /* Kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF32AF45C2A0003EE49 /* Kick.wav */; };
 		0A28FBF72AF45C2A0003EE49 /* Snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF42AF45C2A0003EE49 /* Snare.wav */; };
-		0A28FBF92AF46C0F0003EE49 /* AudioSampleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBF82AF46C0F0003EE49 /* AudioSampleEditor.swift */; };
+		0A28FBF92AF46C0F0003EE49 /* CurrentSampleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */; };
 		0A28FBFB2AF52E560003EE49 /* MicrophoneRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +80,7 @@
 		0A28FBF22AF45C2A0003EE49 /* Hihats.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Hihats.wav; sourceTree = "<group>"; };
 		0A28FBF32AF45C2A0003EE49 /* Kick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Kick.wav; sourceTree = "<group>"; };
 		0A28FBF42AF45C2A0003EE49 /* Snare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Snare.wav; sourceTree = "<group>"; };
-		0A28FBF82AF46C0F0003EE49 /* AudioSampleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSampleEditor.swift; sourceTree = "<group>"; };
+		0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSampleSettings.swift; sourceTree = "<group>"; };
 		0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneRecording.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,7 +184,7 @@
 			children = (
 				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
-				0A28FBF82AF46C0F0003EE49 /* AudioSampleEditor.swift */,
+				0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
@@ -348,7 +348,7 @@
 				0A28FB9A2AF2A8420003EE49 /* WaveformCreator.swift in Sources */,
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
-				0A28FBF92AF46C0F0003EE49 /* AudioSampleEditor.swift in Sources */,
+				0A28FBF92AF46C0F0003EE49 /* CurrentSampleSettings.swift in Sources */,
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
 				0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */,

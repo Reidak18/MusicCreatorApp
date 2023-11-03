@@ -11,14 +11,14 @@ import AVFoundation
 class MainViewController: UIViewController {
     private let mainView = MainView()
 
-    private var database: SamplesDatabase
-    private var audioPlayer: AudioPlayer
-    private var session: Session
+    private var database: SamplesDatabaseProtocol
+    private var audioPlayer: AudioPlayerProtocol
+    private var session: SessionProtocol
     private var sampleEditor: AudioSampleEditor
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        database = SoundsDatabase()
-        audioPlayer = SimpleAudioPlayer()
+        database = SamplesDatabase()
+        audioPlayer = AudioPlayer()
         session = WorkSession(player: audioPlayer)
         sampleEditor = AudioSampleEditor()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -32,6 +32,7 @@ class MainViewController: UIViewController {
         mainView.slidersChangesListener = self
         mainView.switchViewDelegate = self
         mainView.sampleSelectListener = self
+        mainView.addMicrophoneRecordSubscriber = self
         view = mainView
     }
 
@@ -101,12 +102,22 @@ extension MainViewController: SampleSelectListener {
     func sampleSelected(id: String?) {
         mainView.switchView(viewType: .params)
         guard let id = id,
-              var sample = session.getSample(id: id)
+              let sample = session.getSample(id: id)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        sample.setIsPlaying(true)
         session.playSample(id: id, play: true)
         sampleEditor.setAudioSample(sample)
+    }
+}
+
+extension MainViewController: AddMicrophoneRecordListener {
+    func startRecording() {
+        saveSample()
+        audioPlayer.stop()
+    }
+
+    func recordAdded(sample: AudioSample) {
+        session.updateSample(sample: sample)
     }
 }

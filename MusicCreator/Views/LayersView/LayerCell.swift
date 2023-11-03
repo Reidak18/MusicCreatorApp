@@ -98,6 +98,13 @@ class LayerCell: UITableViewCell {
         return sample?.id
     }
 
+    func isSelectable() -> Bool {
+        guard let isMicrophone = sample?.isMicrophone
+        else { return false }
+
+        return !isMicrophone
+    }
+
     private func updateView() {
         guard let unwSample = sample
         else { return }

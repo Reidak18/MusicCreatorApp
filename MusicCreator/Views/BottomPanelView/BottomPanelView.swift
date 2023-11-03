@@ -17,9 +17,15 @@ protocol MiddleViewsSwitcher {
 }
 
 class BottomPanelView: UIStackView {
-    public var switchViewDelegate: MiddleViewsSwitcher?
+    var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
+        didSet {
+            bottomControlButtons.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
+        }
+    }
+    var switchViewDelegate: MiddleViewsSwitcher?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
+    private let bottomControlButtons = BottomControlButtonsView()
 
     private let stylesButton: UIButton = {
         var config = UIButton.Configuration.filled()
@@ -58,7 +64,7 @@ class BottomPanelView: UIStackView {
 
         stylesButton.addTarget(self, action: #selector(onStylesButtonClick), for: .touchUpInside)
         buttonsStackView.addArrangedSubview(stylesButton)
-        buttonsStackView.addArrangedSubview(BottomControlButtonsView())
+        buttonsStackView.addArrangedSubview(bottomControlButtons)
     }
 
     @objc private func onStylesButtonClick() {

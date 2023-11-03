@@ -7,7 +7,17 @@
 
 import UIKit
 
+protocol AddMicrophoneRecordListener {
+    func startRecording()
+    func recordAdded(sample: AudioSample)
+}
+
 class BottomControlButtonsView: UIStackView {
+    var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener?
+    private let microphoneRecording: MicrophoneRecordingProtocol = MicrophoneRecording()
+
+    private var microButton = UIButton()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -18,9 +28,10 @@ class BottomControlButtonsView: UIStackView {
         axis = .horizontal
         spacing = 5
 
-        let microButton = UIButton(configuration: createConfiguration("mic.fill",
-                                                                      scale: .large))
+        microButton = UIButton(configuration: createConfiguration("mic.fill",
+                                                                  scale: .large))
         microButton.widthAnchor.constraint(equalTo: microButton.heightAnchor).isActive = true
+        microButton.addTarget(self, action: #selector(startMicroRecord), for: .touchUpInside)
         addArrangedSubview(microButton)
         let recordButton = UIButton(configuration: createConfiguration("circle.fill",
                                                                        scale: .medium))
@@ -45,6 +56,37 @@ class BottomControlButtonsView: UIStackView {
         config.cornerStyle = .medium
 
         return config
+    }
+
+    @objc private func startMicroRecord() {
+        guard microphoneRecording.hasPermission()
+        else {
+            microphoneRecording.requestPermission()
+            return
+        }
+
+        if microphoneRecording.isRecording() {
+            changeRecordStatus(isRecording: false)
+            guard let sample = microphoneRecording.finishRecording()
+            else { return }
+
+            addMicrophoneRecordSubscriber?.recordAdded(sample: sample)
+        } else {
+            addMicrophoneRecordSubscriber?.startRecording()
+            changeRecordStatus(isRecording: true)
+            microphoneRecording.startRecording { error in
+                DispatchQueue.main.async {
+                    self.changeRecordStatus(isRecording: false)
+                }
+                print(error)
+            }
+        }
+    }
+
+    private func changeRecordStatus(isRecording: Bool) {
+        var config = microButton.configuration ?? UIButton.Configuration.filled()
+        config.baseForegroundColor = isRecording ? .red : .labelPrimary
+        microButton.configuration = config
     }
 
     required init(coder: NSCoder) {

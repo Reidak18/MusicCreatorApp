@@ -28,6 +28,11 @@ class MainView: UIView {
             layersView.sampleSelectListener = sampleSelectListener
         }
     }
+    public var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
+        didSet {
+            bottomPanelView.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
+        }
+    }
 
     private let stackView = UIStackView()
 
@@ -85,7 +90,7 @@ class MainView: UIView {
         }
     }
 
-    func setCurrentSession(session: some Session) {
+    func setCurrentSession(session: some SessionProtocol) {
         layersView.setCurrentSession(session: session)
     }
 

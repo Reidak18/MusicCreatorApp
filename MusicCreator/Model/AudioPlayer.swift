@@ -37,7 +37,14 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         }
     }
     // 0.25...4
-    var frequency: Float
+    var frequency: Float {
+        didSet {
+            if playingId != nil {
+                NSObject.cancelPreviousPerformRequests(withTarget: self)
+                playAgain()
+            }
+        }
+    }
     private var playingId: String?
 
     var displayLink: CADisplayLink?

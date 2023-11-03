@@ -40,6 +40,7 @@ class ParamsView: UIView {
         frequencySlider.minimumValue = 0.2
         frequencySlider.maximumValue = 10
         frequencySlider.value = 2
+        frequencySlider.isContinuous = false
         frequencySlider.addTarget(self, action: #selector(frequencyValueChanged), for: .valueChanged)
         addSubview(frequencySlider)
     }

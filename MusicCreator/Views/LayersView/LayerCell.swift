@@ -134,10 +134,10 @@ class LayerCell: UITableViewCell {
     }
 
     @objc private func mute() {
-        guard var unwSample = sample
+        guard let id = sample?.id
         else { return }
 
-        listener?.muteLayer(id: unwSample.id)
+        listener?.muteLayer(id: id)
     }
 
     @objc private func remove() {

@@ -75,7 +75,7 @@ class MainView: UIView {
         ])
     }
 
-    func setWaveform(url: URL) {
+    func setWaveform(url: URL?) {
         self.bottomPanelView.setWaveform(url: url)
     }
 

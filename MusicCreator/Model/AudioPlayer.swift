@@ -11,6 +11,10 @@ protocol AudioProgressListener {
     func updateProgress(progress: Float)
 }
 
+protocol AudioChangeSampleListener {
+    func sampleChanged(newSample: AudioSample?)
+}
+
 protocol AudioPlayer {
     func play(sample: AudioSample)
     func stop()
@@ -19,10 +23,12 @@ protocol AudioPlayer {
     func getPlayingClipId() -> String?
     func updateSample(sample: AudioSample)
     var audioProgressSubscriber: AudioProgressListener? { get set }
+    var audioChangeSampleSubscriber: AudioChangeSampleListener? { get set }
 }
 
 class SimpleAudioPlayer: NSObject, AudioPlayer {
     var audioProgressSubscriber: AudioProgressListener?
+    var audioChangeSampleSubscriber: AudioChangeSampleListener?
     private var playerInstance: AVAudioPlayer?
     var volume: Float {
         didSet {
@@ -60,6 +66,8 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         playerInstance = player
 
         startDisplayLink()
+
+        audioChangeSampleSubscriber?.sampleChanged(newSample: sample)
     }
 
     func stop() {
@@ -69,6 +77,7 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         stopDisplayLink()
         audioProgressSubscriber?.updateProgress(progress: 0)
         NSObject.cancelPreviousPerformRequests(withTarget: self)
+        audioChangeSampleSubscriber?.sampleChanged(newSample: nil)
     }
 
     func getPlayingClipId() -> String? {

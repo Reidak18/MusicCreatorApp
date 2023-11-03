@@ -28,7 +28,15 @@ class WaveformSlider: UISlider {
         heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
 
-    func setWaveform(url: URL) {
+    func setWaveform(url: URL?) {
+        guard let url = url
+        else {
+            DispatchQueue.main.async {
+                self.setMinimumTrackImage(nil, for: .normal)
+                self.setMaximumTrackImage(nil, for: .normal)
+            }
+            return
+        }
         waveformCreator.drawWaveform(fileUrl: url,
                                      numberOfFrames: 75,
                                      frame: frame) { result in

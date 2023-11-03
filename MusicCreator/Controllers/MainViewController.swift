@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
 
     override func loadView() {
         audioPlayer.audioProgressSubscriber = self
+        audioPlayer.audioChangeSampleSubscriber = self
         mainView.setCurrentSession(session: session)
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
@@ -53,8 +54,6 @@ extension MainViewController: SampleTrackSelector {
         guard var sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
-        mainView.setWaveform(url: sample.audioUrl)
-
         sample.setVolume(volume: audioPlayer.volume)
         sample.setFrequency(frequency: audioPlayer.frequency)
         sample.setIsPlaying(true)
@@ -77,6 +76,12 @@ extension MainViewController: MiddleViewsSwitcher {
 extension MainViewController: AudioProgressListener {
     func updateProgress(progress: Float) {
         mainView.setWaveformProgress(progress: progress)
+    }
+}
+
+extension MainViewController: AudioChangeSampleListener {
+    func sampleChanged(newSample: AudioSample?) {
+        mainView.setWaveform(url: newSample?.audioUrl)
     }
 }
 

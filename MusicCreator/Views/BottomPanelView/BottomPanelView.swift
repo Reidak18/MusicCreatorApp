@@ -70,7 +70,7 @@ class BottomPanelView: UIStackView {
         }
     }
 
-    func setWaveform(url: URL) {
+    func setWaveform(url: URL?) {
         waveformSlider.setWaveform(url: url)
     }
 

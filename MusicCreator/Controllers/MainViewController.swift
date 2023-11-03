@@ -11,16 +11,16 @@ import AVFoundation
 class MainViewController: UIViewController {
     private let mainView = MainView()
 
-    private var database: SamplesDatabase
-    private var audioPlayer: AudioPlayer
-    private var session: Session
-    private var sampleEditor: AudioSampleEditor
+    private var database: SamplesDatabaseProtocol
+    private var audioPlayer: AudioPlayerProtocol
+    private var session: SessionProtocol
+    private var currentSettings: CurrentSampleSettings
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        database = SoundsDatabase()
-        audioPlayer = SimpleAudioPlayer()
+        database = SamplesDatabase()
+        audioPlayer = AudioPlayer()
         session = WorkSession(player: audioPlayer)
-        sampleEditor = AudioSampleEditor()
+        currentSettings = CurrentSampleSettings()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -32,13 +32,17 @@ class MainViewController: UIViewController {
         mainView.slidersChangesListener = self
         mainView.switchViewDelegate = self
         mainView.sampleSelectListener = self
+        mainView.addMicrophoneRecordSubscriber = self
         view = mainView
     }
 
     private func saveSample() {
-        if let oldSample = sampleEditor.getAudioSample() {
-            session.updateSample(sample: oldSample)
-            sampleEditor.setAudioSample(nil)
+        if let id = currentSettings.id,
+           var sample = session.getSample(id: id) {
+            sample.setVolume(volume: currentSettings.volume)
+            sample.setFrequency(frequency: currentSettings.frequency)
+            session.updateSample(sample: sample)
+            currentSettings.id = nil
         }
     }
 
@@ -57,7 +61,8 @@ extension MainViewController: SampleTrackSelector {
         sample.setVolume(volume: audioPlayer.volume)
         sample.setFrequency(frequency: audioPlayer.frequency)
         sample.setIsPlaying(true)
-        sampleEditor.setAudioSample(sample)
+
+        currentSettings = CurrentSampleSettings(sample: sample)
 
         session.updateSample(sample: sample)
         session.playSample(id: sample.id, play: true)
@@ -87,12 +92,12 @@ extension MainViewController: AudioChangeSampleListener {
 
 extension MainViewController: SlidersChangesListener {
     func volumeValueUpdated(volume: Float) {
-        sampleEditor.setVolume(volume: volume)
+        currentSettings.volume = volume
         audioPlayer.volume = volume
     }
 
     func frequencyValueUpdated(frequency: Float) {
-        sampleEditor.setFrequency(frequency: frequency)
+        currentSettings.frequency = frequency
         audioPlayer.frequency = frequency
     }
 }
@@ -101,12 +106,40 @@ extension MainViewController: SampleSelectListener {
     func sampleSelected(id: String?) {
         mainView.switchView(viewType: .params)
         guard let id = id,
-              var sample = session.getSample(id: id)
+              let sample = session.getSample(id: id)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        sample.setIsPlaying(true)
         session.playSample(id: id, play: true)
-        sampleEditor.setAudioSample(sample)
+        currentSettings = CurrentSampleSettings(sample: sample)
+    }
+}
+
+extension MainViewController: AddMicrophoneRecordListener {
+    func startRecording() {
+        saveSample()
+        audioPlayer.stop()
+
+        if UserDefaults.standard.bool(forKey: StringConstants.ShowDisableAlert.rawValue) == true {
+            self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
+        } else {
+            let alert = UIAlertController(title: "Отключение UI",
+                                          message: "UI будет отключен на время записи с микрофона",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
+                self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
+                UserDefaults.standard.set(true, forKey: StringConstants.ShowDisableAlert.rawValue)
+            }))
+            present(alert, animated: true)
+        }
+    }
+
+    func recordAdded(sample: AudioSample) {
+        session.updateSample(sample: sample)
+        mainView.enableAll()
+    }
+
+    func errorHappend(error: RecordMicroError) {
+        mainView.enableAll()
     }
 }

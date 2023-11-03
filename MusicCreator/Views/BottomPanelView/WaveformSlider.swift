@@ -8,7 +8,7 @@
 import UIKit
 
 class WaveformSlider: UISlider {
-    private var waveformCreator: WaveformCreator = CustomWaveformCreator()
+    private var waveformCreator: WaveformCreatorProtocol = WaveformCreator()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

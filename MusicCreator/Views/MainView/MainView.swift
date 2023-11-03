@@ -28,6 +28,11 @@ class MainView: UIView {
             layersView.sampleSelectListener = sampleSelectListener
         }
     }
+    public var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
+        didSet {
+            bottomPanelView.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
+        }
+    }
 
     private let stackView = UIStackView()
 
@@ -85,7 +90,7 @@ class MainView: UIView {
         }
     }
 
-    func setCurrentSession(session: some Session) {
+    func setCurrentSession(session: some SessionProtocol) {
         layersView.setCurrentSession(session: session)
     }
 
@@ -97,6 +102,29 @@ class MainView: UIView {
 
     func setSlidersParams(volume: Float, frequency: Float) {
         paramsView.setSlidersParams(volume: volume, frequency: frequency)
+    }
+
+    func disableAll(exceptTag: Int) {
+        for subview in getAllSubviews(types: [UIControl.self, UITableViewCell.self]) {
+            if subview.tag != exceptTag {
+                if let control = subview as? UIControl {
+                    control.isEnabled = false
+                } else if let cell = subview as? UITableViewCell {
+                    cell.isUserInteractionEnabled = false
+                }
+            }
+        }
+    }
+
+    // все кнопки всегда доступны, так что можно просто включить все
+    func enableAll() {
+        for subview in getAllSubviews(types: [UIControl.self, UITableViewCell.self]) {
+            if let control = subview as? UIControl {
+                control.isEnabled = true
+            } else if let cell = subview as? UITableViewCell {
+                cell.isUserInteractionEnabled = true
+            }
+        }
     }
 
     required init?(coder: NSCoder) {

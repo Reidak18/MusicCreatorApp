@@ -15,14 +15,14 @@ enum WaveformCreatorError: Error {
     case getAudioChannelDataError(String)
 }
 
-protocol WaveformCreator {
+protocol WaveformCreatorProtocol {
     func drawWaveform(fileUrl: URL,
                       numberOfFrames: Int,
                       frame: CGRect,
                       completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ())
 }
 
-class CustomWaveformCreator: WaveformCreator {
+class WaveformCreator: WaveformCreatorProtocol {
     func drawWaveform(fileUrl: URL,
                       numberOfFrames: Int,
                       frame: CGRect,

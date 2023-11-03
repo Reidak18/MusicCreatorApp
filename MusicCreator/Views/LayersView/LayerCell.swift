@@ -98,6 +98,13 @@ class LayerCell: UITableViewCell {
         return sample?.id
     }
 
+    func isSelectable() -> Bool {
+        guard let isMicrophone = sample?.isMicrophone
+        else { return false }
+
+        return !isMicrophone
+    }
+
     private func updateView() {
         guard let unwSample = sample
         else { return }
@@ -127,10 +134,10 @@ class LayerCell: UITableViewCell {
     }
 
     @objc private func mute() {
-        guard var unwSample = sample
+        guard let id = sample?.id
         else { return }
 
-        listener?.muteLayer(id: unwSample.id)
+        listener?.muteLayer(id: id)
     }
 
     @objc private func remove() {

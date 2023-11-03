@@ -13,11 +13,11 @@ enum MusicInstrument {
     case wind
 }
 
-protocol SamplesDatabase {
+protocol SamplesDatabaseProtocol {
     func getSample(instrument: MusicInstrument, index: Int) -> AudioSample?
 }
 
-class SoundsDatabase: SamplesDatabase {
+class SamplesDatabase: SamplesDatabaseProtocol {
     private var sounds: Dictionary<MusicInstrument, [String]> = [:]
 
     init() {

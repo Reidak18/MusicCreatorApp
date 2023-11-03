@@ -7,6 +7,14 @@
 
 import UIKit
 
+enum StringConstants: String {
+    case ShowDisableAlert = "ShowDisableAlert"
+}
+
+enum IntConstants: Int {
+    case MicroButtonTag = 1000
+}
+
 extension UIColor {
     static var backgroundPrimary: UIColor { UIColor(named: "backgroundPrimary") ?? UIColor() }
     static var foregroundPrimary: UIColor { UIColor(named: "foregroundPrimary") ?? UIColor() }

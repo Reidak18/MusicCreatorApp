@@ -8,9 +8,10 @@
 import AVFAudio
 
 struct AudioSample {
-    let id: String = UUID().uuidString
+    let id: String
     let name: String
     let audioUrl: URL
+    let isMicrophone: Bool
 
     var volume: Float
     var frequency: Float
@@ -19,12 +20,15 @@ struct AudioSample {
 
     init(name: String,
          audioUrl: URL,
+         isMicrophone: Bool = false,
          volume: Float = 1,
          frequency: Float = 1,
          isMute: Bool = false,
          isPlaying: Bool = false) {
+        self.id = UUID().uuidString
         self.name = name
         self.audioUrl = audioUrl
+        self.isMicrophone = isMicrophone
         self.volume = volume
         self.frequency = frequency
         self.isMute = isMute

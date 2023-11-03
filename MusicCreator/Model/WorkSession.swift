@@ -11,7 +11,7 @@ protocol SessionUpdateListener {
     func update(samples: [AudioSample])
 }
 
-protocol Session {
+protocol SessionProtocol {
     func updateSample(sample: AudioSample)
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
@@ -21,13 +21,14 @@ protocol Session {
     var updateListener: SessionUpdateListener? { get set }
 }
 
-class WorkSession: Session {
+class WorkSession: SessionProtocol {
     var updateListener: SessionUpdateListener?
     private var samples: [AudioSample] = []
-    private let player: AudioPlayer
+    private var player: AudioPlayerProtocol
 
-    init(player: AudioPlayer) {
+    init(player: AudioPlayerProtocol) {
         self.player = player
+        self.player.audioStopSubscriber = self
     }
 
     func updateSample(sample: AudioSample) {
@@ -75,12 +76,6 @@ class WorkSession: Session {
     }
 
     func stop() {
-        guard let playingId = player.getPlayingClipId(),
-              let index = samples.firstIndex(where: { $0.id == playingId })
-        else { return }
-
-        samples[index].setIsPlaying(false)
-        updateSample(sample: samples[index])
         player.stop()
     }
 
@@ -92,14 +87,6 @@ class WorkSession: Session {
         if id == player.getPlayingClipId() {
             return
         } else {
-            // если что-то другое проигрывается - выключаем
-            if let plaingId = player.getPlayingClipId(),
-               let playingIndex = samples.firstIndex(where: { $0.id == plaingId }) {
-                samples[playingIndex].setIsPlaying(false)
-                updateSample(sample: samples[playingIndex])
-                player.stop()
-            }
-
             // включаем семпл
             samples[index].setIsPlaying(true)
             updateSample(sample: samples[index])
@@ -111,8 +98,7 @@ class WorkSession: Session {
 
     private func stopPlay(id: String) {
         // ничего не проигрывается - ничего не делать
-        guard let index = samples.firstIndex(where: { $0.id == id }),
-              let playingId = player.getPlayingClipId()
+        guard let playingId = player.getPlayingClipId()
         else { return }
 
         // если проигрывается другое - ничего не делать
@@ -120,13 +106,19 @@ class WorkSession: Session {
             return
         } else {
             // выключаем семпл
-            guard let playingIndex = samples.firstIndex(where: { $0.id == playingId })
-            else { return }
-            samples[playingIndex].setIsPlaying(false)
-            updateSample(sample: samples[playingIndex])
             player.stop()
         }
 
         updateListener?.update(samples: getSamples())
+    }
+}
+
+extension WorkSession: AudioStopListener {
+    func stopPlaying(id: String) {
+        guard let index = samples.firstIndex(where: { $0.id == id })
+        else { return }
+
+        samples[index].setIsPlaying(false)
+        updateSample(sample: samples[index])
     }
 }

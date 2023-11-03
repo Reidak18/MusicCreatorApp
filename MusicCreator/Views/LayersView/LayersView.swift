@@ -14,7 +14,7 @@ protocol SampleSelectListener {
 class LayersView: UITableView {
     public var sampleSelectListener: SampleSelectListener?
 //    private var samples: [AudioSample] = []
-    private var session: Session?
+    private var session: SessionProtocol?
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -37,7 +37,7 @@ class LayersView: UITableView {
 //        self.samples = samples
 //    }
 
-    func setCurrentSession(session: some Session) {
+    func setCurrentSession(session: some SessionProtocol) {
         var session = session
         session.updateListener = self
         self.session = session
@@ -73,7 +73,8 @@ extension LayersView: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell
+        guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell,
+              cell.isSelectable()
         else { return }
 
         sampleSelectListener?.sampleSelected(id: cell.getId())

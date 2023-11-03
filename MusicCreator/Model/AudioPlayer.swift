@@ -15,7 +15,11 @@ protocol AudioChangeSampleListener {
     func sampleChanged(newSample: AudioSample?)
 }
 
-protocol AudioPlayer {
+protocol AudioStopListener {
+    func stopPlaying(id: String)
+}
+
+protocol AudioPlayerProtocol {
     func play(sample: AudioSample)
     func stop()
     var volume: Float { get set }
@@ -23,11 +27,13 @@ protocol AudioPlayer {
     func getPlayingClipId() -> String?
     var audioProgressSubscriber: AudioProgressListener? { get set }
     var audioChangeSampleSubscriber: AudioChangeSampleListener? { get set }
+    var audioStopSubscriber: AudioStopListener? { get set }
 }
 
-class SimpleAudioPlayer: NSObject, AudioPlayer {
+class AudioPlayer: NSObject, AudioPlayerProtocol {
     var audioProgressSubscriber: AudioProgressListener?
     var audioChangeSampleSubscriber: AudioChangeSampleListener?
+    var audioStopSubscriber: AudioStopListener?
     private var playerInstance: AVAudioPlayer?
     var volume: Float {
         didSet {
@@ -36,7 +42,6 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
             }
         }
     }
-    // 0.25...4
     var frequency: Float {
         didSet {
             if playingId != nil {
@@ -46,6 +51,7 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         }
     }
     private var playingId: String?
+    private var isOnePlay = false
 
     var displayLink: CADisplayLink?
 
@@ -69,6 +75,7 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
         player.play()
         player.volume = sample.volume
         frequency = sample.frequency
+        isOnePlay = sample.isMicrophone
         playerInstance = player
 
         startDisplayLink()
@@ -77,13 +84,16 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
     }
 
     func stop() {
-        playingId = nil
+        guard let id = playingId
+        else { return }
         playerInstance?.stop()
         playerInstance = nil
         stopDisplayLink()
         audioProgressSubscriber?.updateProgress(progress: 0)
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         audioChangeSampleSubscriber?.sampleChanged(newSample: nil)
+        audioStopSubscriber?.stopPlaying(id: id)
+        playingId = nil
     }
 
     func getPlayingClipId() -> String? {
@@ -112,9 +122,13 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
     }
 }
 
-extension SimpleAudioPlayer: AVAudioPlayerDelegate {
+extension AudioPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        self.perform(#selector(playAgain), with: nil, afterDelay: 1 / Double(frequency))
+        if isOnePlay {
+            stop()
+        } else {
+            self.perform(#selector(playAgain), with: nil, afterDelay: 1 / Double(frequency))
+        }
     }
 
     @objc func playAgain() {

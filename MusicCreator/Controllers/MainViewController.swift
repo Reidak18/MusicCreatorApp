@@ -67,9 +67,6 @@ extension MainViewController: SampleTrackSelector {
 
 extension MainViewController: MiddleViewsSwitcher {
     func switchButtonClicked(to viewType: CurrentViewType) {
-        if viewType == .layers {
-            saveSample()
-        }
         mainView.switchView(viewType: viewType)
     }
 }

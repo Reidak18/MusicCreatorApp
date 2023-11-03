@@ -25,12 +25,14 @@ extension UIView {
         }
     }
 
-    func getAllControls() -> [UIControl] {
-        return self.subviews.flatMap { subView -> [UIControl] in
-            var result = getAllSubviews(from: subView) as [UIControl]
-            if let control = subView as? UIControl {
-                result.append(control)
-                return result
+    func getAllSubviews(types: [UIView.Type]) -> [UIView] {
+        return subviews.flatMap { subView -> [UIView] in
+            var result = getAllSubviews(from: subView) as [UIView]
+            for type in types {
+                if subView.classForCoder == type {
+                    result.append(subView)
+                    return result
+                }
             }
             return result
         }

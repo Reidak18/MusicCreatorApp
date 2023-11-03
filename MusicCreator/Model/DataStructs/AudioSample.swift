@@ -15,13 +15,20 @@ struct AudioSample {
     var volume: Float
     var frequency: Float
     var isMute: Bool
+    var isPlaying: Bool
 
-    init(name: String, audioUrl: URL, volume: Float = 1, frequency: Float = 1, isMute: Bool = false) {
+    init(name: String,
+         audioUrl: URL,
+         volume: Float = 1,
+         frequency: Float = 1,
+         isMute: Bool = false,
+         isPlaying: Bool = false) {
         self.name = name
         self.audioUrl = audioUrl
         self.volume = volume
         self.frequency = frequency
         self.isMute = isMute
+        self.isPlaying = isPlaying
     }
 
     mutating func setVolume(volume: Float) {
@@ -34,5 +41,9 @@ struct AudioSample {
 
     mutating func setMute(isMute: Bool) {
         self.isMute = isMute
+    }
+
+    mutating func setIsPlaying(_ isPlaying: Bool) {
+        self.isPlaying = isPlaying
     }
 }

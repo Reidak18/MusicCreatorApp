@@ -13,7 +13,7 @@ enum CurrentViewType {
 }
 
 protocol MiddleViewsSwitcher {
-    func switchView(viewType: CurrentViewType)
+    func switchButtonClicked(to viewType: CurrentViewType)
 }
 
 class BottomPanelView: UIStackView {
@@ -62,19 +62,12 @@ class BottomPanelView: UIStackView {
     }
 
     @objc private func onStylesButtonClick() {
-        var config = stylesButton.configuration ?? UIButton.Configuration.filled()
         switch currentViewType {
         case .layers:
-            currentViewType = .params
-            config.baseBackgroundColor = .foregroundPrimary
-            config.image = UIImage(systemName: "chevron.up")
+            switchViewDelegate?.switchButtonClicked(to: .params)
         case .params:
-            currentViewType = .layers
-            config.baseBackgroundColor = .customLightGreen
-            config.image = UIImage(systemName: "chevron.down")
+            switchViewDelegate?.switchButtonClicked(to: .layers)
         }
-        stylesButton.configuration = config
-        switchViewDelegate?.switchView(viewType: currentViewType)
     }
 
     func setWaveform(url: URL) {
@@ -83,6 +76,20 @@ class BottomPanelView: UIStackView {
 
     func setWaveformProgress(progress: Float) {
         waveformSlider.value = progress
+    }
+
+    func switchView(viewType: CurrentViewType) {
+        var config = stylesButton.configuration ?? UIButton.Configuration.filled()
+        currentViewType = viewType
+        switch currentViewType {
+        case .params:
+            config.baseBackgroundColor = .foregroundPrimary
+            config.image = UIImage(systemName: "chevron.up")
+        case .layers:
+            config.baseBackgroundColor = .customLightGreen
+            config.image = UIImage(systemName: "chevron.down")
+        }
+        stylesButton.configuration = config
     }
 
     required init(coder: NSCoder) {

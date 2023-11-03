@@ -17,7 +17,8 @@ protocol Session {
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
     func getSamples() -> [AudioSample]
-    func playSample(id: String)
+    func playSample(id: String, play: Bool)
+    func stop()
     var updateListener: SessionUpdateListener? { get set }
 }
 
@@ -57,10 +58,67 @@ class WorkSession: Session {
         return Array(samples.values)
     }
 
-    func playSample(id: String) {
-        guard let sample = samples[id]
+    func playSample(id: String, play: Bool) {
+        // если нужно включить
+        if play {
+            startPlay(id: id)
+        } else { // если надо выключить
+            stopPlay(id: id)
+        }
+    }
+
+    func stop() {
+        guard let playingId = player.getPlayingClipId()
         else { return }
-        
-        player.play(sample: sample)
+
+        if var playingSample = samples[playingId] {
+            playingSample.setIsPlaying(false)
+            updateSample(sample: playingSample)
+            player.stop()
+        }
+    }
+
+    private func startPlay(id: String) {
+        guard var sample = samples[id]
+        else { return }
+
+        // уже проигрывается этот семпл - ничего не делать
+        if id == player.getPlayingClipId() {
+            return
+        } else {
+            // если что-то другое проигрывается - выключаем
+            if let plaingId = player.getPlayingClipId(),
+               var playingSample = samples[plaingId] {
+                playingSample.setIsPlaying(false)
+                updateSample(sample: playingSample)
+                player.stop()
+            }
+
+            // включаем семпл
+            sample.setIsPlaying(true)
+            updateSample(sample: sample)
+            player.play(sample: sample)
+        }
+
+        updateListener?.update(samples: getSamples())
+    }
+
+    private func stopPlay(id: String) {
+        // ничего не проигрывается - ничего не делать
+        guard let playingId = player.getPlayingClipId()
+        else { return }
+        // если проигрывается другое - ничего не делать
+        if id != playingId {
+            return
+        } else {
+            // выключаем семпл
+            if var playingSample = samples[id] {
+                playingSample.setIsPlaying(false)
+                updateSample(sample: playingSample)
+                player.stop()
+            }
+        }
+
+        updateListener?.update(samples: getSamples())
     }
 }

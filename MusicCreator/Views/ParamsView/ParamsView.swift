@@ -31,7 +31,7 @@ class ParamsView: UIView {
         volumeSlider.translatesAutoresizingMaskIntoConstraints = false
         volumeSlider.minimumValue = 0
         volumeSlider.maximumValue = 1
-        volumeSlider.value = 1
+        volumeSlider.value = 0.5
         volumeSlider.addTarget(self, action: #selector(volumeValueChanged), for: .valueChanged)
         addSubview(volumeSlider)
         frequencySlider.setThumbLabel(label: "скорость")
@@ -39,8 +39,8 @@ class ParamsView: UIView {
         frequencySlider.translatesAutoresizingMaskIntoConstraints = false
         frequencySlider.minimumValue = 0.2
         frequencySlider.maximumValue = 10
-        frequencySlider.value = 1
-        frequencySlider.addTarget(self, action: #selector(speedValueChanged), for: .valueChanged)
+        frequencySlider.value = 2
+        frequencySlider.addTarget(self, action: #selector(frequencyValueChanged), for: .valueChanged)
         addSubview(frequencySlider)
     }
 
@@ -58,11 +58,18 @@ class ParamsView: UIView {
         ])
     }
 
+    func setSlidersParams(volume: Float, frequency: Float) {
+        volumeSlider.value = volume
+        volumeValueChanged()
+        frequencySlider.value = frequency
+        frequencyValueChanged()
+    }
+
     @objc private func volumeValueChanged() {
         slidersChangesListener?.volumeValueUpdated(volume: volumeSlider.value)
     }
 
-    @objc private func speedValueChanged() {
+    @objc private func frequencyValueChanged() {
         slidersChangesListener?.frequencyValueUpdated(frequency: frequencySlider.value)
     }
 

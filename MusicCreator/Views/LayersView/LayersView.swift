@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol SampleSelectListener {
+    func sampleSelected(id: String?)
+}
+
 class LayersView: UITableView {
+    public var sampleSelectListener: SampleSelectListener?
 //    private var samples: [AudioSample] = []
     private var session: Session?
 
@@ -57,7 +62,7 @@ extension LayersView: UITableViewDataSource {
               let sample = session?.getSamples()[indexPath.row]
         else { return LayerCell() }
 
-        cell.setLayerParams(id: sample.id, name: sample.name, isMute: sample.isMute)
+        cell.setLayerSample(sample: sample)
         cell.listener = self
         return cell
     }
@@ -67,11 +72,18 @@ extension LayersView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         50 + 10
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell
+        else { return }
+
+        sampleSelectListener?.sampleSelected(id: cell.getId())
+    }
 }
 
 extension LayersView: LayerCellListener {
-    func playLayer(id: String) {
-        session?.playSample(id: id)
+    func playLayer(id: String, play: Bool) {
+        session?.playSample(id: id, play: play)
     }
 
     func muteLayer(id: String) {

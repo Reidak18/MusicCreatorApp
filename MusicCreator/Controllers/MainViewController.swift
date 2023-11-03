@@ -30,7 +30,15 @@ class MainViewController: UIViewController {
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
         mainView.switchViewDelegate = self
+        mainView.sampleSelectListener = self
         view = mainView
+    }
+
+    private func saveSample() {
+        if let oldSample = sampleEditor.getAudioSample() {
+            session.addSample(sample: oldSample)
+            sampleEditor.setAudioSample(nil)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -39,11 +47,8 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: SampleTrackSelector {
-    func selectSample(instrument: MusicInstrument, index: Int) {
-        if let oldSample = sampleEditor.getAudioSample() {
-            session.addSample(sample: oldSample)
-            sampleEditor.setAudioSample(nil)
-        }
+    func selectSampleFromLibrary(instrument: MusicInstrument, index: Int) {
+        saveSample()
 
         guard var sample = database.getSample(instrument: instrument, index: index)
         else { return }
@@ -54,18 +59,17 @@ extension MainViewController: SampleTrackSelector {
         sample.setFrequency(frequency: audioPlayer.frequency)
         sampleEditor.setAudioSample(sample)
 
-        audioPlayer.play(sample: sample)
+        session.addSample(sample: sample)
+        session.playSample(id: sample.id, play: true)
     }
 }
 
 extension MainViewController: MiddleViewsSwitcher {
-    func switchView(viewType: CurrentViewType) {
-        if viewType == .layers,
-           let oldSample = sampleEditor.getAudioSample() {
-            session.addSample(sample: oldSample)
-            sampleEditor.setAudioSample(nil)
-            audioPlayer.stop()
+    func switchButtonClicked(to viewType: CurrentViewType) {
+        if viewType == .layers {
+            saveSample()
         }
+        session.stop()
         mainView.switchView(viewType: viewType)
     }
 }
@@ -85,5 +89,18 @@ extension MainViewController: SlidersChangesListener {
     func frequencyValueUpdated(frequency: Float) {
         sampleEditor.setFrequency(frequency: frequency)
         audioPlayer.frequency = frequency
+    }
+}
+
+extension MainViewController: SampleSelectListener {
+    func sampleSelected(id: String?) {
+        mainView.switchView(viewType: .params)
+        guard let id = id,
+              let sample = session.getSample(id: id)
+        else { return }
+
+        mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
+        session.playSample(id: id, play: true)
+        sampleEditor.setAudioSample(sample)
     }
 }

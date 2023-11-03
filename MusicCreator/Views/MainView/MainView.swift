@@ -23,6 +23,11 @@ class MainView: UIView {
             paramsView.slidersChangesListener = slidersChangesListener
         }
     }
+    public var sampleSelectListener: SampleSelectListener? {
+        didSet {
+            layersView.sampleSelectListener = sampleSelectListener
+        }
+    }
 
     private let stackView = UIStackView()
 
@@ -87,6 +92,11 @@ class MainView: UIView {
     func switchView(viewType: CurrentViewType) {
         layersView.isHidden = viewType != .layers
         paramsView.isHidden = viewType != .params
+        bottomPanelView.switchView(viewType: viewType)
+    }
+
+    func setSlidersParams(volume: Float, frequency: Float) {
+        paramsView.setSlidersParams(volume: volume, frequency: frequency)
     }
 
     required init?(coder: NSCoder) {

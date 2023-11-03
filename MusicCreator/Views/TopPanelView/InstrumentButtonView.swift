@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol SampleTrackSelector {
-    func selectSample(instrument: MusicInstrument, index: Int)
+    func selectSampleFromLibrary(instrument: MusicInstrument, index: Int)
 }
 
 class InstrumentButtonView: UIStackView {
@@ -82,7 +82,7 @@ class InstrumentButtonView: UIStackView {
 
         guard let instrument = associatedInstrument
         else { return }
-        selectDelegate?.selectSample(instrument: instrument, index: 0)
+        selectDelegate?.selectSampleFromLibrary(instrument: instrument, index: 0)
     }
 
     @objc private func openInstrumentsList() {
@@ -170,6 +170,6 @@ extension InstrumentButtonView: ItemSelector {
         guard let instrument = associatedInstrument
         else { return }
 
-        selectDelegate?.selectSample(instrument: instrument, index: index)
+        selectDelegate?.selectSampleFromLibrary(instrument: instrument, index: index)
     }
 }

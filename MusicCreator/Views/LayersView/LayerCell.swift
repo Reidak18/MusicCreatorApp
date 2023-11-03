@@ -8,7 +8,7 @@
 import UIKit
 
 protocol LayerCellListener {
-    func playLayer(id: String)
+    func playLayer(id: String, play: Bool)
     func muteLayer(id: String)
     func removeLayer(id: String)
 }
@@ -16,9 +16,12 @@ protocol LayerCellListener {
 class LayerCell: UITableViewCell {
     public var listener: LayerCellListener?
 
-    private var id = ""
     private let nameLabel = UILabel()
+    private let mainStack = UIStackView()
+    private var playButton = UIButton()
     private var setMuteButton = UIButton()
+
+    private var sample: AudioSample?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,7 +30,6 @@ class LayerCell: UITableViewCell {
         selectionStyle = .none
         transform = CGAffineTransformMakeScale(1, -1)
 
-        let mainStack = UIStackView()
         mainStack.axis = .horizontal
         mainStack.backgroundColor = .foregroundPrimary
         mainStack.layer.cornerRadius = 4
@@ -47,7 +49,7 @@ class LayerCell: UITableViewCell {
         playButtonConfig.image = UIImage(systemName: "play.fill")
         playButtonConfig.baseForegroundColor = .customGray
         playButtonConfig.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        let playButton = UIButton(configuration: playButtonConfig)
+        playButton = UIButton(configuration: playButtonConfig)
         playButton.addTarget(self, action: #selector(play), for: .touchUpInside)
         buttonsStack.addArrangedSubview(playButton)
 
@@ -87,25 +89,58 @@ class LayerCell: UITableViewCell {
         ])
     }
 
-    func setLayerParams(id: String, name: String, isMute: Bool) {
-        self.id = id
-        nameLabel.text = name
+    func setLayerSample(sample: AudioSample) {
+        self.sample = sample
+        updateView()
+    }
 
-        var config = setMuteButton.configuration ?? UIButton.Configuration.filled()
-        config.image = isMute ? UIImage(systemName: "speaker.slash.fill") : UIImage(systemName: "speaker.fill")
-        setMuteButton.configuration = config
+    func getId() -> String? {
+        return sample?.id
+    }
+
+    private func updateView() {
+        guard let unwSample = sample
+        else { return }
+
+        nameLabel.text = unwSample.name
+
+        var muteConfig = setMuteButton.configuration ?? UIButton.Configuration.filled()
+        muteConfig.image = unwSample.isMute ? UIImage(systemName: "speaker.slash.fill") : UIImage(systemName: "speaker.fill")
+        setMuteButton.configuration = muteConfig
+
+        var playConfig = playButton.configuration ?? UIButton.Configuration.plain()
+        if unwSample.isPlaying {
+            playConfig.image = UIImage(systemName: "pause.fill")
+            mainStack.backgroundColor = .customLightGreen
+        } else {
+            playConfig.image = UIImage(systemName: "play.fill")
+            mainStack.backgroundColor = .foregroundPrimary
+        }
+        playButton.configuration = playConfig
     }
 
     @objc private func play() {
-        listener?.playLayer(id: id)
+        guard let unwSample = sample
+        else { return }
+
+        listener?.playLayer(id: unwSample.id, play: !unwSample.isPlaying)
     }
 
     @objc private func mute() {
-        listener?.muteLayer(id: id)
+        guard var unwSample = sample
+        else { return }
+
+        listener?.muteLayer(id: unwSample.id)
     }
 
     @objc private func remove() {
-        listener?.removeLayer(id: id)
+        guard var unwSample = sample
+        else { return }
+
+        unwSample.setIsPlaying(false)
+        sample = unwSample
+
+        listener?.removeLayer(id: unwSample.id)
     }
 
     required init?(coder: NSCoder) {

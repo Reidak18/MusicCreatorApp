@@ -104,6 +104,21 @@ class MainView: UIView {
         paramsView.setSlidersParams(volume: volume, frequency: frequency)
     }
 
+    func disableAll(exceptTag: Int) {
+        for control in getAllControls() {
+            if control.tag != exceptTag {
+                control.isEnabled = false
+            }
+        }
+    }
+
+    // все кнопки всегда доступны, так что можно просто включить все
+    func enableAll() {
+        for control in getAllControls() {
+            control.isEnabled = true
+        }
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

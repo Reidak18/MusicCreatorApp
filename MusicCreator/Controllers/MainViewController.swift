@@ -115,9 +115,27 @@ extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
         saveSample()
         audioPlayer.stop()
+
+        if UserDefaults.standard.bool(forKey: StringConstants.ShowDisableAlert.rawValue) == true {
+            self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
+        } else {
+            let alert = UIAlertController(title: "Отключение UI",
+                                          message: "UI будет отключен на время записи с микрофона",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
+                self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
+                UserDefaults.standard.set(true, forKey: StringConstants.ShowDisableAlert.rawValue)
+            }))
+            present(alert, animated: true)
+        }
     }
 
     func recordAdded(sample: AudioSample) {
         session.updateSample(sample: sample)
+        mainView.enableAll()
+    }
+
+    func errorHappend(error: RecordMicroError) {
+        mainView.enableAll()
     }
 }

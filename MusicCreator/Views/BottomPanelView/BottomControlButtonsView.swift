@@ -10,6 +10,7 @@ import UIKit
 protocol AddMicrophoneRecordListener {
     func startRecording()
     func recordAdded(sample: AudioSample)
+    func errorHappend(error: RecordMicroError)
 }
 
 class BottomControlButtonsView: UIStackView {
@@ -31,6 +32,7 @@ class BottomControlButtonsView: UIStackView {
         microButton = UIButton(configuration: createConfiguration("mic.fill",
                                                                   scale: .large))
         microButton.widthAnchor.constraint(equalTo: microButton.heightAnchor).isActive = true
+        microButton.tag = IntConstants.MicroButtonTag.rawValue
         microButton.addTarget(self, action: #selector(startMicroRecord), for: .touchUpInside)
         addArrangedSubview(microButton)
         let recordButton = UIButton(configuration: createConfiguration("circle.fill",
@@ -68,7 +70,10 @@ class BottomControlButtonsView: UIStackView {
         if microphoneRecording.isRecording() {
             changeRecordStatus(isRecording: false)
             guard let sample = microphoneRecording.finishRecording()
-            else { return }
+            else {
+                addMicrophoneRecordSubscriber?.errorHappend(error: .fileNotCreated("Can't read file path"))
+                return
+            }
 
             addMicrophoneRecordSubscriber?.recordAdded(sample: sample)
         } else {
@@ -78,7 +83,7 @@ class BottomControlButtonsView: UIStackView {
                 DispatchQueue.main.async {
                     self.changeRecordStatus(isRecording: false)
                 }
-                print(error)
+                self.addMicrophoneRecordSubscriber?.errorHappend(error: error)
             }
         }
     }

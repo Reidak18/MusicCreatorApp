@@ -11,6 +11,7 @@ import UIKit
 enum RecordMicroError: Error {
     case alreadyStarted(String)
     case errorInProgress(String)
+    case fileNotCreated(String)
 }
 
 enum RequestMicroPermissionResult {

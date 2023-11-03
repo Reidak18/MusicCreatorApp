@@ -21,7 +21,6 @@ protocol AudioPlayer {
     var volume: Float { get set }
     var frequency: Float { get set }
     func getPlayingClipId() -> String?
-    func updateSample(sample: AudioSample)
     var audioProgressSubscriber: AudioProgressListener? { get set }
     var audioChangeSampleSubscriber: AudioChangeSampleListener? { get set }
 }
@@ -82,14 +81,6 @@ class SimpleAudioPlayer: NSObject, AudioPlayer {
 
     func getPlayingClipId() -> String? {
         return playingId
-    }
-
-    func updateSample(sample: AudioSample) {
-        guard playingId == sample.id
-        else { return }
-
-        volume = sample.volume
-        frequency = sample.frequency
     }
 
     @objc private func updateAudioProgress() {

@@ -41,7 +41,6 @@ class WorkSession: Session {
             return
         }
         samples[index] = sample
-        player.updateSample(sample: sample)
     }
 
     func removeSample(id: String) {

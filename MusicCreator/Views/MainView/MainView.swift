@@ -8,6 +8,11 @@
 import UIKit
 
 class MainView: UIView {
+    public var switchViewDelegate: MiddleViewsSwitcher? {
+        didSet {
+            bottomPanelView.switchViewDelegate = switchViewDelegate
+        }
+    }
     public var selectSampleDelegate: SampleTrackSelector? {
         didSet {
             topPanelView.selectDelegate = selectSampleDelegate
@@ -49,8 +54,6 @@ class MainView: UIView {
         layersView.isHidden = true
         backgroundView.addArrangedSubview(layersView)
         stackView.addArrangedSubview(backgroundView)
-
-        bottomPanelView.switchViewDelegate = self
         stackView.addArrangedSubview(bottomPanelView)
     }
 
@@ -81,14 +84,12 @@ class MainView: UIView {
         layersView.setCurrentSession(session: session)
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-
-extension MainView: StylesWindowOpener {
-    func openStylesWindow(viewType: CurrentViewType) {
+    func switchView(viewType: CurrentViewType) {
         layersView.isHidden = viewType != .layers
         paramsView.isHidden = viewType != .params
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 }

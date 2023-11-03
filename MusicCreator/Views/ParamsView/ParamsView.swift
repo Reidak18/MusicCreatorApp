@@ -37,7 +37,7 @@ class ParamsView: UIView {
         frequencySlider.setThumbLabel(label: "скорость")
         frequencySlider.setBackgroundImage(named: "HorizontalSliderBackground")
         frequencySlider.translatesAutoresizingMaskIntoConstraints = false
-        frequencySlider.minimumValue = 0.1
+        frequencySlider.minimumValue = 0.2
         frequencySlider.maximumValue = 10
         frequencySlider.value = 1
         frequencySlider.addTarget(self, action: #selector(speedValueChanged), for: .valueChanged)

@@ -14,11 +14,13 @@ class MainViewController: UIViewController {
     private var database: SamplesDatabase
     private var audioPlayer: AudioPlayer
     private var session: Session
+    private var sampleEditor: AudioSampleEditor
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SoundsDatabase()
         audioPlayer = SimpleAudioPlayer()
         session = WorkSession(player: audioPlayer)
+        sampleEditor = AudioSampleEditor()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -27,6 +29,7 @@ class MainViewController: UIViewController {
         mainView.setCurrentSession(session: session)
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
+        mainView.switchViewDelegate = self
         view = mainView
     }
 
@@ -37,15 +40,33 @@ class MainViewController: UIViewController {
 
 extension MainViewController: SampleTrackSelector {
     func selectSample(instrument: MusicInstrument, index: Int) {
+        if let oldSample = sampleEditor.getAudioSample() {
+            session.addSample(sample: oldSample)
+            sampleEditor.setAudioSample(nil)
+        }
+
         guard var sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
-        self.mainView.setWaveform(url: sample.audioUrl)
+        mainView.setWaveform(url: sample.audioUrl)
 
         sample.setVolume(volume: audioPlayer.volume)
         sample.setFrequency(frequency: audioPlayer.frequency)
-        session.addSample(sample: sample)
+        sampleEditor.setAudioSample(sample)
+
         audioPlayer.play(sample: sample)
+    }
+}
+
+extension MainViewController: MiddleViewsSwitcher {
+    func switchView(viewType: CurrentViewType) {
+        if viewType == .layers,
+           let oldSample = sampleEditor.getAudioSample() {
+            session.addSample(sample: oldSample)
+            sampleEditor.setAudioSample(nil)
+            audioPlayer.stop()
+        }
+        mainView.switchView(viewType: viewType)
     }
 }
 
@@ -57,10 +78,12 @@ extension MainViewController: AudioProgressListener {
 
 extension MainViewController: SlidersChangesListener {
     func volumeValueUpdated(volume: Float) {
+        sampleEditor.setVolume(volume: volume)
         audioPlayer.volume = volume
     }
 
     func frequencyValueUpdated(frequency: Float) {
+        sampleEditor.setFrequency(frequency: frequency)
         audioPlayer.frequency = frequency
     }
 }

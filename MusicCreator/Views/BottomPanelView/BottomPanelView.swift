@@ -12,12 +12,12 @@ enum CurrentViewType {
     case layers
 }
 
-protocol StylesWindowOpener {
-    func openStylesWindow(viewType: CurrentViewType)
+protocol MiddleViewsSwitcher {
+    func switchView(viewType: CurrentViewType)
 }
 
 class BottomPanelView: UIStackView {
-    public var switchViewDelegate: StylesWindowOpener?
+    public var switchViewDelegate: MiddleViewsSwitcher?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
 
@@ -74,7 +74,7 @@ class BottomPanelView: UIStackView {
             config.image = UIImage(systemName: "chevron.down")
         }
         stylesButton.configuration = config
-        switchViewDelegate?.openStylesWindow(viewType: currentViewType)
+        switchViewDelegate?.switchView(viewType: currentViewType)
     }
 
     func setWaveform(url: URL) {

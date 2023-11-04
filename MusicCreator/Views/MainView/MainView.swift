@@ -8,6 +8,11 @@
 import UIKit
 
 class MainView: UIView {
+    var mixTrackPlayer: MixTrackPlayer? {
+        didSet {
+            bottomPanelView.mixTrackPlayer = mixTrackPlayer
+        }
+    }
     public var switchViewDelegate: MiddleViewsSwitcher? {
         didSet {
             bottomPanelView.switchViewDelegate = switchViewDelegate

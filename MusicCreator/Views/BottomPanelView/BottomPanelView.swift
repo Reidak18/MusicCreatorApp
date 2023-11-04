@@ -17,6 +17,11 @@ protocol MiddleViewsSwitcher {
 }
 
 class BottomPanelView: UIStackView {
+    var mixTrackPlayer: MixTrackPlayer? {
+        didSet {
+            bottomControlButtons.mixTrackPlayer = mixTrackPlayer
+        }
+    }
     var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
         didSet {
             bottomControlButtons.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber

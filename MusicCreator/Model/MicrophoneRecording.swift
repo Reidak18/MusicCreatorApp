@@ -107,8 +107,8 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
         else { return nil }
 
         clear()
-
-        return AudioSample(name: currentName, audioUrl: url, isMicrophone: true)
+        
+        return AudioSample(name: currentName, audioUrl: url, isMicrophone: true, volume: 1)
     }
 
     private func clear() {

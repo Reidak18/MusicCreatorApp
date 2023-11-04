@@ -13,6 +13,7 @@ enum StringConstants: String {
 
 enum IntConstants: Int {
     case MicroButtonTag = 1000
+    case PlayMixButtonTag = 1001
 }
 
 extension UIColor {

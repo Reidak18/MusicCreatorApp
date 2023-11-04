@@ -42,6 +42,7 @@
 		0A28FBF72AF45C2A0003EE49 /* Snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF42AF45C2A0003EE49 /* Snare.wav */; };
 		0A28FBF92AF46C0F0003EE49 /* CurrentSampleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */; };
 		0A28FBFB2AF52E560003EE49 /* MicrophoneRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */; };
+		0A28FBFF2AF5968D0003EE49 /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		0A28FBF42AF45C2A0003EE49 /* Snare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Snare.wav; sourceTree = "<group>"; };
 		0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSampleSettings.swift; sourceTree = "<group>"; };
 		0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneRecording.swift; sourceTree = "<group>"; };
+		0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,7 +186,7 @@
 			children = (
 				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
-				0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */,
+				0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				0A28FBE12AF40D330003EE49 /* AudioSample.swift */,
+				0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */,
 			);
 			path = DataStructs;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
 				0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */,
 				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,
+				0A28FBFF2AF5968D0003EE49 /* AudioMixer.swift in Sources */,
 				0A28FBE22AF40D330003EE49 /* AudioSample.swift in Sources */,
 				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
 				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,

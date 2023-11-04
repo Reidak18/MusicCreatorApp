@@ -15,12 +15,14 @@ class MainViewController: UIViewController {
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
     private var currentSettings: CurrentSampleSettings
+    private var audioMixer: AudioMixer
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()
         audioPlayer = AudioPlayer()
         session = WorkSession(player: audioPlayer)
         currentSettings = CurrentSampleSettings()
+        audioMixer = AudioMixer()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -33,6 +35,7 @@ class MainViewController: UIViewController {
         mainView.switchViewDelegate = self
         mainView.sampleSelectListener = self
         mainView.addMicrophoneRecordSubscriber = self
+        mainView.mixTrackPlayer = self
         view = mainView
     }
 
@@ -43,6 +46,21 @@ class MainViewController: UIViewController {
             sample.setFrequency(frequency: currentSettings.frequency)
             session.updateSample(sample: sample)
             currentSettings.id = nil
+        }
+    }
+
+    private func blockUI(exceptTag: Int) {
+        if UserDefaults.standard.bool(forKey: StringConstants.ShowDisableAlert.rawValue) == true {
+            self.mainView.disableAll(exceptTag: exceptTag)
+        } else {
+            let alert = UIAlertController(title: "Отключение UI",
+                                          message: "UI будет отключен на время работы функции. Вы можете вернуться в режим редактирования повторным нажатием на кнопку",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
+                self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
+                UserDefaults.standard.set(true, forKey: StringConstants.ShowDisableAlert.rawValue)
+            }))
+            present(alert, animated: true)
         }
     }
 
@@ -119,19 +137,7 @@ extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
         saveSample()
         audioPlayer.stop()
-
-        if UserDefaults.standard.bool(forKey: StringConstants.ShowDisableAlert.rawValue) == true {
-            self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
-        } else {
-            let alert = UIAlertController(title: "Отключение UI",
-                                          message: "UI будет отключен на время записи с микрофона",
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
-                self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
-                UserDefaults.standard.set(true, forKey: StringConstants.ShowDisableAlert.rawValue)
-            }))
-            present(alert, animated: true)
-        }
+        blockUI(exceptTag: IntConstants.MicroButtonTag.rawValue)
     }
 
     func recordAdded(sample: AudioSample) {
@@ -141,5 +147,27 @@ extension MainViewController: AddMicrophoneRecordListener {
 
     func errorHappend(error: RecordMicroError) {
         mainView.enableAll()
+    }
+}
+
+extension MainViewController: MixTrackPlayer {
+    func mixAndPlay() {
+        saveSample()
+        audioPlayer.stop()
+        blockUI(exceptTag: IntConstants.PlayMixButtonTag.rawValue)
+        audioMixer.play(samples: session.getSamples().filter({ !$0.isMute }))
+    }
+
+    func stopPlay() {
+        audioMixer.stopPlay()
+        mainView.enableAll()
+    }
+
+    func mixAndRecord() {
+
+    }
+
+    func stopRecord() {
+        
     }
 }

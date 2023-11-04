@@ -13,11 +13,22 @@ protocol AddMicrophoneRecordListener {
     func errorHappend(error: RecordMicroError)
 }
 
+protocol MixTrackPlayer {
+    func mixAndPlay()
+    func stopPlay()
+    func mixAndRecord()
+    func stopRecord()
+}
+
 class BottomControlButtonsView: UIStackView {
+    var mixTrackPlayer: MixTrackPlayer?
     var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener?
     private let microphoneRecording: MicrophoneRecordingProtocol = MicrophoneRecording()
 
     private var microButton = UIButton()
+    private var playButton = UIButton()
+
+    private var isPlaying = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,10 +51,11 @@ class BottomControlButtonsView: UIStackView {
         recordButton.widthAnchor.constraint(equalTo: recordButton.heightAnchor).isActive = true
 
         addArrangedSubview(recordButton)
-        let playButton = UIButton(configuration: createConfiguration("play.fill",
+        playButton = UIButton(configuration: createConfiguration("play.fill",
                                                                      scale: .large))
         playButton.widthAnchor.constraint(equalTo: playButton.heightAnchor).isActive = true
-
+        playButton.tag = IntConstants.PlayMixButtonTag.rawValue
+        playButton.addTarget(self, action: #selector(playMixedTrack), for: .touchUpInside)
         addArrangedSubview(playButton)
     }
 
@@ -86,6 +98,22 @@ class BottomControlButtonsView: UIStackView {
                 self.addMicrophoneRecordSubscriber?.errorHappend(error: error)
             }
         }
+    }
+
+    @objc private func playMixedTrack() {
+        if isPlaying {
+            mixTrackPlayer?.stopPlay()
+        } else {
+            mixTrackPlayer?.mixAndPlay()
+        }
+        isPlaying.toggle()
+        changePlayingStatus(isPlaying: isPlaying)
+    }
+
+    private func changePlayingStatus(isPlaying: Bool) {
+        var config = playButton.configuration ?? UIButton.Configuration.filled()
+        config.image = UIImage(systemName: isPlaying ? "stop.fill" : "play.fill")
+        playButton.configuration = config
     }
 
     private func changeRecordStatus(isRecording: Bool) {

@@ -15,6 +15,7 @@ protocol SampleTrackSelector {
 class InstrumentButtonView: UIStackView {
     public var selectDelegate: SampleTrackSelector?
 
+    private var samplesNames: [String] = []
     private var associatedInstrument: MusicInstrument?
     private let imageButton = UIButton()
     private let nameLabel = UILabel()
@@ -70,6 +71,10 @@ class InstrumentButtonView: UIStackView {
         nameLabel.textColor = .foregroundPrimary
         nameLabel.textAlignment = .center
         addArrangedSubview(nameLabel)
+    }
+
+    func setSamples(samplesNames: [String]) {
+        self.samplesNames = samplesNames
     }
 
     @objc private func playDefaultSample() {
@@ -128,7 +133,7 @@ class InstrumentButtonView: UIStackView {
         nameLabel.isHidden = true
         backgroundColor = .customLightGreen
         imageButton.setBackgroundImage(buttonImage?.withTintColor(.customLightGreen), for: .normal)
-        segmentControl.setSamples(samples: ["cемпл 1", "cемпл 2", "cемпл 3"], width: self.bounds.width)
+        segmentControl.setSamples(samples: samplesNames, width: self.bounds.width)
         segmentControl.selectDelegate = self
         addArrangedSubview(self.segmentControl)
         layoutIfNeeded()

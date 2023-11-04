@@ -29,17 +29,17 @@ class ParamsView: UIView {
         volumeSlider.setBackgroundImage(named: "VerticalSliderBackground")
         volumeSlider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
         volumeSlider.translatesAutoresizingMaskIntoConstraints = false
-        volumeSlider.minimumValue = 0
-        volumeSlider.maximumValue = 1
-        volumeSlider.value = 0.5
+        volumeSlider.minimumValue = FloatConstants.minimumVolume.rawValue
+        volumeSlider.maximumValue = FloatConstants.maximumVolume.rawValue
+        volumeSlider.value = FloatConstants.defaultVolume.rawValue
         volumeSlider.addTarget(self, action: #selector(volumeValueChanged), for: .valueChanged)
         addSubview(volumeSlider)
         frequencySlider.setThumbLabel(label: "скорость")
         frequencySlider.setBackgroundImage(named: "HorizontalSliderBackground")
         frequencySlider.translatesAutoresizingMaskIntoConstraints = false
-        frequencySlider.minimumValue = 0.2
-        frequencySlider.maximumValue = 10
-        frequencySlider.value = 2
+        frequencySlider.minimumValue = FloatConstants.minimumFrequency.rawValue
+        frequencySlider.maximumValue = FloatConstants.maximumFrequency.rawValue
+        frequencySlider.value = FloatConstants.defaultFrequency.rawValue
         frequencySlider.isContinuous = false
         frequencySlider.addTarget(self, action: #selector(frequencyValueChanged), for: .valueChanged)
         addSubview(frequencySlider)

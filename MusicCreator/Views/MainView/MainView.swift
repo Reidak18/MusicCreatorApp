@@ -85,6 +85,10 @@ class MainView: UIView {
         ])
     }
 
+    func setSamples(samplesNames: Dictionary<MusicInstrument, [String]>) {
+        topPanelView.setSamples(samplesNames: samplesNames)
+    }
+
     func setWaveform(url: URL?) {
         self.bottomPanelView.setWaveform(url: url)
     }

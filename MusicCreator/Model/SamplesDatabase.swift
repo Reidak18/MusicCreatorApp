@@ -14,6 +14,7 @@ enum MusicInstrument {
 }
 
 protocol SamplesDatabaseProtocol {
+    func getSamples() -> Dictionary<MusicInstrument, [String]>
     func getSample(instrument: MusicInstrument, index: Int) -> AudioSample?
 }
 
@@ -25,15 +26,19 @@ class SamplesDatabase: SamplesDatabaseProtocol {
     }
 
     private func loadFromLocal() {
-        sounds[.guitar] = ["Electric",
-                           "Goldkind",
-                           "Kaponja"]
+        sounds[.guitar] = ["Guitar-riff",
+                           "Violin",
+                           "Guitar-loop"]
         sounds[.drums] = ["Hihats",
                           "Kick",
                           "Snare"]
-        sounds[.wind] = ["FluteA4",
-                         "FluteD2",
-                         "FluteF3"]
+        sounds[.wind] = ["Bieber-style",
+                         "Pan-flute",
+                         "Flute-hammer"]
+    }
+
+    func getSamples() -> Dictionary<MusicInstrument, [String]> {
+        return sounds
     }
 
     func getSample(instrument: MusicInstrument, index: Int) -> AudioSample? {

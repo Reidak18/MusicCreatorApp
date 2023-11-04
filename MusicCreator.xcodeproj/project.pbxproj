@@ -31,18 +31,18 @@
 		0A28FBDC2AF3845D0003EE49 /* SamplesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */; };
 		0A28FBE22AF40D330003EE49 /* AudioSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBE12AF40D330003EE49 /* AudioSample.swift */; };
 		0A28FBE52AF40F410003EE49 /* WorkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBE42AF40F410003EE49 /* WorkSession.swift */; };
-		0A28FBE92AF45C160003EE49 /* Goldkind.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBE62AF45C150003EE49 /* Goldkind.wav */; };
-		0A28FBEA2AF45C160003EE49 /* Electric.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBE72AF45C160003EE49 /* Electric.wav */; };
-		0A28FBEB2AF45C160003EE49 /* Kaponja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBE82AF45C160003EE49 /* Kaponja.wav */; };
-		0A28FBEF2AF45C200003EE49 /* FluteA4.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBEC2AF45C200003EE49 /* FluteA4.wav */; };
-		0A28FBF02AF45C200003EE49 /* FluteD2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBED2AF45C200003EE49 /* FluteD2.wav */; };
-		0A28FBF12AF45C200003EE49 /* FluteF3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBEE2AF45C200003EE49 /* FluteF3.wav */; };
 		0A28FBF52AF45C2A0003EE49 /* Hihats.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF22AF45C2A0003EE49 /* Hihats.wav */; };
 		0A28FBF62AF45C2A0003EE49 /* Kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF32AF45C2A0003EE49 /* Kick.wav */; };
 		0A28FBF72AF45C2A0003EE49 /* Snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FBF42AF45C2A0003EE49 /* Snare.wav */; };
 		0A28FBF92AF46C0F0003EE49 /* CurrentSampleSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */; };
 		0A28FBFB2AF52E560003EE49 /* MicrophoneRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */; };
 		0A28FBFF2AF5968D0003EE49 /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */; };
+		0A28FC032AF653270003EE49 /* Bieber-style.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC002AF653270003EE49 /* Bieber-style.wav */; };
+		0A28FC042AF653270003EE49 /* Pan-flute.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC012AF653270003EE49 /* Pan-flute.wav */; };
+		0A28FC052AF653270003EE49 /* Flute-hammer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC022AF653270003EE49 /* Flute-hammer.wav */; };
+		0A28FC092AF654770003EE49 /* Guitar-riff.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC062AF654770003EE49 /* Guitar-riff.wav */; };
+		0A28FC0A2AF654770003EE49 /* Violin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC072AF654770003EE49 /* Violin.wav */; };
+		0A28FC0B2AF654770003EE49 /* Guitar-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC082AF654770003EE49 /* Guitar-loop.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,18 +72,18 @@
 		0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesDatabase.swift; sourceTree = "<group>"; };
 		0A28FBE12AF40D330003EE49 /* AudioSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSample.swift; sourceTree = "<group>"; };
 		0A28FBE42AF40F410003EE49 /* WorkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkSession.swift; sourceTree = "<group>"; };
-		0A28FBE62AF45C150003EE49 /* Goldkind.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Goldkind.wav; sourceTree = "<group>"; };
-		0A28FBE72AF45C160003EE49 /* Electric.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Electric.wav; sourceTree = "<group>"; };
-		0A28FBE82AF45C160003EE49 /* Kaponja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Kaponja.wav; sourceTree = "<group>"; };
-		0A28FBEC2AF45C200003EE49 /* FluteA4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FluteA4.wav; sourceTree = "<group>"; };
-		0A28FBED2AF45C200003EE49 /* FluteD2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FluteD2.wav; sourceTree = "<group>"; };
-		0A28FBEE2AF45C200003EE49 /* FluteF3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FluteF3.wav; sourceTree = "<group>"; };
 		0A28FBF22AF45C2A0003EE49 /* Hihats.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Hihats.wav; sourceTree = "<group>"; };
 		0A28FBF32AF45C2A0003EE49 /* Kick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Kick.wav; sourceTree = "<group>"; };
 		0A28FBF42AF45C2A0003EE49 /* Snare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Snare.wav; sourceTree = "<group>"; };
 		0A28FBF82AF46C0F0003EE49 /* CurrentSampleSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSampleSettings.swift; sourceTree = "<group>"; };
 		0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneRecording.swift; sourceTree = "<group>"; };
 		0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
+		0A28FC002AF653270003EE49 /* Bieber-style.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Bieber-style.wav"; sourceTree = "<group>"; };
+		0A28FC012AF653270003EE49 /* Pan-flute.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Pan-flute.wav"; sourceTree = "<group>"; };
+		0A28FC022AF653270003EE49 /* Flute-hammer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Flute-hammer.wav"; sourceTree = "<group>"; };
+		0A28FC062AF654770003EE49 /* Guitar-riff.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-riff.wav"; sourceTree = "<group>"; };
+		0A28FC072AF654770003EE49 /* Violin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Violin.wav; sourceTree = "<group>"; };
+		0A28FC082AF654770003EE49 /* Guitar-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-loop.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,9 +233,9 @@
 		0A28FBD82AF3841E0003EE49 /* Guitar */ = {
 			isa = PBXGroup;
 			children = (
-				0A28FBE72AF45C160003EE49 /* Electric.wav */,
-				0A28FBE62AF45C150003EE49 /* Goldkind.wav */,
-				0A28FBE82AF45C160003EE49 /* Kaponja.wav */,
+				0A28FC062AF654770003EE49 /* Guitar-riff.wav */,
+				0A28FC082AF654770003EE49 /* Guitar-loop.wav */,
+				0A28FC072AF654770003EE49 /* Violin.wav */,
 			);
 			path = Guitar;
 			sourceTree = "<group>";
@@ -253,9 +253,9 @@
 		0A28FBDA2AF3842C0003EE49 /* Wind */ = {
 			isa = PBXGroup;
 			children = (
-				0A28FBEC2AF45C200003EE49 /* FluteA4.wav */,
-				0A28FBED2AF45C200003EE49 /* FluteD2.wav */,
-				0A28FBEE2AF45C200003EE49 /* FluteF3.wav */,
+				0A28FC022AF653270003EE49 /* Flute-hammer.wav */,
+				0A28FC002AF653270003EE49 /* Bieber-style.wav */,
+				0A28FC012AF653270003EE49 /* Pan-flute.wav */,
 			);
 			path = Wind;
 			sourceTree = "<group>";
@@ -327,16 +327,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A28FBF12AF45C200003EE49 /* FluteF3.wav in Resources */,
 				0A28FB522AEFFFA10003EE49 /* LaunchScreen.storyboard in Resources */,
-				0A28FBF02AF45C200003EE49 /* FluteD2.wav in Resources */,
-				0A28FBEB2AF45C160003EE49 /* Kaponja.wav in Resources */,
-				0A28FBEF2AF45C200003EE49 /* FluteA4.wav in Resources */,
-				0A28FBEA2AF45C160003EE49 /* Electric.wav in Resources */,
+				0A28FC032AF653270003EE49 /* Bieber-style.wav in Resources */,
 				0A28FBF62AF45C2A0003EE49 /* Kick.wav in Resources */,
 				0A28FBF52AF45C2A0003EE49 /* Hihats.wav in Resources */,
-				0A28FBE92AF45C160003EE49 /* Goldkind.wav in Resources */,
+				0A28FC092AF654770003EE49 /* Guitar-riff.wav in Resources */,
+				0A28FC052AF653270003EE49 /* Flute-hammer.wav in Resources */,
+				0A28FC042AF653270003EE49 /* Pan-flute.wav in Resources */,
+				0A28FC0A2AF654770003EE49 /* Violin.wav in Resources */,
 				0A28FB4F2AEFFFA10003EE49 /* Assets.xcassets in Resources */,
+				0A28FC0B2AF654770003EE49 /* Guitar-loop.wav in Resources */,
 				0A28FBF72AF45C2A0003EE49 /* Snare.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

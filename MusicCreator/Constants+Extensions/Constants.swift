@@ -16,6 +16,15 @@ enum IntConstants: Int {
     case PlayMixButtonTag = 1001
 }
 
+enum FloatConstants: Float {
+    case minimumVolume = 0
+    case maximumVolume = 1
+    case defaultVolume = 0.5
+    case minimumFrequency = 0.2
+    case maximumFrequency = 10
+    case defaultFrequency = 2
+}
+
 extension UIColor {
     static var backgroundPrimary: UIColor { UIColor(named: "backgroundPrimary") ?? UIColor() }
     static var foregroundPrimary: UIColor { UIColor(named: "foregroundPrimary") ?? UIColor() }

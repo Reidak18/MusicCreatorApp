@@ -21,15 +21,15 @@ struct AudioSample {
     init(name: String,
          audioUrl: URL,
          isMicrophone: Bool = false,
-         volume: Float = 1,
-         frequency: Float = 1,
+         volume: Float = FloatConstants.defaultVolume.rawValue,
+         frequency: Float = FloatConstants.defaultFrequency.rawValue,
          isMute: Bool = false,
          isPlaying: Bool = false) {
         self.id = UUID().uuidString
         self.name = name
         self.audioUrl = audioUrl
         self.isMicrophone = isMicrophone
-        self.volume = volume
+        self.volume = isMicrophone ? FloatConstants.maximumVolume.rawValue : volume
         self.frequency = frequency
         self.isMute = isMute
         self.isPlaying = isPlaying

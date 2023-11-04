@@ -61,6 +61,7 @@ extension VerticalSegmentedControl: UITableViewDataSource {
 
         var content = cell.defaultContentConfiguration()
         content.text = samples[indexPath.row]
+        content.textProperties.alignment = .center
         content.textProperties.font = .systemFont(ofSize: 12)
         cell.contentConfiguration = content
         cell.backgroundColor = .clear

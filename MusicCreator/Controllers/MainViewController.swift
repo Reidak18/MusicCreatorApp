@@ -27,6 +27,8 @@ class MainViewController: UIViewController {
     }
 
     override func loadView() {
+        mainView.setSamples(samplesNames: database.getSamples())
+
         audioPlayer.audioProgressSubscriber = self
         audioPlayer.audioChangeSampleSubscriber = self
         mainView.setCurrentSession(session: session)
@@ -73,15 +75,11 @@ extension MainViewController: SampleTrackSelector {
     func selectSampleFromLibrary(instrument: MusicInstrument, index: Int) {
         saveSample()
 
-        guard var sample = database.getSample(instrument: instrument, index: index)
+        guard let sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
-        sample.setVolume(volume: audioPlayer.volume)
-        sample.setFrequency(frequency: audioPlayer.frequency)
-        sample.setIsPlaying(true)
-
+        mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
         currentSettings = CurrentSampleSettings(sample: sample)
-
         session.updateSample(sample: sample)
         session.playSample(id: sample.id, play: true)
     }

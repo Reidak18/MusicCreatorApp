@@ -51,6 +51,19 @@ class TopPanelView: UIStackView {
         addArrangedSubview(windButton)
     }
 
+    func setSamples(samplesNames: Dictionary<MusicInstrument, [String]>) {
+        for instrument in samplesNames.keys {
+            switch instrument {
+            case .guitar:
+                guitarButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+            case .drums:
+                drumsButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+            case .wind:
+                windButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+            }
+        }
+    }
+
     required init(coder: NSCoder) {
         super.init(coder: coder)
     }

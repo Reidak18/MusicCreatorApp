@@ -44,6 +44,7 @@
 		0A28FC0B2AF654770003EE49 /* Guitar-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC082AF654770003EE49 /* Guitar-loop.wav */; };
 		0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */; };
 		0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */; };
+		0A28FC352AF708A90003EE49 /* UIBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC342AF708A90003EE49 /* UIBlocker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		0A28FC082AF654770003EE49 /* Guitar-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-loop.wav"; sourceTree = "<group>"; };
 		0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesNamesProvider.swift; sourceTree = "<group>"; };
 		0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersProvider.swift; sourceTree = "<group>"; };
+		0A28FC342AF708A90003EE49 /* UIBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlocker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				0A28FB492AEFFFA00003EE49 /* MainViewController.swift */,
+				0A28FC342AF708A90003EE49 /* UIBlocker.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				0A28FB712AF0E9190003EE49 /* LayersView.swift in Sources */,
 				0A28FBDC2AF3845D0003EE49 /* SamplesDatabase.swift in Sources */,
 				0A28FB5D2AF008930003EE49 /* InstrumentButtonView.swift in Sources */,
+				0A28FC352AF708A90003EE49 /* UIBlocker.swift in Sources */,
 				0A28FB732AF0E9C40003EE49 /* LayerCell.swift in Sources */,
 				0A28FBD22AF325E70003EE49 /* AudioPlayer.swift in Sources */,
 				0A28FB462AEFFFA00003EE49 /* AppDelegate.swift in Sources */,

@@ -114,29 +114,6 @@ class MainView: UIView {
         paramsView.setSlidersParams(volume: volume, frequency: frequency)
     }
 
-    func disableAll(exceptTag: Int) {
-        for subview in getAllSubviews(types: [UIControl.self, UITableViewCell.self]) {
-            if subview.tag != exceptTag {
-                if let control = subview as? UIControl {
-                    control.isEnabled = false
-                } else if let cell = subview as? UITableViewCell {
-                    cell.isUserInteractionEnabled = false
-                }
-            }
-        }
-    }
-
-    // все кнопки всегда доступны, так что можно просто включить все
-    func enableAll() {
-        for subview in getAllSubviews(types: [UIControl.self, UITableViewCell.self]) {
-            if let control = subview as? UIControl {
-                control.isEnabled = true
-            } else if let cell = subview as? UITableViewCell {
-                cell.isUserInteractionEnabled = true
-            }
-        }
-    }
-
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

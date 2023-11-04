@@ -17,7 +17,7 @@ extension UIView {
 }
 
 extension UIView {
-    func getAllSubviews<T: UIView>(from parentView: UIView) -> [T] {
+    class func getAllSubviews<T: UIView>(from parentView: UIView) -> [T] {
         return parentView.subviews.flatMap { subView -> [T] in
             var result = getAllSubviews(from: subView) as [T]
             if let view = subView as? T { result.append(view) }
@@ -25,8 +25,8 @@ extension UIView {
         }
     }
 
-    func getAllSubviews(types: [UIView.Type]) -> [UIView] {
-        return subviews.flatMap { subView -> [UIView] in
+    class func getAllSubviews(from parentView: UIView, types: [UIView.Type]) -> [UIView] {
+        return parentView.subviews.flatMap { subView -> [UIView] in
             var result = getAllSubviews(from: subView) as [UIView]
             for type in types {
                 if subView.classForCoder == type {

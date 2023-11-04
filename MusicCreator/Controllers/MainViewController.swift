@@ -16,11 +16,14 @@ class MainViewController: UIViewController {
     private var session: SessionProtocol
     private var audioMixer: AudioMixerProtocol
 
+    private var uiBlocker: UIBlocker
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()
         audioPlayer = AudioPlayer()
         session = WorkSession(player: audioPlayer)
         audioMixer = AudioMixer()
+        uiBlocker = UIBlocker(parentView: mainView)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         session.subscribeForUpdates(self)
     }
@@ -38,21 +41,6 @@ class MainViewController: UIViewController {
         mainView.mixTrackPlayer = self
         mainView.playStopper = self
         view = mainView
-    }
-
-    private func blockUI(exceptTag: Int) {
-        if UserDefaults.standard.bool(forKey: StringConstants.showDisableAlert.rawValue) == true {
-            self.mainView.disableAll(exceptTag: exceptTag)
-        } else {
-            let alert = UIAlertController(title: "Отключение UI",
-                                          message: "UI будет отключен на время работы функции. Вы можете вернуться в режим редактирования повторным нажатием на кнопку",
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
-                self.mainView.disableAll(exceptTag: IntConstants.microButtonTag.rawValue)
-                UserDefaults.standard.set(true, forKey: StringConstants.showDisableAlert.rawValue)
-            }))
-            present(alert, animated: true)
-        }
     }
 
     private func shareAudio(filename: String) {
@@ -166,34 +154,34 @@ extension MainViewController: SampleActionDelegate {
 extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.microButtonTag.rawValue)
+        uiBlocker.blockUI(exceptTag: IntConstants.microButtonTag.rawValue)
     }
 
     func recordAdded(sample: AudioSample) {
         session.updateSample(sample: sample)
-        mainView.enableAll()
+        uiBlocker.releaseUI()
     }
 
     func errorHappend(error: RecordMicroError) {
-        mainView.enableAll()
+        uiBlocker.releaseUI()
     }
 }
 
 extension MainViewController: MixTrackPlayer {
     func mixAndPlay() {
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue)
+        uiBlocker.blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue)
         audioMixer.play(samples: session.getSamples().filter({ !$0.isMute }))
     }
 
     func stopPlay() {
         audioMixer.stopPlay()
-        mainView.enableAll()
+        uiBlocker.releaseUI()
     }
 
     func mixAndRecord() {
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.recordButtonTag.rawValue)
+        uiBlocker.blockUI(exceptTag: IntConstants.recordButtonTag.rawValue)
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }),
                                  filename: filename)
@@ -201,7 +189,7 @@ extension MainViewController: MixTrackPlayer {
 
     func stopRecord() {
         audioMixer.stopRecord()
-        mainView.enableAll()
+        uiBlocker.releaseUI()
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         shareAudio(filename: filename)
     }

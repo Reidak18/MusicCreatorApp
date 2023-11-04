@@ -33,9 +33,9 @@ class MainView: UIView {
             paramsView.slidersChangesListener = slidersChangesListener
         }
     }
-    public var sampleSelectListener: SampleSelectListener? {
+    public var sampleActionDelegate: SampleActionDelegate? {
         didSet {
-            layersView.sampleSelectListener = sampleSelectListener
+            layersView.sampleActionDelegate = sampleActionDelegate
         }
     }
     public var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {

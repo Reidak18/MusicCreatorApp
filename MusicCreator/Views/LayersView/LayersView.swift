@@ -7,13 +7,15 @@
 
 import UIKit
 
-protocol SampleSelectListener: AnyObject {
-    func sampleSelected(id: String?)
+protocol SampleActionDelegate: AnyObject {
+    func setIsPlaying(id: String, isPlaying: Bool)
+    func setIsMute(id: String, isMute: Bool)
+    func removeSample(id: String)
+    func selectSample(id: String)
 }
 
 class LayersView: UITableView {
-    weak var sampleSelectListener: SampleSelectListener?
-//    private var samples: [AudioSample] = []
+    weak var sampleActionDelegate: SampleActionDelegate?
     private weak var session: SessionProtocol?
 
     override init(frame: CGRect, style: UITableView.Style) {
@@ -33,13 +35,8 @@ class LayersView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-//    func setSamplesNames(samples: [AudioSample]) {
-//        self.samples = samples
-//    }
-
     func setCurrentSession(session: some SessionProtocol) {
-        let session = session
-        session.updateListener = self
+        session.subscribeForUpdates(self)
         self.session = session
     }
 
@@ -74,29 +71,26 @@ extension LayersView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell,
-              cell.isSelectable()
+              cell.isSelectable(),
+              let cellId = cell.getId()
         else { return }
 
-        sampleSelectListener?.sampleSelected(id: cell.getId())
+        sampleActionDelegate?.selectSample(id: cellId)
     }
 }
 
 extension LayersView: LayerCellListener {
-    func playLayer(id: String, play: Bool) {
-        session?.playSample(id: id, play: play)
+    func setIsPlaying(id: String, isPlaying: Bool) {
+        sampleActionDelegate?.setIsPlaying(id: id, isPlaying: isPlaying)
     }
 
-    func muteLayer(id: String) {
-        guard var sample = session?.getSample(id: id)
-        else { return }
-
-        sample.setMute(isMute: !sample.isMute)
-        session?.updateSample(sample: sample)
+    func setIsMute(id: String, isMute: Bool) {
+        sampleActionDelegate?.setIsMute(id: id, isMute: isMute)
         reloadData()
     }
 
     func removeLayer(id: String) {
-        session?.removeSample(id: id)
+        sampleActionDelegate?.removeSample(id: id)
         reloadData()
     }
 }

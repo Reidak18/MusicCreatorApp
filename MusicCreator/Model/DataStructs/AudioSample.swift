@@ -35,15 +35,15 @@ struct AudioSample {
         self.isPlaying = isPlaying
     }
 
-    mutating func setVolume(volume: Float) {
+    mutating func setVolume(_ volume: Float) {
         self.volume = volume
     }
 
-    mutating func setFrequency(frequency: Float) {
+    mutating func setFrequency(_ frequency: Float) {
         self.frequency = frequency
     }
 
-    mutating func setMute(isMute: Bool) {
+    mutating func setMute(_ isMute: Bool) {
         self.isMute = isMute
     }
 

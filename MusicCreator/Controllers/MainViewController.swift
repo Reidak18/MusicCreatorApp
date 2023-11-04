@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
         session = WorkSession(player: audioPlayer)
         audioMixer = AudioMixer()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        session.subscribeForUpdates(self)
     }
 
     override func loadView() {
@@ -33,7 +34,7 @@ class MainViewController: UIViewController {
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
         mainView.switchViewDelegate = self
-        mainView.sampleSelectListener = self
+        mainView.sampleActionDelegate = self
         mainView.addMicrophoneRecordSubscriber = self
         mainView.mixTrackPlayer = self
         mainView.playStopper = self
@@ -83,6 +84,14 @@ extension MainViewController: SampleTrackSelector {
 
 extension MainViewController: MiddleViewsSwitcher {
     func switchButtonClicked(to viewType: CurrentViewType) {
+        var volume = FloatConstants.defaultVolume.rawValue
+        var frequency = FloatConstants.defaultFrequency.rawValue
+        if let id = audioPlayer.getPlayingClipId(),
+           let sample = session.getSample(id: id) {
+            volume = sample.volume
+            frequency = sample.frequency
+        }
+        mainView.setSlidersParams(volume: volume, frequency: frequency)
         mainView.switchView(viewType: viewType)
     }
 }
@@ -106,7 +115,7 @@ extension MainViewController: SlidersChangesListener {
               var sample = session.getSample(id: id)
         else { return }
 
-        sample.setVolume(volume: volume)
+        sample.setVolume(volume)
         session.updateSample(sample: sample)
     }
 
@@ -116,20 +125,42 @@ extension MainViewController: SlidersChangesListener {
               var sample = session.getSample(id: id)
         else { return }
 
-        sample.setFrequency(frequency: frequency)
+        sample.setFrequency(frequency)
         session.updateSample(sample: sample)
     }
 }
 
-extension MainViewController: SampleSelectListener {
-    func sampleSelected(id: String?) {
+extension MainViewController: SampleActionDelegate {
+    func setIsPlaying(id: String, isPlaying: Bool) {
+        guard var sample = session.getSample(id: id)
+        else { return }
+
+        sample.setIsPlaying(isPlaying)
+        session.updateSample(sample: sample)
+        audioPlayer.play(sample: sample)
+    }
+
+    func setIsMute(id: String, isMute: Bool) {
+        guard var sample = session.getSample(id: id)
+        else { return }
+
+        sample.setMute(isMute)
+        session.updateSample(sample: sample)
+    }
+
+    func removeSample(id: String) {
+        session.removeSample(id: id)
+    }
+
+    func selectSample(id: String) {
         mainView.switchView(viewType: .params)
-        guard let id = id,
-              let sample = session.getSample(id: id)
+        guard var sample = session.getSample(id: id)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        session.playSample(id: id, play: true)
+        sample.setIsPlaying(true)
+        session.updateSample(sample: sample)
+        audioPlayer.play(sample: sample)
     }
 }
 
@@ -180,5 +211,14 @@ extension MainViewController: MixTrackPlayer {
 extension MainViewController: PlayStopper {
     func stop() {
         audioPlayer.stop()
+    }
+}
+
+extension MainViewController: SessionUpdateListener {
+    func update(samples: [AudioSample]) {
+        if let id = audioPlayer.getPlayingClipId(),
+           session.getSample(id: id) == nil {
+            audioPlayer.stop()
+        }
     }
 }

@@ -8,8 +8,8 @@
 import UIKit
 
 protocol LayerCellListener: AnyObject {
-    func playLayer(id: String, play: Bool)
-    func muteLayer(id: String)
+    func setIsPlaying(id: String, isPlaying: Bool)
+    func setIsMute(id: String, isMute: Bool)
     func removeLayer(id: String)
 }
 
@@ -130,14 +130,14 @@ class LayerCell: UITableViewCell {
         guard let unwSample = sample
         else { return }
 
-        listener?.playLayer(id: unwSample.id, play: !unwSample.isPlaying)
+        listener?.setIsPlaying(id: unwSample.id, isPlaying: !unwSample.isPlaying)
     }
 
     @objc private func mute() {
-        guard let id = sample?.id
+        guard let unwSample = sample
         else { return }
 
-        listener?.muteLayer(id: id)
+        listener?.setIsMute(id: unwSample.id, isMute: !unwSample.isMute)
     }
 
     @objc private func remove() {

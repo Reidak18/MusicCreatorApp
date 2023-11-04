@@ -80,28 +80,33 @@ class AudioMixer: AudioMixerProtocol {
     }
 
     func playAndRecord(samples: [AudioSample], filename: String) {
-        play(samples: samples)
+        DispatchQueue.global(qos: .background).async {
+            self.play(samples: samples)
 
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let audioURL = documentsDirectory.appendingPathComponent(filename)
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let audioURL = documentsDirectory.appendingPathComponent(filename)
 
-        var audioFile: AVAudioFile
-        do {
-            audioFile = try AVAudioFile(forWriting: audioURL, settings: recordSettings, commonFormat: .pcmFormatFloat32, interleaved: false)
-        }
-        catch {
-            print ("Failed to open audio file for writing: \(error.localizedDescription)")
-            return
-        }
-
-        self.audioMixer.installTap(onBus: 0, bufferSize: 8192, format: nil, block: { pcmBuffer, when in
+            var audioFile: AVAudioFile
             do {
-                try audioFile.write(from: pcmBuffer)
+                audioFile = try AVAudioFile(forWriting: audioURL,
+                                            settings: self.recordSettings,
+                                            commonFormat: .pcmFormatFloat32,
+                                            interleaved: false)
             }
             catch {
-                print("Failed to write Audio File: \(error.localizedDescription)")
+                print ("Failed to open audio file for writing: \(error.localizedDescription)")
+                return
             }
-        })
+
+            self.audioMixer.installTap(onBus: 0, bufferSize: 8192, format: nil, block: { pcmBuffer, when in
+                do {
+                    try audioFile.write(from: pcmBuffer)
+                }
+                catch {
+                    print("Failed to write Audio File: \(error.localizedDescription)")
+                }
+            })
+        }
     }
 
     func stopRecord() {

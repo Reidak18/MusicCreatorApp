@@ -33,11 +33,6 @@ class MainView: UIView {
             paramsView.slidersChangesListener = slidersChangesListener
         }
     }
-    public var sampleActionDelegate: SampleActionDelegate? {
-        didSet {
-            layersView.sampleActionDelegate = sampleActionDelegate
-        }
-    }
     public var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
         didSet {
             bottomPanelView.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
@@ -104,8 +99,9 @@ class MainView: UIView {
         }
     }
 
-    func setCurrentSession(session: some SessionProtocol) {
-        layersView.setCurrentSession(session: session)
+    func setLayersProvider<T1: SessionProtocol, T2: SampleActionDelegate>(session: T1, delegate: T2) {
+        let provider = LayersProvider(session: session, sampleActionDelegate: delegate)
+        layersView.setProvider(provider)
     }
 
     func switchView(viewType: CurrentViewType) {

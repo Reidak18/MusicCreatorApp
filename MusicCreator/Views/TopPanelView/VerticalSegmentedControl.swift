@@ -28,16 +28,16 @@ class VerticalSegmentedControl: UITableView {
         backgroundColor = .clear
     }
 
-    func setSamples(samples: [String],
-                    width: CGFloat,
-                    selectDelegate: ItemSelector?) {
-        let samplesNamesProvider = SamplesNamesProvider(samples: samples, selectDelegate: selectDelegate)
-        dataSource = samplesNamesProvider
-        delegate = samplesNamesProvider
-        self.samplesNamesProvider = samplesNamesProvider
+    func setProvider(provider: SamplesNamesProvider) {
+        dataSource = provider
+        delegate = provider
+        self.samplesNamesProvider = provider
 
-        let height = CGFloat(CGFloat(samples.count) * UIHeight.segmentRow.rawValue) + UIHeight.segmentRow.rawValue / 2
+        let height = CGFloat(CGFloat(provider.getSamplesCount()) * UIHeight.segmentRow.rawValue) + UIHeight.segmentRow.rawValue / 2
         heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+
+    func setWidth(width: CGFloat) {
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
 

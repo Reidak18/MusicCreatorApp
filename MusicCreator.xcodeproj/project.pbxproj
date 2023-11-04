@@ -43,6 +43,7 @@
 		0A28FC0A2AF654770003EE49 /* Violin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC072AF654770003EE49 /* Violin.wav */; };
 		0A28FC0B2AF654770003EE49 /* Guitar-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC082AF654770003EE49 /* Guitar-loop.wav */; };
 		0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */; };
+		0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		0A28FC072AF654770003EE49 /* Violin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Violin.wav; sourceTree = "<group>"; };
 		0A28FC082AF654770003EE49 /* Guitar-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-loop.wav"; sourceTree = "<group>"; };
 		0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesNamesProvider.swift; sourceTree = "<group>"; };
+		0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				0A28FB702AF0E9190003EE49 /* LayersView.swift */,
+				0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */,
 				0A28FB722AF0E9C40003EE49 /* LayerCell.swift */,
 			);
 			path = LayersView;
@@ -350,6 +353,7 @@
 			files = (
 				0A28FB9A2AF2A8420003EE49 /* WaveformCreator.swift in Sources */,
 				0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */,
+				0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */,
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,

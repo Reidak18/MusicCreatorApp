@@ -30,11 +30,10 @@ class MainViewController: UIViewController {
 
         audioPlayer.audioProgressSubscriber = self
         audioPlayer.audioChangeSampleSubscriber = self
-        mainView.setCurrentSession(session: session)
+        mainView.setLayersProvider(session: session, delegate: self)
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
         mainView.switchViewDelegate = self
-        mainView.sampleActionDelegate = self
         mainView.addMicrophoneRecordSubscriber = self
         mainView.mixTrackPlayer = self
         mainView.playStopper = self

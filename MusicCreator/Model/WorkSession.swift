@@ -58,7 +58,7 @@ class WorkSession: SessionProtocol {
         return samples
     }
 
-    func subscribeForUpdates<Listener>(_ listener: Listener) where Listener: SessionUpdateListener {
+    func subscribeForUpdates<Listener: SessionUpdateListener>(_ listener: Listener) {
         listeners.append(listener)
     }
 

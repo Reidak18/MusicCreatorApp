@@ -11,9 +11,13 @@ class SamplesNamesProvider: NSObject {
     private weak var selectDelegate: ItemSelector?
     private let samples: [String]
 
-    init(samples: [String], selectDelegate: ItemSelector? = nil) {
+    init<Delegate: ItemSelector> (samples: [String], selectDelegate: Delegate) {
         self.selectDelegate = selectDelegate
         self.samples = samples
+    }
+
+    func getSamplesCount() -> Int {
+        return samples.count
     }
 }
 

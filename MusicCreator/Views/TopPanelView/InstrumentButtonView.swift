@@ -79,6 +79,8 @@ class InstrumentButtonView: UIStackView {
 
     func setSamples(samplesNames: [String]) {
         self.samplesNames = samplesNames
+        let provider = SamplesNamesProvider(samples: samplesNames, selectDelegate: self)
+        segmentControl.setProvider(provider: provider)
     }
 
     @objc private func playDefaultSample() {
@@ -138,7 +140,7 @@ class InstrumentButtonView: UIStackView {
         nameLabel.isHidden = true
         backgroundColor = .customLightGreen
         imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.customLightGreen), for: .normal)
-        segmentControl.setSamples(samples: samplesNames, width: self.bounds.width, selectDelegate: self)
+        segmentControl.setWidth(width: self.bounds.width)
         addArrangedSubview(self.segmentControl)
         layoutIfNeeded()
 

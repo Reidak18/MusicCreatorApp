@@ -35,15 +35,22 @@ class BottomPanelView: UIStackView {
     private let stylesButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .foregroundPrimary
-        config.title = "Слои"
         config.baseForegroundColor = .labelPrimary
+        config.title = "Слои"
         config.image = UIImage(systemName: "chevron.up")
         config.imagePadding = 16
         config.imagePlacement = .trailing
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(scale: .medium)
         config.cornerStyle = .medium
+        config.titleTextAttributesTransformer =
+           UIConfigurationTextAttributesTransformer { incoming in
+             var outgoing = incoming
+             outgoing.font = UIFont.systemFont(ofSize: 16)
+             return outgoing
+         }
 
         let button = UIButton(configuration: config)
+        button.titleLabel!.font = .systemFont(ofSize: 6)
         button.widthAnchor.constraint(equalTo: button.heightAnchor,
                                       multiplier: 2).isActive = true
 

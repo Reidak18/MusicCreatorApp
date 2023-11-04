@@ -29,32 +29,17 @@ protocol MicrophoneRecordingProtocol {
 }
 
 class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
-    private let recordingSession: AVAudioSession
-    private var recorder: AVAudioRecorder?
-    private var recordIndex: Int
+    private let recordingSession = AVAudioSession.sharedInstance()
+    private var recorder: AVAudioRecorder? = nil
+    private var recordIndex: Int = 0
     private var currentName: String { return "microphoneRecord_\(recordIndex).m4a" }
     private var errorHandler: ((_ error: RecordMicroError) -> ())?
-    
     private let settings: Dictionary<String, Int> = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
         AVSampleRateKey: 12000,
         AVNumberOfChannelsKey: 1,
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
-
-    override init() {
-        recordingSession = AVAudioSession.sharedInstance()
-        do {
-            try recordingSession.setCategory(.record, mode: .default)
-            try recordingSession.setActive(true)
-        } catch(let error) {
-            print(error)
-        }
-
-        recordIndex = 0
-
-        super.init()
-    }
 
     func hasPermission() -> Bool {
         return recordingSession.recordPermission == .granted
@@ -76,6 +61,7 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
     }
 
     func startRecording(errorHandler: @escaping(_ error: RecordMicroError) -> ()) {
+        switchCategory(category: .playAndRecord)
         self.errorHandler = errorHandler
 
         guard recorder == nil
@@ -107,8 +93,19 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
         else { return nil }
 
         clear()
-        
+        switchCategory(category: .playback)
+
         return AudioSample(name: currentName, audioUrl: url, isMicrophone: true, volume: 1)
+    }
+
+    private func switchCategory(category: AVAudioSession.Category) {
+        do {
+            try recordingSession.setActive(false)
+            try recordingSession.setCategory(category, mode: .default)
+            try recordingSession.setActive(true)
+        } catch(let error) {
+            print(error)
+        }
     }
 
     private func clear() {

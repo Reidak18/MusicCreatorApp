@@ -27,8 +27,10 @@ class BottomControlButtonsView: UIStackView {
 
     private var microButton = UIButton()
     private var playButton = UIButton()
+    private var recordButton = UIButton()
 
     private var isPlaying = false
+    private var isRecording = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,13 +48,14 @@ class BottomControlButtonsView: UIStackView {
         microButton.tag = IntConstants.MicroButtonTag.rawValue
         microButton.addTarget(self, action: #selector(startMicroRecord), for: .touchUpInside)
         addArrangedSubview(microButton)
-        let recordButton = UIButton(configuration: createConfiguration("circle.fill",
-                                                                       scale: .medium))
+        recordButton = UIButton(configuration: createConfiguration("circle.fill",
+                                                                   scale: .medium))
         recordButton.widthAnchor.constraint(equalTo: recordButton.heightAnchor).isActive = true
-
+        recordButton.tag = IntConstants.RecordButtonTag.rawValue
+        recordButton.addTarget(self, action: #selector(startMixRecord), for: .touchUpInside)
         addArrangedSubview(recordButton)
         playButton = UIButton(configuration: createConfiguration("play.fill",
-                                                                     scale: .large))
+                                                                 scale: .large))
         playButton.widthAnchor.constraint(equalTo: playButton.heightAnchor).isActive = true
         playButton.tag = IntConstants.PlayMixButtonTag.rawValue
         playButton.addTarget(self, action: #selector(playMixedTrack), for: .touchUpInside)
@@ -80,7 +83,7 @@ class BottomControlButtonsView: UIStackView {
         }
 
         if microphoneRecording.isRecording() {
-            changeRecordStatus(isRecording: false)
+            changeMicroRecordStatus(isRecording: false)
             guard let sample = microphoneRecording.finishRecording()
             else {
                 addMicrophoneRecordSubscriber?.errorHappend(error: .fileNotCreated("Can't read file path"))
@@ -90,10 +93,10 @@ class BottomControlButtonsView: UIStackView {
             addMicrophoneRecordSubscriber?.recordAdded(sample: sample)
         } else {
             addMicrophoneRecordSubscriber?.startRecording()
-            changeRecordStatus(isRecording: true)
+            changeMicroRecordStatus(isRecording: true)
             microphoneRecording.startRecording { error in
                 DispatchQueue.main.async {
-                    self.changeRecordStatus(isRecording: false)
+                    self.changeMicroRecordStatus(isRecording: false)
                 }
                 self.addMicrophoneRecordSubscriber?.errorHappend(error: error)
             }
@@ -110,16 +113,32 @@ class BottomControlButtonsView: UIStackView {
         changePlayingStatus(isPlaying: isPlaying)
     }
 
+    @objc private func startMixRecord() {
+        if isRecording {
+            mixTrackPlayer?.stopRecord()
+        } else {
+            mixTrackPlayer?.mixAndRecord()
+        }
+        isRecording.toggle()
+        changeMixRecordingStatus(isRecording: isRecording)
+    }
+
     private func changePlayingStatus(isPlaying: Bool) {
         var config = playButton.configuration ?? UIButton.Configuration.filled()
         config.image = UIImage(systemName: isPlaying ? "stop.fill" : "play.fill")
         playButton.configuration = config
     }
 
-    private func changeRecordStatus(isRecording: Bool) {
+    private func changeMicroRecordStatus(isRecording: Bool) {
         var config = microButton.configuration ?? UIButton.Configuration.filled()
         config.baseForegroundColor = isRecording ? .red : .labelPrimary
         microButton.configuration = config
+    }
+
+    private func changeMixRecordingStatus(isRecording: Bool) {
+        var config = recordButton.configuration ?? UIButton.Configuration.filled()
+        config.baseForegroundColor = isRecording ? .red : .labelPrimary
+        recordButton.configuration = config
     }
 
     required init(coder: NSCoder) {

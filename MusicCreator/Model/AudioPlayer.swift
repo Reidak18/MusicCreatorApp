@@ -22,8 +22,8 @@ protocol AudioStopListener: AnyObject {
 protocol AudioPlayerProtocol {
     func play(sample: AudioSample)
     func stop()
-    var volume: Float { get set }
-    var frequency: Float { get set }
+    func setVolume(_ volume: Float)
+    func setFrequency(_ frequency: Float)
     func getPlayingClipId() -> String?
     var audioProgressSubscriber: AudioProgressListener? { get set }
     var audioChangeSampleSubscriber: AudioChangeSampleListener? { get set }
@@ -34,22 +34,8 @@ class AudioPlayer: NSObject, AudioPlayerProtocol {
     weak var audioProgressSubscriber: AudioProgressListener?
     weak var audioChangeSampleSubscriber: AudioChangeSampleListener?
     weak var audioStopSubscriber: AudioStopListener?
+    private var frequency: Float = FloatConstants.defaultFrequency.rawValue
     private var playerInstance: AVAudioPlayer?
-    var volume: Float = FloatConstants.defaultVolume.rawValue {
-        didSet {
-            if let player = playerInstance {
-                player.volume = volume
-            }
-        }
-    }
-    var frequency: Float = FloatConstants.defaultFrequency.rawValue {
-        didSet {
-            if playingId != nil {
-                NSObject.cancelPreviousPerformRequests(withTarget: self)
-                playAgain()
-            }
-        }
-    }
     private var playingId: String?
     private var isOnePlay = false
 
@@ -89,6 +75,20 @@ class AudioPlayer: NSObject, AudioPlayerProtocol {
         audioChangeSampleSubscriber?.sampleChanged(newSample: nil)
         audioStopSubscriber?.stopPlaying(id: id)
         playingId = nil
+    }
+
+    func setVolume(_ volume: Float) {
+        if let player = playerInstance {
+            player.volume = volume
+        }
+    }
+
+    func setFrequency(_ frequency: Float) {
+        if playingId != nil {
+            self.frequency = frequency
+            NSObject.cancelPreviousPerformRequests(withTarget: self)
+            playAgain()
+        }
     }
 
     func getPlayingClipId() -> String? {

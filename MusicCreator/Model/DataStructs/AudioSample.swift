@@ -13,10 +13,10 @@ struct AudioSample {
     let audioUrl: URL
     let isMicrophone: Bool
 
-    var volume: Float
-    var frequency: Float
-    var isMute: Bool
-    var isPlaying: Bool
+    private(set) var volume: Float
+    private(set) var frequency: Float
+    private(set) var isMute: Bool
+    private(set) var isPlaying: Bool
 
     init(name: String,
          audioUrl: URL,

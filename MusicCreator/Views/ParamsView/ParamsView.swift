@@ -92,9 +92,7 @@ class ParamsView: UIView {
 
     func setSlidersParams(volume: Float, frequency: Float) {
         volumeSlider.value = volume
-        volumeValueChanged()
         frequencySlider.value = frequency
-        frequencyValueChanged()
     }
 
     @objc private func volumeValueChanged() {

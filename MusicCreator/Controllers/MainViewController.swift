@@ -14,14 +14,12 @@ class MainViewController: UIViewController {
     private var database: SamplesDatabaseProtocol
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
-    private var currentSettings: CurrentSampleSettings
     private var audioMixer: AudioMixerProtocol
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()
         audioPlayer = AudioPlayer()
         session = WorkSession(player: audioPlayer)
-        currentSettings = CurrentSampleSettings()
         audioMixer = AudioMixer()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -40,16 +38,6 @@ class MainViewController: UIViewController {
         mainView.mixTrackPlayer = self
         mainView.playStopper = self
         view = mainView
-    }
-
-    private func saveSample() {
-        if let id = currentSettings.id,
-           var sample = session.getSample(id: id) {
-            sample.setVolume(volume: currentSettings.volume)
-            sample.setFrequency(frequency: currentSettings.frequency)
-            session.updateSample(sample: sample)
-            currentSettings.id = nil
-        }
     }
 
     private func blockUI(exceptTag: Int) {
@@ -83,23 +71,18 @@ class MainViewController: UIViewController {
 
 extension MainViewController: SampleTrackSelector {
     func selectSampleFromLibrary(instrument: MusicInstrument, index: Int) {
-        saveSample()
-
-        guard let sample = database.getSample(instrument: instrument, index: index)
+        guard var sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        currentSettings = CurrentSampleSettings(sample: sample)
+        sample.setIsPlaying(true)
         session.updateSample(sample: sample)
-        session.playSample(id: sample.id, play: true)
+        audioPlayer.play(sample: sample)
     }
 }
 
 extension MainViewController: MiddleViewsSwitcher {
     func switchButtonClicked(to viewType: CurrentViewType) {
-        if viewType == .layers {
-            saveSample()
-        }
         mainView.switchView(viewType: viewType)
     }
 }
@@ -118,13 +101,23 @@ extension MainViewController: AudioChangeSampleListener {
 
 extension MainViewController: SlidersChangesListener {
     func volumeValueUpdated(volume: Float) {
-        currentSettings.volume = volume
-        audioPlayer.volume = volume
+        audioPlayer.setVolume(volume)
+        guard let id = audioPlayer.getPlayingClipId(),
+              var sample = session.getSample(id: id)
+        else { return }
+
+        sample.setVolume(volume: volume)
+        session.updateSample(sample: sample)
     }
 
     func frequencyValueUpdated(frequency: Float) {
-        currentSettings.frequency = frequency
-        audioPlayer.frequency = frequency
+        audioPlayer.setFrequency(frequency)
+        guard let id = audioPlayer.getPlayingClipId(),
+              var sample = session.getSample(id: id)
+        else { return }
+
+        sample.setFrequency(frequency: frequency)
+        session.updateSample(sample: sample)
     }
 }
 
@@ -137,13 +130,11 @@ extension MainViewController: SampleSelectListener {
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
         session.playSample(id: id, play: true)
-        currentSettings = CurrentSampleSettings(sample: sample)
     }
 }
 
 extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
-        saveSample()
         audioPlayer.stop()
         blockUI(exceptTag: IntConstants.microButtonTag.rawValue)
     }
@@ -160,7 +151,6 @@ extension MainViewController: AddMicrophoneRecordListener {
 
 extension MainViewController: MixTrackPlayer {
     func mixAndPlay() {
-        saveSample()
         audioPlayer.stop()
         blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue)
         audioMixer.play(samples: session.getSamples().filter({ !$0.isMute }))
@@ -172,7 +162,6 @@ extension MainViewController: MixTrackPlayer {
     }
 
     func mixAndRecord() {
-        saveSample()
         audioPlayer.stop()
         blockUI(exceptTag: IntConstants.recordButtonTag.rawValue)
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"

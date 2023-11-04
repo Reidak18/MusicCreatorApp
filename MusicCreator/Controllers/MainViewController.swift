@@ -38,6 +38,7 @@ class MainViewController: UIViewController {
         mainView.sampleSelectListener = self
         mainView.addMicrophoneRecordSubscriber = self
         mainView.mixTrackPlayer = self
+        mainView.playStopper = self
         view = mainView
     }
 
@@ -167,5 +168,11 @@ extension MainViewController: MixTrackPlayer {
 
     func stopRecord() {
         
+    }
+}
+
+extension MainViewController: PlayStopper {
+    func stop() {
+        audioPlayer.stop()
     }
 }

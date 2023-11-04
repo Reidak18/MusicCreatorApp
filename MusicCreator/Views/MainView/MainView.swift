@@ -8,6 +8,11 @@
 import UIKit
 
 class MainView: UIView {
+    var playStopper: PlayStopper? {
+        didSet {
+            paramsView.playStopper = playStopper
+        }
+    }
     var mixTrackPlayer: MixTrackPlayer? {
         didSet {
             bottomPanelView.mixTrackPlayer = mixTrackPlayer

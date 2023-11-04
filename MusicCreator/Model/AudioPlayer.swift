@@ -122,6 +122,8 @@ class AudioPlayer: NSObject, AudioPlayerProtocol {
     }
 }
 
+// все семплы зациклены; после завершения запускается заново через установленный таймаут
+// в UI добавил кнопку для выключения проигрывания текущего, так как всегда выключать через слои неудобно
 extension AudioPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if isOnePlay {

@@ -154,7 +154,10 @@ extension MainViewController: SampleActionDelegate {
 extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
         audioPlayer.stop()
-        uiBlocker.blockUI(exceptTag: IntConstants.microButtonTag.rawValue)
+        if let alert = uiBlocker.blockUI(exceptTag: IntConstants.microButtonTag.rawValue) {
+            present(alert, animated: true)
+        }
+
     }
 
     func recordAdded(sample: AudioSample) {
@@ -170,7 +173,9 @@ extension MainViewController: AddMicrophoneRecordListener {
 extension MainViewController: MixTrackPlayer {
     func mixAndPlay() {
         audioPlayer.stop()
-        uiBlocker.blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue)
+        if let alert = uiBlocker.blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue) {
+            present(alert, animated: true)
+        }
         audioMixer.play(samples: session.getSamples().filter({ !$0.isMute }))
     }
 
@@ -181,7 +186,9 @@ extension MainViewController: MixTrackPlayer {
 
     func mixAndRecord() {
         audioPlayer.stop()
-        uiBlocker.blockUI(exceptTag: IntConstants.recordButtonTag.rawValue)
+        if let alert = uiBlocker.blockUI(exceptTag: IntConstants.recordButtonTag.rawValue) {
+            present(alert, animated: true)
+        }
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }),
                                  filename: filename)

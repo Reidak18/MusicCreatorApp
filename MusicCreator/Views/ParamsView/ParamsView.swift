@@ -19,9 +19,42 @@ protocol PlayStopper: AnyObject {
 class ParamsView: UIView {
     weak var slidersChangesListener: SlidersChangesListener?
     weak var playStopper: PlayStopper?
-    private let volumeSlider = ThumbTextSlider()
-    private let frequencySlider = ThumbTextSlider()
-    private var stopButton = UIButton()
+
+    private let volumeSlider: ThumbTextSlider = {
+        let slider = ThumbTextSlider()
+        slider.setThumbLabel(label: "громкость")
+        slider.setBackgroundImage(named: "VerticalSliderBackground")
+        slider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = FloatConstants.minimumVolume.rawValue
+        slider.maximumValue = FloatConstants.maximumVolume.rawValue
+        slider.value = FloatConstants.defaultVolume.rawValue
+        return slider
+    }()
+    private let frequencySlider: ThumbTextSlider = {
+        let slider = ThumbTextSlider()
+        slider.setThumbLabel(label: "скорость")
+        slider.setBackgroundImage(named: "HorizontalSliderBackground")
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = FloatConstants.minimumFrequency.rawValue
+        slider.maximumValue = FloatConstants.maximumFrequency.rawValue
+        slider.value = FloatConstants.defaultFrequency.rawValue
+        slider.isContinuous = false
+        return slider
+    }()
+    // кнопка для остановки проигрывания текущего семпла
+    private var stopButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "stop.fill")
+        config.baseBackgroundColor = .foregroundPrimary
+        config.baseForegroundColor = .labelPrimary
+        config.imagePlacement = .all
+        config.cornerStyle = .medium
+        let button = UIButton(configuration: config)
+//        button.isEnabled = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,36 +64,11 @@ class ParamsView: UIView {
     }
 
     private func setupView() {
-        volumeSlider.setThumbLabel(label: "громкость")
-        volumeSlider.setBackgroundImage(named: "VerticalSliderBackground")
-        volumeSlider.transform = CGAffineTransformMakeRotation(-CGFloat.pi / 2)
-        volumeSlider.translatesAutoresizingMaskIntoConstraints = false
-        volumeSlider.minimumValue = FloatConstants.minimumVolume.rawValue
-        volumeSlider.maximumValue = FloatConstants.maximumVolume.rawValue
-        volumeSlider.value = FloatConstants.defaultVolume.rawValue
         volumeSlider.addTarget(self, action: #selector(volumeValueChanged), for: .valueChanged)
         addSubview(volumeSlider)
-        frequencySlider.setThumbLabel(label: "скорость")
-        frequencySlider.setBackgroundImage(named: "HorizontalSliderBackground")
-        frequencySlider.translatesAutoresizingMaskIntoConstraints = false
-        frequencySlider.minimumValue = FloatConstants.minimumFrequency.rawValue
-        frequencySlider.maximumValue = FloatConstants.maximumFrequency.rawValue
-        frequencySlider.value = FloatConstants.defaultFrequency.rawValue
-        frequencySlider.isContinuous = false
         frequencySlider.addTarget(self, action: #selector(frequencyValueChanged), for: .valueChanged)
         addSubview(frequencySlider)
-
-        // кнопка для остановки проигрывания текущего семпла
-        var stopButtonConfiguration = UIButton.Configuration.filled()
-        stopButtonConfiguration.image = UIImage(systemName: "stop.fill")
-        stopButtonConfiguration.baseBackgroundColor = .foregroundPrimary
-        stopButtonConfiguration.baseForegroundColor = .labelPrimary
-        stopButtonConfiguration.imagePlacement = .all
-        stopButtonConfiguration.cornerStyle = .medium
-        stopButton = UIButton(configuration: stopButtonConfiguration)
         stopButton.addTarget(self, action: #selector(stopPlaying), for: .touchUpInside)
-//        stopButton.isEnabled = false
-        stopButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stopButton)
     }
 

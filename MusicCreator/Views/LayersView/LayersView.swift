@@ -38,7 +38,7 @@ class LayersView: UITableView {
 //    }
 
     func setCurrentSession(session: some SessionProtocol) {
-        var session = session
+        let session = session
         session.updateListener = self
         self.session = session
     }

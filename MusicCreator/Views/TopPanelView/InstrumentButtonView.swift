@@ -17,11 +17,15 @@ class InstrumentButtonView: UIStackView {
 
     private var samplesNames: [String] = []
     private var associatedInstrument: MusicInstrument?
-    private let imageButton = UIButton()
+    private let imageButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.foregroundPrimary), for: .normal)
+        button.tintColor = .foregroundPrimary
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     private let nameLabel = UILabel()
     private let segmentControl = VerticalSegmentedControl()
-
-    private let buttonImage = UIImage(named: "Ellipse")
 
     private var isOpened = false
     private let animDuration = 0.25
@@ -41,14 +45,11 @@ class InstrumentButtonView: UIStackView {
         spacing = Spacing.standart.rawValue
         translatesAutoresizingMaskIntoConstraints = false
 
-        imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
-
-        imageButton.tintColor = .foregroundPrimary
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector (playDefaultSample))
         imageButton.addGestureRecognizer(tapGesture)
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(openInstrumentsList))
         imageButton.addGestureRecognizer(longGesture)
-        imageButton.translatesAutoresizingMaskIntoConstraints = false
+
         addArrangedSubview(imageButton)
     }
 
@@ -102,6 +103,7 @@ class InstrumentButtonView: UIStackView {
     private func preopenSampleList() {
         layer.cornerRadius = bounds.width / 2
         backgroundColor = .customLightGreen
+        let buttonImage = UIImage(named: "Ellipse")
         imageButton.setBackgroundImage(buttonImage?.withTintColor(.customLightGreen), for: .normal)
 
         let labelHeight = nameLabel.frame.height
@@ -124,7 +126,7 @@ class InstrumentButtonView: UIStackView {
                 self.layoutIfNeeded()
             } completion: { _ in
                 self.backgroundColor = .clear
-                self.imageButton.setBackgroundImage(self.buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
+                self.imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
                 self.nameLabel.textColor = .foregroundPrimary
             }
         }
@@ -135,9 +137,8 @@ class InstrumentButtonView: UIStackView {
         layer.cornerRadius = bounds.width / 2
         nameLabel.isHidden = true
         backgroundColor = .customLightGreen
-        imageButton.setBackgroundImage(buttonImage?.withTintColor(.customLightGreen), for: .normal)
-        segmentControl.setSamples(samples: samplesNames, width: self.bounds.width)
-        segmentControl.selectDelegate = self
+        imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.customLightGreen), for: .normal)
+        segmentControl.setSamples(samples: samplesNames, width: self.bounds.width, selectDelegate: self)
         addArrangedSubview(self.segmentControl)
         layoutIfNeeded()
 
@@ -161,7 +162,7 @@ class InstrumentButtonView: UIStackView {
             self.segmentControl.removeFromSuperview()
 
             self.backgroundColor = .clear
-            self.imageButton.setBackgroundImage(self.buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
+            self.imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.foregroundPrimary), for: .normal)
             self.nameLabel.isHidden = false
         }
     }

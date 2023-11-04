@@ -16,9 +16,30 @@ class TopPanelView: UIStackView {
         }
     }
 
-    private let guitarButton = InstrumentButtonView()
-    private let drumsButton = InstrumentButtonView()
-    private let windButton = InstrumentButtonView()
+    private let guitarButton: InstrumentButtonView = {
+        let button = InstrumentButtonView()
+        button.setInstrument(.guitar)
+        button.setImage(named: "Guitar",
+                        insets: UIEdgeInsets(top: 20, left: 23, bottom: 0, right: 23))
+        button.setTitle(title: "гитара")
+        return button
+    }()
+    private let drumsButton: InstrumentButtonView = {
+        let button = InstrumentButtonView()
+        button.setInstrument(.drums)
+        button.setImage(named: "Drums",
+                        insets: UIEdgeInsets(top: 23, left: 18, bottom: 23, right: 18))
+        button.setTitle(title: "ударные")
+        return button
+    }()
+    private let windButton: InstrumentButtonView = {
+        let button = InstrumentButtonView()
+        button.setInstrument(.wind)
+        button.setImage(named: "Wind",
+                        insets: UIEdgeInsets(top: 26, left: 10, bottom: 24, right: 14))
+        button.setTitle(title: "духовые")
+        return button
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,20 +53,6 @@ class TopPanelView: UIStackView {
         distribution = .equalSpacing
         isLayoutMarginsRelativeArrangement = true
         translatesAutoresizingMaskIntoConstraints = false
-
-        guitarButton.setInstrument(.guitar)
-        guitarButton.setImage(named: "Guitar",
-                              insets: UIEdgeInsets(top: 20, left: 23, bottom: 0, right: 23))
-        guitarButton.setTitle(title: "гитара")
-
-        drumsButton.setInstrument(.drums)
-        drumsButton.setImage(named: "Drums",
-                             insets: UIEdgeInsets(top: 23, left: 18, bottom: 23, right: 18))
-        drumsButton.setTitle(title: "ударные")
-        windButton.setInstrument(.wind)
-        windButton.setImage(named: "Wind",
-                            insets: UIEdgeInsets(top: 26, left: 10, bottom: 24, right: 14))
-        windButton.setTitle(title: "духовые")
 
         addArrangedSubview(guitarButton)
         addArrangedSubview(drumsButton)

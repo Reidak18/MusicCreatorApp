@@ -43,6 +43,7 @@
 		0A28FC092AF654770003EE49 /* Guitar-riff.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC062AF654770003EE49 /* Guitar-riff.wav */; };
 		0A28FC0A2AF654770003EE49 /* Violin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC072AF654770003EE49 /* Violin.wav */; };
 		0A28FC0B2AF654770003EE49 /* Guitar-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A28FC082AF654770003EE49 /* Guitar-loop.wav */; };
+		0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		0A28FC062AF654770003EE49 /* Guitar-riff.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-riff.wav"; sourceTree = "<group>"; };
 		0A28FC072AF654770003EE49 /* Violin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Violin.wav; sourceTree = "<group>"; };
 		0A28FC082AF654770003EE49 /* Guitar-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-loop.wav"; sourceTree = "<group>"; };
+		0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesNamesProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				0A28FB5F2AF0255E0003EE49 /* TopPanelView.swift */,
 				0A28FB5C2AF008930003EE49 /* InstrumentButtonView.swift */,
 				0A28FB782AF132AA0003EE49 /* VerticalSegmentedControl.swift */,
+				0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */,
 			);
 			path = TopPanelView;
 			sourceTree = "<group>";
@@ -184,11 +187,11 @@
 		0A28FB7A2AF238A50003EE49 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
+				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
+				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
-				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
 				0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */,
 			);
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A28FB9A2AF2A8420003EE49 /* WaveformCreator.swift in Sources */,
+				0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */,
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
 				0A28FBF92AF46C0F0003EE49 /* CurrentSampleSettings.swift in Sources */,

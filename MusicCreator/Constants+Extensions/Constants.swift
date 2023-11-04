@@ -8,6 +8,9 @@
 import UIKit
 
 enum StringConstants: String {
+    case MicroRecordingName = "microphoneRecord_"
+    case AudioMixRecordingName = "share"
+    case CreatedFilesExtension = ".m4a"
     case ShowDisableAlert = "ShowDisableAlert"
 }
 

@@ -32,7 +32,9 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
     private let recordingSession = AVAudioSession.sharedInstance()
     private var recorder: AVAudioRecorder? = nil
     private var recordIndex: Int = 0
-    private var currentName: String { return "microphoneRecord_\(recordIndex).m4a" }
+    private var currentName: String {
+        return "\(StringConstants.MicroRecordingName.rawValue)\(recordIndex)\(StringConstants.CreatedFilesExtension.rawValue)"
+    }
     private var errorHandler: ((_ error: RecordMicroError) -> ())?
     private let settings: Dictionary<String, Int> = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),

@@ -32,9 +32,6 @@ class AudioMixer: AudioMixerProtocol {
 
     func play(samples: [AudioSample]) {
         DispatchQueue.global(qos: .background).async {
-            try! AVAudioSession.sharedInstance().setCategory(.playAndRecord)
-            try! AVAudioSession.sharedInstance().setActive(true)
-
             self.audioEngine.attach(self.audioMixer)
             self.audioEngine.connect(self.audioMixer, to: self.audioEngine.outputNode, format: nil)
             do {
@@ -76,7 +73,9 @@ class AudioMixer: AudioMixerProtocol {
     }
 
     func stopPlay() {
+        self.switchCategory(category: .playAndRecord)
         audioEngine.stop()
+        switchCategory(category: .playback)
     }
 
     func playAndRecord(samples: [AudioSample], filename: String) {

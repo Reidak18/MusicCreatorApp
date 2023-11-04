@@ -67,6 +67,16 @@ class MainViewController: UIViewController {
         }
     }
 
+    private func shareAudio(filename: String) {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileUrl = documentsDirectory.appendingPathComponent(filename)
+
+        let activityVC = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self.view
+
+        self.present(activityVC, animated: true, completion: nil)
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -166,12 +176,16 @@ extension MainViewController: MixTrackPlayer {
         saveSample()
         audioPlayer.stop()
         blockUI(exceptTag: IntConstants.RecordButtonTag.rawValue)
-        audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }), filename: "share.m4a")
+        let filename = "\(StringConstants.AudioMixRecordingName.rawValue)\(StringConstants.CreatedFilesExtension.rawValue)"
+        audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }),
+                                 filename: filename)
     }
 
     func stopRecord() {
         audioMixer.stopRecord()
         mainView.enableAll()
+        let filename = "\(StringConstants.AudioMixRecordingName.rawValue)\(StringConstants.CreatedFilesExtension.rawValue)"
+        shareAudio(filename: filename)
     }
 }
 

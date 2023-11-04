@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-protocol SampleTrackSelector {
+protocol SampleTrackSelector: AnyObject {
     func selectSampleFromLibrary(instrument: MusicInstrument, index: Int)
 }
 
 class InstrumentButtonView: UIStackView {
-    public var selectDelegate: SampleTrackSelector?
+    weak var selectDelegate: SampleTrackSelector?
 
     private var samplesNames: [String] = []
     private var associatedInstrument: MusicInstrument?

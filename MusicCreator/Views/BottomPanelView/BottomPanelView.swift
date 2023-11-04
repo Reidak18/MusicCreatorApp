@@ -12,22 +12,22 @@ enum CurrentViewType {
     case layers
 }
 
-protocol MiddleViewsSwitcher {
+protocol MiddleViewsSwitcher: AnyObject {
     func switchButtonClicked(to viewType: CurrentViewType)
 }
 
 class BottomPanelView: UIStackView {
-    var mixTrackPlayer: MixTrackPlayer? {
+    weak var mixTrackPlayer: MixTrackPlayer? {
         didSet {
             bottomControlButtons.mixTrackPlayer = mixTrackPlayer
         }
     }
-    var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
+    weak var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
         didSet {
             bottomControlButtons.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
         }
     }
-    var switchViewDelegate: MiddleViewsSwitcher?
+    weak var switchViewDelegate: MiddleViewsSwitcher?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
     private let bottomControlButtons = BottomControlButtonsView()

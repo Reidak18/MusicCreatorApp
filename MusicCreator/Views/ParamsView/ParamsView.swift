@@ -7,18 +7,18 @@
 
 import UIKit
 
-protocol SlidersChangesListener {
+protocol SlidersChangesListener: AnyObject {
     func volumeValueUpdated(volume: Float)
     func frequencyValueUpdated(frequency: Float)
 }
 
-protocol PlayStopper {
+protocol PlayStopper: AnyObject {
     func stop()
 }
 
 class ParamsView: UIView {
-    var slidersChangesListener: SlidersChangesListener?
-    var playStopper: PlayStopper?
+    weak var slidersChangesListener: SlidersChangesListener?
+    weak var playStopper: PlayStopper?
     private let volumeSlider = ThumbTextSlider()
     private let frequencySlider = ThumbTextSlider()
     private var stopButton = UIButton()

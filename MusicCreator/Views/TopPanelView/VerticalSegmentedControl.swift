@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol ItemSelector {
+protocol ItemSelector: AnyObject {
     func select(index: Int)
 }
 
 class VerticalSegmentedControl: UITableView {
-    public var selectDelegate: ItemSelector?
+    weak var selectDelegate: ItemSelector?
     private var samples: [String] = []
 
     override init(frame: CGRect, style: UITableView.Style) {

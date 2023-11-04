@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol AddMicrophoneRecordListener {
+protocol AddMicrophoneRecordListener: AnyObject {
     func startRecording()
     func recordAdded(sample: AudioSample)
     func errorHappend(error: RecordMicroError)
 }
 
-protocol MixTrackPlayer {
+protocol MixTrackPlayer: AnyObject {
     func mixAndPlay()
     func stopPlay()
     func mixAndRecord()
@@ -21,8 +21,8 @@ protocol MixTrackPlayer {
 }
 
 class BottomControlButtonsView: UIStackView {
-    var mixTrackPlayer: MixTrackPlayer?
-    var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener?
+    weak var mixTrackPlayer: MixTrackPlayer?
+    weak var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener?
     private let microphoneRecording: MicrophoneRecordingProtocol = MicrophoneRecording()
 
     private var microButton = UIButton()

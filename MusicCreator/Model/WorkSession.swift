@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol SessionUpdateListener {
+protocol SessionUpdateListener: AnyObject {
     func update(samples: [AudioSample])
 }
 
-protocol SessionProtocol {
+protocol SessionProtocol: AnyObject {
     func updateSample(sample: AudioSample)
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
@@ -22,7 +22,7 @@ protocol SessionProtocol {
 }
 
 class WorkSession: SessionProtocol {
-    var updateListener: SessionUpdateListener?
+    weak var updateListener: SessionUpdateListener?
     private var samples: [AudioSample] = []
     private var player: AudioPlayerProtocol
 

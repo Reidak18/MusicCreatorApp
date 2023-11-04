@@ -15,7 +15,7 @@ class MainViewController: UIViewController {
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
     private var currentSettings: CurrentSampleSettings
-    private var audioMixer: AudioMixer
+    private var audioMixer: AudioMixerProtocol
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()

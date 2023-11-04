@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol SampleSelectListener {
+protocol SampleSelectListener: AnyObject {
     func sampleSelected(id: String?)
 }
 
 class LayersView: UITableView {
-    public var sampleSelectListener: SampleSelectListener?
+    weak var sampleSelectListener: SampleSelectListener?
 //    private var samples: [AudioSample] = []
-    private var session: SessionProtocol?
+    private weak var session: SessionProtocol?
 
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)

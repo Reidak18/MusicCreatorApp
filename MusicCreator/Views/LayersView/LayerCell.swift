@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol LayerCellListener {
+protocol LayerCellListener: AnyObject {
     func playLayer(id: String, play: Bool)
     func muteLayer(id: String)
     func removeLayer(id: String)
 }
 
 class LayerCell: UITableViewCell {
-    public var listener: LayerCellListener?
+    weak var listener: LayerCellListener?
 
     private let nameLabel = UILabel()
     private let mainStack = UIStackView()

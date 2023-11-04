@@ -7,15 +7,15 @@
 
 import AVFoundation
 
-protocol AudioProgressListener {
+protocol AudioProgressListener: AnyObject {
     func updateProgress(progress: Float)
 }
 
-protocol AudioChangeSampleListener {
+protocol AudioChangeSampleListener: AnyObject {
     func sampleChanged(newSample: AudioSample?)
 }
 
-protocol AudioStopListener {
+protocol AudioStopListener: AnyObject {
     func stopPlaying(id: String)
 }
 
@@ -31,9 +31,9 @@ protocol AudioPlayerProtocol {
 }
 
 class AudioPlayer: NSObject, AudioPlayerProtocol {
-    var audioProgressSubscriber: AudioProgressListener?
-    var audioChangeSampleSubscriber: AudioChangeSampleListener?
-    var audioStopSubscriber: AudioStopListener?
+    weak var audioProgressSubscriber: AudioProgressListener?
+    weak var audioChangeSampleSubscriber: AudioChangeSampleListener?
+    weak var audioStopSubscriber: AudioStopListener?
     private var playerInstance: AVAudioPlayer?
     var volume: Float = FloatConstants.defaultVolume.rawValue {
         didSet {

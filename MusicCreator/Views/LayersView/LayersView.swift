@@ -69,7 +69,7 @@ extension LayersView: UITableViewDataSource {
 
 extension LayersView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50 + 10
+        return UIHeight.segmentRow.rawValue
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

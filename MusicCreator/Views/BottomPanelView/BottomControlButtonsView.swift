@@ -40,24 +40,24 @@ class BottomControlButtonsView: UIStackView {
 
     private func setupView() {
         axis = .horizontal
-        spacing = 5
+        spacing = Spacing.small.rawValue
 
         microButton = UIButton(configuration: createConfiguration("mic.fill",
                                                                   scale: .large))
         microButton.widthAnchor.constraint(equalTo: microButton.heightAnchor).isActive = true
-        microButton.tag = IntConstants.MicroButtonTag.rawValue
+        microButton.tag = IntConstants.microButtonTag.rawValue
         microButton.addTarget(self, action: #selector(startMicroRecord), for: .touchUpInside)
         addArrangedSubview(microButton)
         recordButton = UIButton(configuration: createConfiguration("circle.fill",
                                                                    scale: .medium))
         recordButton.widthAnchor.constraint(equalTo: recordButton.heightAnchor).isActive = true
-        recordButton.tag = IntConstants.RecordButtonTag.rawValue
+        recordButton.tag = IntConstants.recordButtonTag.rawValue
         recordButton.addTarget(self, action: #selector(startMixRecord), for: .touchUpInside)
         addArrangedSubview(recordButton)
         playButton = UIButton(configuration: createConfiguration("play.fill",
                                                                  scale: .large))
         playButton.widthAnchor.constraint(equalTo: playButton.heightAnchor).isActive = true
-        playButton.tag = IntConstants.PlayMixButtonTag.rawValue
+        playButton.tag = IntConstants.playMixButtonTag.rawValue
         playButton.addTarget(self, action: #selector(playMixedTrack), for: .touchUpInside)
         addArrangedSubview(playButton)
     }

@@ -32,7 +32,7 @@ class LayerCell: UITableViewCell {
 
         mainStack.axis = .horizontal
         mainStack.backgroundColor = .foregroundPrimary
-        mainStack.layer.cornerRadius = 4
+        mainStack.layer.cornerRadius = CornerRadius.standart.rawValue
         mainStack.isLayoutMarginsRelativeArrangement = true
         mainStack.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class LayerCell: UITableViewCell {
         buttonsStack.alignment = .fill
         buttonsStack.distribution = .fillEqually
 
-        nameLabel.font = .systemFont(ofSize: 12)
+        nameLabel.font = .systemFont(ofSize: FontSize.standart.rawValue)
         mainStack.addArrangedSubview(nameLabel)
 
         var playButtonConfig = UIButton.Configuration.plain()

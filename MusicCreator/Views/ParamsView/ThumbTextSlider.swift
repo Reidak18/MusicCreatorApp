@@ -14,7 +14,7 @@ class ThumbTextSlider: UISlider {
 
     override func trackRect(forBounds bounds: CGRect) -> CGRect {
         var newBounds = super.trackRect(forBounds: bounds)
-        newBounds.size.height = 15
+        newBounds.size.height = UIHeight.sliderThumb.rawValue
         return newBounds
     }
 
@@ -30,8 +30,11 @@ class ThumbTextSlider: UISlider {
     }
 
     private func createThumbImage(label: String) -> UIImage {
-        let thumbView = UIView(frame: CGRect(x: 0, y: 15, width: 72, height: 15))
-        thumbView.layer.cornerRadius = 4
+        let thumbView = UIView(frame: CGRect(x: 0,
+                                             y: UIHeight.sliderThumb.rawValue,
+                                             width: 72,
+                                             height: UIHeight.sliderThumb.rawValue))
+        thumbView.layer.cornerRadius = CornerRadius.standart.rawValue
         thumbView.backgroundColor = .sliderThumbColor
 
         let thumbTextLabel: UILabel = UILabel()
@@ -39,7 +42,7 @@ class ThumbTextSlider: UISlider {
         thumbTextLabel.textColor = .labelPrimary
         thumbTextLabel.text = label
         thumbTextLabel.textColor = .labelPrimary
-        thumbTextLabel.font = .systemFont(ofSize: 11)
+        thumbTextLabel.font = .systemFont(ofSize: FontSize.standart.rawValue)
         thumbView.addSubview(thumbTextLabel)
         thumbTextLabel.frame = thumbView.bounds
 

@@ -38,3 +38,10 @@ extension UIView {
         }
     }
 }
+
+extension FileManager {
+    func getDocumentsPath(filename: String) -> URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return documentsDirectory.appendingPathComponent(filename)
+    }
+}

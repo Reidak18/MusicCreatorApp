@@ -8,16 +8,16 @@
 import UIKit
 
 enum StringConstants: String {
-    case MicroRecordingName = "microphoneRecord_"
-    case AudioMixRecordingName = "share"
-    case CreatedFilesExtension = ".m4a"
-    case ShowDisableAlert = "ShowDisableAlert"
+    case microRecordingName = "microphoneRecord_"
+    case audioMixRecordingName = "share"
+    case createdFilesExtension = ".m4a"
+    case showDisableAlert = "ShowDisableAlert"
 }
 
 enum IntConstants: Int {
-    case MicroButtonTag = 1000
-    case PlayMixButtonTag = 1001
-    case RecordButtonTag = 1002
+    case microButtonTag = 1000
+    case playMixButtonTag = 1001
+    case recordButtonTag = 1002
 }
 
 enum FloatConstants: Float {
@@ -27,6 +27,31 @@ enum FloatConstants: Float {
     case minimumFrequency = 0.2
     case maximumFrequency = 10
     case defaultFrequency = 2
+}
+
+enum Padding: CGFloat {
+    case standart = 15
+}
+
+enum UIHeight: CGFloat {
+    case topButton = 80
+    case segmentRow = 60
+    case sliderThumb = 15
+    case waveform = 50
+}
+
+enum CornerRadius: CGFloat {
+    case standart = 4
+}
+
+enum FontSize: CGFloat {
+    case standart = 12
+    case title = 16
+}
+
+enum Spacing: CGFloat {
+    case small = 5
+    case standart = 10
 }
 
 extension UIColor {

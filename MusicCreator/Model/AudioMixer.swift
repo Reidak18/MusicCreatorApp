@@ -15,6 +15,10 @@ protocol AudioMixerProtocol {
 }
 
 class AudioMixer: AudioMixerProtocol {
+    private let sampleRate = 44100
+    private let channelsCount = 2
+    private let bufferSize: UInt32 = 8192
+
     private let recordingSession = AVAudioSession.sharedInstance()
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var audioMixer: AVAudioMixerNode = AVAudioMixerNode()
@@ -24,8 +28,8 @@ class AudioMixer: AudioMixerProtocol {
     init() {
         recordSettings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100,
-            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey: sampleRate,
+            AVNumberOfChannelsKey: channelsCount,
             AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
         ]
     }
@@ -73,21 +77,18 @@ class AudioMixer: AudioMixerProtocol {
     }
 
     func stopPlay() {
-        self.switchCategory(category: .playAndRecord)
         audioEngine.stop()
-        switchCategory(category: .playback)
     }
 
     func playAndRecord(samples: [AudioSample], filename: String) {
         DispatchQueue.global(qos: .background).async {
             self.play(samples: samples)
 
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let audioURL = documentsDirectory.appendingPathComponent(filename)
+            let audioUrl = FileManager.default.getDocumentsPath(filename: filename)
 
             var audioFile: AVAudioFile
             do {
-                audioFile = try AVAudioFile(forWriting: audioURL,
+                audioFile = try AVAudioFile(forWriting: audioUrl,
                                             settings: self.recordSettings,
                                             commonFormat: .pcmFormatFloat32,
                                             interleaved: false)
@@ -97,7 +98,7 @@ class AudioMixer: AudioMixerProtocol {
                 return
             }
 
-            self.audioMixer.installTap(onBus: 0, bufferSize: 8192, format: nil, block: { pcmBuffer, when in
+            self.audioMixer.installTap(onBus: 0, bufferSize: self.bufferSize, format: nil, block: { pcmBuffer, when in
                 do {
                     try audioFile.write(from: pcmBuffer)
                 }
@@ -110,6 +111,7 @@ class AudioMixer: AudioMixerProtocol {
 
     func stopRecord() {
         stopPlay()
+        self.switchCategory(category: .playAndRecord)
         self.audioMixer.removeTap(onBus: 0)
         switchCategory(category: .playback)
     }

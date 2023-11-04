@@ -33,7 +33,7 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
     private var recorder: AVAudioRecorder? = nil
     private var recordIndex: Int = 0
     private var currentName: String {
-        return "\(StringConstants.MicroRecordingName.rawValue)\(recordIndex)\(StringConstants.CreatedFilesExtension.rawValue)"
+        return "\(StringConstants.microRecordingName.rawValue)\(recordIndex)\(StringConstants.createdFilesExtension.rawValue)"
     }
     private var errorHandler: ((_ error: RecordMicroError) -> ())?
     private let settings: Dictionary<String, Int> = [
@@ -97,7 +97,7 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
         clear()
         switchCategory(category: .playback)
 
-        return AudioSample(name: currentName, audioUrl: url, isMicrophone: true, volume: 1)
+        return AudioSample(name: currentName, audioUrl: url, isMicrophone: true, volume: FloatConstants.maximumVolume.rawValue)
     }
 
     private func switchCategory(category: AVAudioSession.Category) {
@@ -117,8 +117,7 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
 
     private func createRecordUrl() -> URL {
         recordIndex += 1
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsDirectory.appendingPathComponent(currentName)
+        return FileManager.default.getDocumentsPath(filename: currentName)
     }
 }
 

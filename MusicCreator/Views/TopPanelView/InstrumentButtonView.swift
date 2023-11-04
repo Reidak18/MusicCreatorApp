@@ -20,9 +20,11 @@ class InstrumentButtonView: UIStackView {
     private let imageButton = UIButton()
     private let nameLabel = UILabel()
     private let segmentControl = VerticalSegmentedControl()
-    private var isOpened = false
 
     private let buttonImage = UIImage(named: "Ellipse")
+
+    private var isOpened = false
+    private let animDuration = 0.25
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,7 +38,7 @@ class InstrumentButtonView: UIStackView {
         backgroundColor = .clear
         alignment = .center
         distribution = .equalSpacing
-        spacing = 8
+        spacing = Spacing.standart.rawValue
         translatesAutoresizingMaskIntoConstraints = false
 
         imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
@@ -52,7 +54,7 @@ class InstrumentButtonView: UIStackView {
 
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            imageButton.heightAnchor.constraint(equalToConstant: 80),
+            imageButton.heightAnchor.constraint(equalToConstant: UIHeight.topButton.rawValue),
             imageButton.widthAnchor.constraint(equalTo: imageButton.heightAnchor)
         ])
     }
@@ -70,6 +72,7 @@ class InstrumentButtonView: UIStackView {
         nameLabel.text = title
         nameLabel.textColor = .foregroundPrimary
         nameLabel.textAlignment = .center
+        nameLabel.font = .systemFont(ofSize: FontSize.title.rawValue)
         addArrangedSubview(nameLabel)
     }
 
@@ -111,12 +114,12 @@ class InstrumentButtonView: UIStackView {
                               y: frame.minY,
                               width: frame.width,
                               height: frame.height + labelHeight)
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: self.animDuration) {
             self.frame = newFrame
             self.layoutIfNeeded()
         } completion: { _ in
             self.nameLabel.removeConstraint(heightConstraint)
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: self.animDuration) {
                 self.frame = oldFrame
                 self.layoutIfNeeded()
             } completion: { _ in

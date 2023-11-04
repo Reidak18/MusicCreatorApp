@@ -27,13 +27,14 @@ class VerticalSegmentedControl: UITableView {
         delegate = self
         isScrollEnabled = false
         separatorStyle = .none
-        rowHeight = 60
+        rowHeight = UIHeight.segmentRow.rawValue
         backgroundColor = .clear
     }
 
     func setSamples(samples: [String], width: CGFloat) {
         self.samples = samples
-        heightAnchor.constraint(equalToConstant: CGFloat(samples.count * 60) + 30).isActive = true
+        let height = CGFloat(CGFloat(samples.count) * UIHeight.segmentRow.rawValue) + UIHeight.segmentRow.rawValue / 2
+        heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
 
@@ -62,7 +63,7 @@ extension VerticalSegmentedControl: UITableViewDataSource {
         var content = cell.defaultContentConfiguration()
         content.text = samples[indexPath.row]
         content.textProperties.alignment = .center
-        content.textProperties.font = .systemFont(ofSize: 12)
+        content.textProperties.font = .systemFont(ofSize: FontSize.standart.rawValue)
         cell.contentConfiguration = content
         cell.backgroundColor = .clear
         let gradientView = GradientView()

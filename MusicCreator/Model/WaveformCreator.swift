@@ -23,6 +23,9 @@ protocol WaveformCreatorProtocol {
 }
 
 class WaveformCreator: WaveformCreatorProtocol {
+    private let minTraitLength: CGFloat = 2
+    private let startDrawPos: CGFloat = 6
+
     func drawWaveform(fileUrl: URL,
                       numberOfFrames: Int,
                       frame: CGRect,
@@ -51,12 +54,12 @@ class WaveformCreator: WaveformCreatorProtocol {
         let pencil = UIBezierPath()
         let wfLayer = CAShapeLayer()
         let view = UIView(frame: frame)
-        var start = CGPoint(x: 6, y: view.bounds.midY)
+        var start = CGPoint(x: startDrawPos, y: view.bounds.midY)
         let step = (view.bounds.width - start.x * 2) / CGFloat(powers.count)
 
         for trait in powers {
             var length = CGFloat(trait) * view.frame.height / 4
-            length = max(2, length)
+            length = max(minTraitLength, length)
 
             pencil.move(to: start)
             pencil.addLine(to: CGPoint(x: start.x, y: start.y + length))

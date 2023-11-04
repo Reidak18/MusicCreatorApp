@@ -8,6 +8,7 @@
 import UIKit
 
 class WaveformSlider: UISlider {
+    private let numberOfFrames = 75
     private var waveformCreator: WaveformCreatorProtocol = WaveformCreator()
 
     override init(frame: CGRect) {
@@ -25,7 +26,7 @@ class WaveformSlider: UISlider {
     }
 
     private func setConstraints() {
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        heightAnchor.constraint(equalToConstant: UIHeight.waveform.rawValue).isActive = true
     }
 
     func setWaveform(url: URL?) {
@@ -38,7 +39,7 @@ class WaveformSlider: UISlider {
             return
         }
         waveformCreator.drawWaveform(fileUrl: url,
-                                     numberOfFrames: 75,
+                                     numberOfFrames: numberOfFrames,
                                      frame: frame) { result in
             switch(result) {
             case .failure(let error):

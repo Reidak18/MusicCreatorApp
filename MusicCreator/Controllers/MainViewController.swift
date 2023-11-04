@@ -53,23 +53,22 @@ class MainViewController: UIViewController {
     }
 
     private func blockUI(exceptTag: Int) {
-        if UserDefaults.standard.bool(forKey: StringConstants.ShowDisableAlert.rawValue) == true {
+        if UserDefaults.standard.bool(forKey: StringConstants.showDisableAlert.rawValue) == true {
             self.mainView.disableAll(exceptTag: exceptTag)
         } else {
             let alert = UIAlertController(title: "Отключение UI",
                                           message: "UI будет отключен на время работы функции. Вы можете вернуться в режим редактирования повторным нажатием на кнопку",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
-                self.mainView.disableAll(exceptTag: IntConstants.MicroButtonTag.rawValue)
-                UserDefaults.standard.set(true, forKey: StringConstants.ShowDisableAlert.rawValue)
+                self.mainView.disableAll(exceptTag: IntConstants.microButtonTag.rawValue)
+                UserDefaults.standard.set(true, forKey: StringConstants.showDisableAlert.rawValue)
             }))
             present(alert, animated: true)
         }
     }
 
     private func shareAudio(filename: String) {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileUrl = documentsDirectory.appendingPathComponent(filename)
+        let fileUrl = FileManager.default.getDocumentsPath(filename: filename)
 
         let activityVC = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
         activityVC.popoverPresentationController?.sourceView = self.view
@@ -146,7 +145,7 @@ extension MainViewController: AddMicrophoneRecordListener {
     func startRecording() {
         saveSample()
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.MicroButtonTag.rawValue)
+        blockUI(exceptTag: IntConstants.microButtonTag.rawValue)
     }
 
     func recordAdded(sample: AudioSample) {
@@ -163,7 +162,7 @@ extension MainViewController: MixTrackPlayer {
     func mixAndPlay() {
         saveSample()
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.PlayMixButtonTag.rawValue)
+        blockUI(exceptTag: IntConstants.playMixButtonTag.rawValue)
         audioMixer.play(samples: session.getSamples().filter({ !$0.isMute }))
     }
 
@@ -175,8 +174,8 @@ extension MainViewController: MixTrackPlayer {
     func mixAndRecord() {
         saveSample()
         audioPlayer.stop()
-        blockUI(exceptTag: IntConstants.RecordButtonTag.rawValue)
-        let filename = "\(StringConstants.AudioMixRecordingName.rawValue)\(StringConstants.CreatedFilesExtension.rawValue)"
+        blockUI(exceptTag: IntConstants.recordButtonTag.rawValue)
+        let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }),
                                  filename: filename)
     }
@@ -184,7 +183,7 @@ extension MainViewController: MixTrackPlayer {
     func stopRecord() {
         audioMixer.stopRecord()
         mainView.enableAll()
-        let filename = "\(StringConstants.AudioMixRecordingName.rawValue)\(StringConstants.CreatedFilesExtension.rawValue)"
+        let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         shareAudio(filename: filename)
     }
 }

@@ -38,19 +38,18 @@ class BottomPanelView: UIStackView {
         config.baseForegroundColor = .labelPrimary
         config.title = "Слои"
         config.image = UIImage(systemName: "chevron.up")
-        config.imagePadding = 16
+        config.imagePadding = Padding.standart.rawValue
         config.imagePlacement = .trailing
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(scale: .medium)
         config.cornerStyle = .medium
         config.titleTextAttributesTransformer =
            UIConfigurationTextAttributesTransformer { incoming in
              var outgoing = incoming
-             outgoing.font = UIFont.systemFont(ofSize: 16)
+             outgoing.font = UIFont.systemFont(ofSize: FontSize.title.rawValue)
              return outgoing
          }
 
         let button = UIButton(configuration: config)
-        button.titleLabel!.font = .systemFont(ofSize: 6)
         button.widthAnchor.constraint(equalTo: button.heightAnchor,
                                       multiplier: 2).isActive = true
 
@@ -65,7 +64,7 @@ class BottomPanelView: UIStackView {
 
     private func setupView() {
         axis = .vertical
-        spacing = 10
+        spacing = Spacing.standart.rawValue
 
         addArrangedSubview(waveformSlider)
 

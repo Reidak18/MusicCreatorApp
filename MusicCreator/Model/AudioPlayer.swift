@@ -35,14 +35,14 @@ class AudioPlayer: NSObject, AudioPlayerProtocol {
     var audioChangeSampleSubscriber: AudioChangeSampleListener?
     var audioStopSubscriber: AudioStopListener?
     private var playerInstance: AVAudioPlayer?
-    var volume: Float {
+    var volume: Float = FloatConstants.defaultVolume.rawValue {
         didSet {
             if let player = playerInstance {
                 player.volume = volume
             }
         }
     }
-    var frequency: Float {
+    var frequency: Float = FloatConstants.defaultFrequency.rawValue {
         didSet {
             if playingId != nil {
                 NSObject.cancelPreviousPerformRequests(withTarget: self)
@@ -54,11 +54,6 @@ class AudioPlayer: NSObject, AudioPlayerProtocol {
     private var isOnePlay = false
 
     var displayLink: CADisplayLink?
-
-    init(defaultVolume: Float = 1, defaultFrequency: Float = 1) {
-        volume = defaultVolume
-        frequency = defaultFrequency
-    }
 
     func play(sample: AudioSample) {
         stop()

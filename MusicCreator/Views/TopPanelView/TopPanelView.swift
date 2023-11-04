@@ -37,6 +37,7 @@ class TopPanelView: UIStackView {
         guitarButton.setImage(named: "Guitar",
                               insets: UIEdgeInsets(top: 20, left: 23, bottom: 0, right: 23))
         guitarButton.setTitle(title: "гитара")
+
         drumsButton.setInstrument(.drums)
         drumsButton.setImage(named: "Drums",
                              insets: UIEdgeInsets(top: 23, left: 18, bottom: 23, right: 18))

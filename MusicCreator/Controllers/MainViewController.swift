@@ -163,11 +163,15 @@ extension MainViewController: MixTrackPlayer {
     }
 
     func mixAndRecord() {
-
+        saveSample()
+        audioPlayer.stop()
+        blockUI(exceptTag: IntConstants.RecordButtonTag.rawValue)
+        audioMixer.playAndRecord(samples: session.getSamples().filter({ !$0.isMute }), filename: "share.m4a")
     }
 
     func stopRecord() {
-        
+        audioMixer.stopRecord()
+        mainView.enableAll()
     }
 }
 

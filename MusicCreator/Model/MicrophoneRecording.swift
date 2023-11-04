@@ -101,7 +101,7 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
     private func switchCategory(category: AVAudioSession.Category) {
         do {
             try recordingSession.setActive(false)
-            try recordingSession.setCategory(category, mode: .default)
+            try recordingSession.setCategory(category)
             try recordingSession.setActive(true)
         } catch(let error) {
             print(error)

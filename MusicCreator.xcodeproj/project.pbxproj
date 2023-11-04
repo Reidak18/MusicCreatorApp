@@ -190,9 +190,9 @@
 		0A28FB7A2AF238A50003EE49 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
-				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
+				0A28FC362AF70E220003EE49 /* Utils */,
+				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
@@ -215,7 +215,6 @@
 			isa = PBXGroup;
 			children = (
 				0A28FB492AEFFFA00003EE49 /* MainViewController.swift */,
-				0A28FC342AF708A90003EE49 /* UIBlocker.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -273,6 +272,15 @@
 				0A28FBE12AF40D330003EE49 /* AudioSample.swift */,
 			);
 			path = DataStructs;
+			sourceTree = "<group>";
+		};
+		0A28FC362AF70E220003EE49 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FB992AF2A8420003EE49 /* WaveformCreator.swift */,
+				0A28FC342AF708A90003EE49 /* UIBlocker.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

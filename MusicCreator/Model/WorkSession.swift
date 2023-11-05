@@ -23,7 +23,7 @@ protocol SessionProtocol: SessionSamplesProvider, AudioPlayerStateListener {
 }
 
 class WorkSession: SessionProtocol {
-    private var listeners: [SessionUpdateListener] = []
+    private var listeners: [Weak<SessionUpdateListener>] = []
     private var samples: [AudioSample] = []
 
     func updateSample(sample: AudioSample) {
@@ -59,12 +59,13 @@ class WorkSession: SessionProtocol {
     }
 
     func subscribeForUpdates<Listener: SessionUpdateListener>(_ listener: Listener) {
-        listeners.append(listener)
+        listeners.append(Weak(listener))
     }
 
     private func notifyListeners(id: String, updatedSample: AudioSample?) {
+        listeners = listeners.compactMap({ $0 })
         for listener in listeners {
-            listener.update(id: id, updatedSample: updatedSample)
+            listener.value?.update(id: id, updatedSample: updatedSample)
         }
     }
 }

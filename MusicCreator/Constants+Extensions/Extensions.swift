@@ -7,6 +7,22 @@
 
 import UIKit
 
+struct Weak<T> {
+    private weak var _value: AnyObject?
+    var value: T? {
+        get {
+            return _value as? T
+        }
+        set {
+            _value = newValue as? AnyObject
+        }
+    }
+
+    init(_ _value: AnyObject? = nil) {
+        self._value = _value
+    }
+}
+
 extension UIView {
     func asImage() -> UIImage {
         let renderer = UIGraphicsImageRenderer(bounds: bounds)

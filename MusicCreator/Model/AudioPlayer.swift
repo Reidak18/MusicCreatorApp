@@ -32,8 +32,8 @@ protocol AudioPlayerProtocol: PlayStopper {
 }
 
 class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
-    private var progressListeners: [AudioProgressListener] = []
-    private var stateListeners: [AudioPlayerStateListener] = []
+    private var progressListeners: [Weak<AudioProgressListener>] = []
+    private var stateListeners: [Weak<AudioPlayerStateListener>] = []
     private var frequency: Float = FloatConstants.defaultFrequency.rawValue
     private var playerInstance: AVAudioPlayer?
     private var playingId: String?
@@ -95,11 +95,11 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
     }
 
     func subscribeForUpdates<Listener: AudioPlayerStateListener>(_ listener: Listener) {
-        stateListeners.append(listener)
+        stateListeners.append(Weak(listener))
     }
 
     func subscribeForProgressUpdates<Listener: AudioProgressListener>(_ listener: Listener) {
-        progressListeners.append(listener)
+        progressListeners.append(Weak(listener))
     }
 
     @objc private func updateAudioProgress() {
@@ -124,14 +124,16 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
     }
 
     private func notifyListeners(oldId: String?, newSample: AudioSample?) {
+        stateListeners = stateListeners.compactMap({ $0 })
         for listener in stateListeners {
-            listener.onStateChanged(oldId: oldId, newSample: newSample)
+            listener.value?.onStateChanged(oldId: oldId, newSample: newSample)
         }
     }
 
     private func notifyListeners(progress: Float) {
+        progressListeners = progressListeners.compactMap({ $0 })
         for listener in progressListeners {
-            listener.updateProgress(progress: progress)
+            listener.value?.updateProgress(progress: progress)
         }
     }
 } 

@@ -31,7 +31,6 @@ class UIBlocker {
         return nil
     }
 
-    // все кнопки всегда доступны, так что можно просто включить все
     func releaseUI(exceptTags: Set<Int>) {
         for subview in UIView.getAllSubviews(from: parentView, types: [UIControl.self, UITableViewCell.self]) {
             if !exceptTags.contains(subview.tag) {

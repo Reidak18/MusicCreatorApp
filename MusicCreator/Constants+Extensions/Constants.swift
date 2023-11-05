@@ -15,6 +15,7 @@ enum StringConstants: String {
 }
 
 enum IntConstants: Int {
+    case stopButtonTag = 999
     case microButtonTag = 1000
     case playMixButtonTag = 1001
     case recordButtonTag = 1002

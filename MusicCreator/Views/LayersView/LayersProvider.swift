@@ -12,7 +12,7 @@ class LayersProvider: NSObject {
     private weak var session: SessionProtocol?
     private weak var sampleActionDelegate: SampleActionDelegate?
 
-    init(session: SessionProtocol, sampleActionDelegate: SampleActionDelegate) {
+    init<Provider: SessionProtocol, Delegate: SampleActionDelegate> (session: Provider, sampleActionDelegate: Delegate) {
         self.session = session
         self.sampleActionDelegate = sampleActionDelegate
         super.init()

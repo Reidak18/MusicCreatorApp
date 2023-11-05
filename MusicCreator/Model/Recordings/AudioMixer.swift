@@ -7,25 +7,21 @@
 
 import AVFoundation
 
-protocol AudioMixerProtocol {
-    func play(samples: [AudioSample])
-    func stopPlay()
-    func playAndRecord(samples: [AudioSample], filename: String)
-    func stopRecord()
-}
-
-class AudioMixer: AudioMixerProtocol {
+class AudioMixer {
     private let sampleRate = 44100
     private let channelsCount = 2
     private let bufferSize: UInt32 = 8192
 
-    private let recordingSession = AVAudioSession.sharedInstance()
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var audioMixer: AVAudioMixerNode = AVAudioMixerNode()
 
+    private let audioUrl: URL
     private let recordSettings: Dictionary<String, Any>
 
     init() {
+        let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
+        audioUrl = FileManager.default.getDocumentsPath(filename: filename)
+
         recordSettings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: sampleRate,
@@ -34,7 +30,7 @@ class AudioMixer: AudioMixerProtocol {
         ]
     }
 
-    func play(samples: [AudioSample]) {
+    func playMixedAudio(samples: [AudioSample]) {
         DispatchQueue.global(qos: .background).async {
             self.audioEngine.attach(self.audioMixer)
             self.audioEngine.connect(self.audioMixer, to: self.audioEngine.outputNode, format: nil)
@@ -76,19 +72,17 @@ class AudioMixer: AudioMixerProtocol {
         }
     }
 
-    func stopPlay() {
+    func finishPlayingMixedAudio() {
         audioEngine.stop()
     }
 
-    func playAndRecord(samples: [AudioSample], filename: String) {
+    func recordMuxedAudio(samples: [AudioSample]) {
         DispatchQueue.global(qos: .background).async {
-            self.play(samples: samples)
-
-            let audioUrl = FileManager.default.getDocumentsPath(filename: filename)
+            self.playMixedAudio(samples: samples)
 
             var audioFile: AVAudioFile
             do {
-                audioFile = try AVAudioFile(forWriting: audioUrl,
+                audioFile = try AVAudioFile(forWriting: self.audioUrl,
                                             settings: self.recordSettings,
                                             commonFormat: .pcmFormatFloat32,
                                             interleaved: false)
@@ -109,21 +103,10 @@ class AudioMixer: AudioMixerProtocol {
         }
     }
 
-    func stopRecord() {
-        stopPlay()
-        self.switchCategory(category: .playAndRecord)
-        self.audioMixer.removeTap(onBus: 0)
-        switchCategory(category: .playback)
-    }
-
-    private func switchCategory(category: AVAudioSession.Category) {
-        do {
-            try recordingSession.setActive(false)
-            try recordingSession.setCategory(category)
-            try recordingSession.setActive(true)
-        } catch(let error) {
-            print(error)
-        }
+    func finishRecordingMixedAudio() -> URL {
+        audioEngine.stop()
+        audioMixer.removeTap(onBus: 0)
+        return audioUrl
     }
 
     private func createRecordUrl(filename: String) -> URL {

@@ -20,15 +20,7 @@ enum RequestMicroPermissionResult {
     case deny
 }
 
-protocol MicrophoneRecordingProtocol {
-    func hasPermission() -> Bool
-    func requestPermission()
-    func startRecording(errorHandler: @escaping(_ error: RecordMicroError) -> ())
-    func isRecording() -> Bool
-    func finishRecording() -> AudioSample?
-}
-
-class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
+class MicrophoneRecording: NSObject {
     private let recordingSession = AVAudioSession.sharedInstance()
     private var recorder: AVAudioRecorder? = nil
     private var recordIndex: Int = 0
@@ -63,7 +55,6 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
     }
 
     func startRecording(errorHandler: @escaping(_ error: RecordMicroError) -> ()) {
-        switchCategory(category: .playAndRecord)
         self.errorHandler = errorHandler
 
         guard recorder == nil
@@ -86,28 +77,12 @@ class MicrophoneRecording: NSObject, MicrophoneRecordingProtocol {
         }
     }
 
-    func isRecording() -> Bool {
-        return recorder != nil
-    }
-
-    func finishRecording() -> AudioSample? {
-        guard let url = recorder?.url
-        else { return nil }
+    func finishRecording() -> URL? {
+        let url = recorder?.url
 
         clear()
-        switchCategory(category: .playback)
 
-        return AudioSample(name: currentName, audioUrl: url, isMicrophone: true, volume: FloatConstants.maximumVolume.rawValue)
-    }
-
-    private func switchCategory(category: AVAudioSession.Category) {
-        do {
-            try recordingSession.setActive(false)
-            try recordingSession.setCategory(category)
-            try recordingSession.setActive(true)
-        } catch(let error) {
-            print(error)
-        }
+        return url
     }
 
     private func clear() {

@@ -27,6 +27,7 @@ class StopButton: UIButton {
         configuration = config
         translatesAutoresizingMaskIntoConstraints = false
         isEnabled = false
+        tag = IntConstants.stopButtonTag.rawValue
         addTarget(self, action: #selector(stopPlaying), for: .touchUpInside)
     }
 

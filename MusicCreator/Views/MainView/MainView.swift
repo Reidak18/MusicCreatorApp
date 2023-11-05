@@ -8,11 +8,6 @@
 import UIKit
 
 class MainView: UIView {
-    var mixTrackPlayer: MixTrackPlayer? {
-        didSet {
-            bottomPanelView.mixTrackPlayer = mixTrackPlayer
-        }
-    }
     public var switchViewDelegate: MiddleViewsSwitcher? {
         didSet {
             bottomPanelView.switchViewDelegate = switchViewDelegate
@@ -26,11 +21,6 @@ class MainView: UIView {
     public var slidersChangesListener: SlidersChangesListener? {
         didSet {
             paramsView.slidersChangesListener = slidersChangesListener
-        }
-    }
-    public var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
-        didSet {
-            bottomPanelView.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
         }
     }
 
@@ -86,7 +76,14 @@ class MainView: UIView {
 
     func setPlayStopper<Stopper: PlayStopper>(stopper: Stopper) {
         paramsView.setPlayStopper(stopper: stopper)
-        bottomPanelView.setSubscribeAdder(adder: stopper)
+        bottomPanelView.setAudioPlayerSubscribeAdder(adder: stopper)
+    }
+
+    func setRecordProviderAndSubscriber<Provider: SessionSamplesProvider,
+                                        Subscriber: RecordingStatusSubscriber>(provider: Provider,
+                                                                               subscriber: Subscriber) {
+        bottomPanelView.setRecordProviderAndSubscriber(provider: provider,
+                                                       subscriber: subscriber)
     }
 
     func setLayersProvider<T1: SessionProtocol, T2: SampleActionDelegate>(session: T1, delegate: T2) {

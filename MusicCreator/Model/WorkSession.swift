@@ -11,12 +11,15 @@ protocol SessionUpdateListener: AnyObject {
     func update(id: String, updatedSample: AudioSample?)
 }
 
-protocol SessionProtocol: AnyObject, AudioPlayerStateListener {
+protocol SessionSamplesProvider: AnyObject {
+    func getSamples() -> [AudioSample]
+    func subscribeForUpdates<Listener: SessionUpdateListener>(_ listener: Listener)
+}
+
+protocol SessionProtocol: SessionSamplesProvider, AudioPlayerStateListener {
     func updateSample(sample: AudioSample)
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
-    func getSamples() -> [AudioSample]
-    func subscribeForUpdates<Listener: SessionUpdateListener>(_ listener: Listener)
 }
 
 class WorkSession: SessionProtocol {

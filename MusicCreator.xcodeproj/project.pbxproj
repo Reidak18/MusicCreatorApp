@@ -46,6 +46,7 @@
 		0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */; };
 		0A28FC352AF708A90003EE49 /* UIBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC342AF708A90003EE49 /* UIBlocker.swift */; };
 		0A28FC382AF716BB0003EE49 /* StopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC372AF716BB0003EE49 /* StopButton.swift */; };
+		0A28FC3B2AF794160003EE49 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersProvider.swift; sourceTree = "<group>"; };
 		0A28FC342AF708A90003EE49 /* UIBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlocker.swift; sourceTree = "<group>"; };
 		0A28FC372AF716BB0003EE49 /* StopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButton.swift; sourceTree = "<group>"; };
+		0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,13 +195,12 @@
 		0A28FB7A2AF238A50003EE49 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0A28FC392AF739DB0003EE49 /* Recordings */,
 				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FC362AF70E220003EE49 /* Utils */,
 				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
-				0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
-				0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -284,6 +285,16 @@
 				0A28FC342AF708A90003EE49 /* UIBlocker.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		0A28FC392AF739DB0003EE49 /* Recordings */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */,
+				0A28FBFA2AF52E560003EE49 /* MicrophoneRecording.swift */,
+				0A28FBFE2AF5968D0003EE49 /* AudioMixer.swift */,
+			);
+			path = Recordings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,6 +387,7 @@
 				0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */,
 				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,
 				0A28FBFF2AF5968D0003EE49 /* AudioMixer.swift in Sources */,
+				0A28FC3B2AF794160003EE49 /* AudioRecorder.swift in Sources */,
 				0A28FBE22AF40D330003EE49 /* AudioSample.swift in Sources */,
 				0A28FB5B2AF005B20003EE49 /* Constants.swift in Sources */,
 				0A28FB792AF132AA0003EE49 /* VerticalSegmentedControl.swift in Sources */,

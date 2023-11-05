@@ -17,16 +17,6 @@ protocol MiddleViewsSwitcher: AnyObject {
 }
 
 class BottomPanelView: UIStackView {
-    weak var mixTrackPlayer: MixTrackPlayer? {
-        didSet {
-            bottomControlButtons.mixTrackPlayer = mixTrackPlayer
-        }
-    }
-    weak var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener? {
-        didSet {
-            bottomControlButtons.addMicrophoneRecordSubscriber = addMicrophoneRecordSubscriber
-        }
-    }
     weak var switchViewDelegate: MiddleViewsSwitcher?
     private var currentViewType: CurrentViewType = .params
     private let waveformSlider = WaveformSlider()
@@ -87,8 +77,15 @@ class BottomPanelView: UIStackView {
         }
     }
 
-    func setSubscribeAdder<Adder: AudioPlayerSubscribeAdder>(adder: Adder) {
+    func setAudioPlayerSubscribeAdder<Adder: AudioPlayerSubscribeAdder>(adder: Adder) {
         waveformSlider.setSubscribeAdder(adder: adder)
+    }
+
+    func setRecordProviderAndSubscriber<Provider: SessionSamplesProvider,
+                                        Subscriber: RecordingStatusSubscriber>(provider: Provider,
+                                                                               subscriber: Subscriber) {
+        bottomControlButtons.setProviderAndSubscriber(provider: provider,
+                                                      subscriber: subscriber)
     }
 
     func switchView(viewType: CurrentViewType) {

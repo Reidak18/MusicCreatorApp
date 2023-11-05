@@ -7,23 +7,16 @@
 
 import UIKit
 
-protocol AddMicrophoneRecordListener: AnyObject {
-    func startRecording()
-    func recordAdded(sample: AudioSample)
-    func errorHappend(error: RecordMicroError)
-}
-
-protocol MixTrackPlayer: AnyObject {
-    func mixAndPlay()
-    func stopPlay()
-    func mixAndRecord()
-    func stopRecord()
+protocol RecordingStatusSubscriber: AnyObject {
+    func started(_ type: RecordingType)
+    func finished(_ type: RecordingType, url: URL?)
+    func error(_ type: RecordingType, error: RecordMicroError)
 }
 
 class BottomControlButtonsView: UIStackView {
-    weak var mixTrackPlayer: MixTrackPlayer?
-    weak var addMicrophoneRecordSubscriber: AddMicrophoneRecordListener?
-    private let microphoneRecording: MicrophoneRecordingProtocol = MicrophoneRecording()
+    private weak var sampleProvider: SessionSamplesProvider?
+    private weak var recordingSubscriber: RecordingStatusSubscriber?
+    private let audioRecorder: AudioRecorderProtocol = AudioRecorder()
 
     private var microButton = UIButton()
     private var playButton = UIButton()
@@ -62,6 +55,13 @@ class BottomControlButtonsView: UIStackView {
         addArrangedSubview(playButton)
     }
 
+    func setProviderAndSubscriber<Provider: SessionSamplesProvider,
+                                  Subscriber: RecordingStatusSubscriber>(provider: Provider,
+                                                                         subscriber: Subscriber) {
+        sampleProvider = provider
+        recordingSubscriber = subscriber
+    }
+
     private func createConfiguration(_ imageSystemName: String,
                                      scale: UIImage.SymbolScale) -> UIButton.Configuration {
         var config = UIButton.Configuration.filled()
@@ -76,38 +76,42 @@ class BottomControlButtonsView: UIStackView {
     }
 
     @objc private func startMicroRecord() {
-        guard microphoneRecording.hasPermission()
+        guard audioRecorder.hasMicrophonePermission()
         else {
-            microphoneRecording.requestPermission()
+            audioRecorder.requestMicrophonePermission()
             return
         }
 
-        if microphoneRecording.isRecording() {
+        if audioRecorder.isRecording(.microphoneRecording){
             changeMicroRecordStatus(isRecording: false)
-            guard let sample = microphoneRecording.finishRecording()
+            guard let url = audioRecorder.finishMicrophoneRecording()
             else {
-                addMicrophoneRecordSubscriber?.errorHappend(error: .fileNotCreated("Can't read file path"))
+                recordingSubscriber?.error(.microphoneRecording, error: .fileNotCreated("Can't read file path"))
                 return
             }
 
-            addMicrophoneRecordSubscriber?.recordAdded(sample: sample)
+            recordingSubscriber?.finished(.microphoneRecording, url: url)
         } else {
-            addMicrophoneRecordSubscriber?.startRecording()
+            recordingSubscriber?.started(.microphoneRecording)
             changeMicroRecordStatus(isRecording: true)
-            microphoneRecording.startRecording { error in
+            audioRecorder.startMicrophoneRecording { error in
                 DispatchQueue.main.async {
                     self.changeMicroRecordStatus(isRecording: false)
                 }
-                self.addMicrophoneRecordSubscriber?.errorHappend(error: error)
+                self.recordingSubscriber?.error(.microphoneRecording, error: error)
             }
         }
     }
 
     @objc private func playMixedTrack() {
         if isPlaying {
-            mixTrackPlayer?.stopPlay()
+            audioRecorder.finishPlayingMixedAudio()
+            recordingSubscriber?.finished(.mixAudioPlaying, url: nil)
         } else {
-            mixTrackPlayer?.mixAndPlay()
+            guard let samples = sampleProvider?.getSamples().filter({ !$0.isMute })
+            else { return }
+            audioRecorder.startPlayingMixedAudio(samples: samples)
+            recordingSubscriber?.started(.mixAudioPlaying)
         }
         isPlaying.toggle()
         changePlayingStatus(isPlaying: isPlaying)
@@ -115,9 +119,13 @@ class BottomControlButtonsView: UIStackView {
 
     @objc private func startMixRecord() {
         if isRecording {
-            mixTrackPlayer?.stopRecord()
+            let fileUrl = audioRecorder.finishRecordingMixedAudio()
+            recordingSubscriber?.finished(.mixAudioRecording, url: fileUrl)
         } else {
-            mixTrackPlayer?.mixAndRecord()
+            guard let samples = sampleProvider?.getSamples().filter({ !$0.isMute })
+            else { return }
+            audioRecorder.startRecordingMuxedAudio(samples: samples)
+            recordingSubscriber?.started(.mixAudioRecording)
         }
         isRecording.toggle()
         changeMixRecordingStatus(isRecording: isRecording)

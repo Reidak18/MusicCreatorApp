@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ItemSelector: AnyObject {
+    func select(index: Int)
+}
+
 class SamplesNamesProvider: NSObject {
     private weak var selectDelegate: ItemSelector?
     private let samples: [String]

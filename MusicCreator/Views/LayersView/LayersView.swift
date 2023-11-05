@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol SampleActionDelegate: AnyObject {
-    func selectSample(id: String)
-}
-
 class LayersView: UITableView {
     private var layersProvider: LayersProvider?
 

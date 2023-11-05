@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SampleActionDelegate: AnyObject {
+    func selectSample(id: String)
+}
+
 class LayersProvider: NSObject {
     var reloadData: (() -> Void)?
     private weak var session: SessionProtocol?

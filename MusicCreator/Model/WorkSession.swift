@@ -69,6 +69,7 @@ class WorkSession: SessionProtocol {
     }
 }
 
+// AudioPlayerStateListener
 extension WorkSession {
     func onStateChanged(oldId: String?, newSample: AudioSample?) {
         if let id = oldId,

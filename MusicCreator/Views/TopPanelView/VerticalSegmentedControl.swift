@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol ItemSelector: AnyObject {
-    func select(index: Int)
-}
-
 class VerticalSegmentedControl: UITableView {
     private var samplesNamesProvider: SamplesNamesProvider?
 

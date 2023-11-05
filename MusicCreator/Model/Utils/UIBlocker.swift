@@ -7,7 +7,12 @@
 
 import UIKit
 
-class UIBlocker {
+protocol UIBlockerProtocol {
+    func blockUI(exceptTag: Int) -> UIAlertController?
+    func releaseUI(exceptTags: Set<Int>)
+}
+
+class UIBlocker: UIBlockerProtocol {
     private let parentView: UIView
 
     init(parentView: UIView) {

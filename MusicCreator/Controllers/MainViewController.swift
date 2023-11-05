@@ -15,7 +15,7 @@ class MainViewController: UIViewController {
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
 
-    private var uiBlocker: UIBlocker
+    private var uiBlocker: UIBlockerProtocol
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()

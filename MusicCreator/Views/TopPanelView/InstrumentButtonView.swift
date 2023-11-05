@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-protocol SampleTrackSelector: AnyObject {
-    func selectSampleFromLibrary(instrument: MusicInstrument, index: Int)
+protocol AddSampleListener: AnyObject {
+    func addSampleFromLibrary(sample: AudioSample)
 }
 
 class InstrumentButtonView: UIStackView {
-    weak var selectDelegate: SampleTrackSelector?
-
-    private var samplesNames: [String] = []
+    weak var selectDelegate: AddSampleListener?
+    weak var database: SamplesDatabaseProtocol?
+    
     private var associatedInstrument: MusicInstrument?
     private let imageButton: UIButton = {
         let button = UIButton()
@@ -60,6 +60,10 @@ class InstrumentButtonView: UIStackView {
         ])
     }
 
+    func setDatabase(database: SamplesDatabaseProtocol) {
+        self.database = database
+    }
+
     func setInstrument(_ instrument: MusicInstrument) {
         associatedInstrument = instrument
     }
@@ -77,8 +81,9 @@ class InstrumentButtonView: UIStackView {
         addArrangedSubview(nameLabel)
     }
 
-    func setSamples(samplesNames: [String]) {
-        self.samplesNames = samplesNames
+    func loadSamplesNames(instrument: MusicInstrument) {
+        guard let samplesNames = database?.getSamples()[instrument, default: []]
+        else { return }
         let provider = SamplesNamesProvider(samples: samplesNames, selectDelegate: self)
         segmentControl.setProvider(provider: provider)
     }
@@ -91,9 +96,10 @@ class InstrumentButtonView: UIStackView {
 
         preopenSampleList()
 
-        guard let instrument = associatedInstrument
+        guard let instrument = associatedInstrument,
+              let sample = database?.getSample(instrument: instrument, index: 0)
         else { return }
-        selectDelegate?.selectSampleFromLibrary(instrument: instrument, index: 0)
+        selectDelegate?.addSampleFromLibrary(sample: sample)
     }
 
     @objc private func openInstrumentsList() {
@@ -178,9 +184,10 @@ extension InstrumentButtonView: ItemSelector {
     func select(index: Int) {
         closeSampleList()
 
-        guard let instrument = associatedInstrument
+        guard let instrument = associatedInstrument,
+              let sample = database?.getSample(instrument: instrument, index: index)
         else { return }
 
-        selectDelegate?.selectSampleFromLibrary(instrument: instrument, index: index)
+        selectDelegate?.addSampleFromLibrary(sample: sample)
     }
 }

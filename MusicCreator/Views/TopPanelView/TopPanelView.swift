@@ -8,6 +8,9 @@
 import UIKit
 
 class TopPanelView: UIStackView {
+    private var databaseFactory: SamplesDatabaseFactoryProtocol = SamplesDatabaseFactory()
+    private lazy var database: SamplesDatabaseProtocol = databaseFactory.getDatabase()
+
     private let guitarButton: InstrumentButtonView = {
         let button = InstrumentButtonView()
         button.setInstrument(.guitar)
@@ -49,22 +52,27 @@ class TopPanelView: UIStackView {
         addArrangedSubview(guitarButton)
         addArrangedSubview(drumsButton)
         addArrangedSubview(windButton)
+
+        loadSamplesFromDatabase(samplesNames: database.getSamples())
     }
 
-    func setSamples(samplesNames: Dictionary<MusicInstrument, [String]>) {
+    private func loadSamplesFromDatabase(samplesNames: Dictionary<MusicInstrument, [String]>) {
         for instrument in samplesNames.keys {
             switch instrument {
             case .guitar:
-                guitarButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+                guitarButton.setDatabase(database: database)
+                guitarButton.loadSamplesNames(instrument: instrument)
             case .drums:
-                drumsButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+                drumsButton.setDatabase(database: database)
+                drumsButton.loadSamplesNames(instrument: instrument)
             case .wind:
-                windButton.setSamples(samplesNames: samplesNames[instrument, default: []])
+                windButton.setDatabase(database: database)
+                windButton.loadSamplesNames(instrument: instrument)
             }
         }
     }
 
-    func setDatabaseSelector<T: SampleTrackSelector>(selector: T) {
+    func setDatabaseSelector<T: AddSampleListener>(selector: T) {
         guitarButton.selectDelegate = selector
         drumsButton.selectDelegate = selector
         windButton.selectDelegate = selector

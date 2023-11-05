@@ -47,6 +47,7 @@
 		0A28FC352AF708A90003EE49 /* UIBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC342AF708A90003EE49 /* UIBlocker.swift */; };
 		0A28FC382AF716BB0003EE49 /* StopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC372AF716BB0003EE49 /* StopButton.swift */; };
 		0A28FC3B2AF794160003EE49 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */; };
+		0A28FC3E2AF7E6510003EE49 /* DatabaseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC3D2AF7E6510003EE49 /* DatabaseFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		0A28FC342AF708A90003EE49 /* UIBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlocker.swift; sourceTree = "<group>"; };
 		0A28FC372AF716BB0003EE49 /* StopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButton.swift; sourceTree = "<group>"; };
 		0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		0A28FC3D2AF7E6510003EE49 /* DatabaseFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,10 +197,10 @@
 		0A28FB7A2AF238A50003EE49 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0A28FC3C2AF7E6380003EE49 /* Database */,
 				0A28FC392AF739DB0003EE49 /* Recordings */,
 				0A28FBE32AF40D3C0003EE49 /* DataStructs */,
 				0A28FC362AF70E220003EE49 /* Utils */,
-				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
 				0A28FBD12AF325E70003EE49 /* AudioPlayer.swift */,
 				0A28FBE42AF40F410003EE49 /* WorkSession.swift */,
 			);
@@ -297,6 +299,15 @@
 			path = Recordings;
 			sourceTree = "<group>";
 		};
+		0A28FC3C2AF7E6380003EE49 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				0A28FBDB2AF3845D0003EE49 /* SamplesDatabase.swift */,
+				0A28FC3D2AF7E6510003EE49 /* DatabaseFactory.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -383,6 +394,7 @@
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,
+				0A28FC3E2AF7E6510003EE49 /* DatabaseFactory.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
 				0A28FBD72AF37FF60003EE49 /* MainView.swift in Sources */,
 				0A28FB622AF026300003EE49 /* ParamsView.swift in Sources */,

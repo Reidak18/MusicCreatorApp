@@ -11,14 +11,12 @@ import AVFoundation
 class MainViewController: UIViewController {
     private let mainView = MainView()
 
-    private var database: SamplesDatabaseProtocol
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
 
     private var uiBlocker: UIBlockerProtocol
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        database = SamplesDatabase()
         audioPlayer = AudioPlayer()
         session = WorkSession()
         uiBlocker = UIBlocker(parentView: mainView)
@@ -28,11 +26,9 @@ class MainViewController: UIViewController {
     }
 
     override func loadView() {
-        mainView.setSamples(samplesNames: database.getSamples())
         mainView.setPlayStopper(stopper: audioPlayer)
         mainView.setRecordProviderAndSubscriber(provider: session,
                                                 subscriber: self)
-
         mainView.setLayersProvider(session: session, delegate: self)
         mainView.setDatabaseSelector(selector: self)
         mainView.setSlidersChangesListener(listener: self)
@@ -52,11 +48,8 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController: SampleTrackSelector {
-    func selectSampleFromLibrary(instrument: MusicInstrument, index: Int) {
-        guard let sample = database.getSample(instrument: instrument, index: index)
-        else { return }
-
+extension MainViewController: AddSampleListener {
+    func addSampleFromLibrary(sample: AudioSample) {
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
         session.updateSample(sample: sample)
         audioPlayer.play(sample: sample)

@@ -52,10 +52,6 @@ class MainView: UIView {
         ])
     }
 
-    func setSamples(samplesNames: Dictionary<MusicInstrument, [String]>) {
-        topPanelView.setSamples(samplesNames: samplesNames)
-    }
-
     func setPlayStopper<Stopper: PlayStopper>(stopper: Stopper) {
         paramsView.setPlayStopper(stopper: stopper)
         bottomPanelView.setAudioPlayerSubscribeAdder(adder: stopper)
@@ -81,7 +77,7 @@ class MainView: UIView {
         layersView.setProvider(provider)
     }
 
-    func setDatabaseSelector<T: SampleTrackSelector>(selector: T) {
+    func setDatabaseSelector<T: AddSampleListener>(selector: T) {
         topPanelView.setDatabaseSelector(selector: selector)
     }
 

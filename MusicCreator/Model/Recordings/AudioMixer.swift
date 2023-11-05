@@ -31,7 +31,7 @@ class AudioMixer {
     }
 
     func playMixedAudio(samples: [AudioSample]) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             self.audioEngine.attach(self.audioMixer)
             self.audioEngine.connect(self.audioMixer, to: self.audioEngine.outputNode, format: nil)
             do {
@@ -77,7 +77,7 @@ class AudioMixer {
     }
 
     func recordMuxedAudio(samples: [AudioSample]) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             self.playMixedAudio(samples: samples)
 
             var audioFile: AVAudioFile

@@ -94,7 +94,7 @@ class WaveformCreator: WaveformCreatorProtocol {
             return
         }
 
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .utility).async {
             var returnArray = [Float]()
 
             for i in 0..<numberOfFrames {

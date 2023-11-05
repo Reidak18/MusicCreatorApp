@@ -118,18 +118,18 @@ class InstrumentButtonView: UIStackView {
                               y: frame.minY,
                               width: frame.width,
                               height: frame.height + labelHeight)
-        UIView.animate(withDuration: self.animDuration) {
-            self.frame = newFrame
-            self.layoutIfNeeded()
-        } completion: { _ in
-            self.nameLabel.removeConstraint(heightConstraint)
-            UIView.animate(withDuration: self.animDuration) {
-                self.frame = oldFrame
-                self.layoutIfNeeded()
-            } completion: { _ in
-                self.backgroundColor = .clear
-                self.imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
-                self.nameLabel.textColor = .foregroundPrimary
+        UIView.animate(withDuration: animDuration) { [weak self] in
+            self?.frame = newFrame
+            self?.layoutIfNeeded()
+        } completion: { [weak self] _ in
+            self?.nameLabel.removeConstraint(heightConstraint)
+            UIView.animate(withDuration: self?.animDuration ?? 0) {
+                self?.frame = oldFrame
+                self?.layoutIfNeeded()
+            } completion: { [weak self] _ in
+                self?.backgroundColor = .clear
+                self?.imageButton.setBackgroundImage(buttonImage?.withTintColor(.foregroundPrimary), for: .normal)
+                self?.nameLabel.textColor = .foregroundPrimary
             }
         }
     }
@@ -140,32 +140,32 @@ class InstrumentButtonView: UIStackView {
         nameLabel.isHidden = true
         backgroundColor = .customLightGreen
         imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.customLightGreen), for: .normal)
-        segmentControl.setWidth(width: self.bounds.width)
-        addArrangedSubview(self.segmentControl)
+        segmentControl.setWidth(width: bounds.width)
+        addArrangedSubview(segmentControl)
         layoutIfNeeded()
 
         let newFrame = CGRect(x: frame.minX,
                               y: frame.minY,
                               width: frame.width,
                               height: frame.height + segmentControl.frame.height)
-        UIView.animate(withDuration: 1) {
-            self.frame = newFrame
-            self.layoutIfNeeded()
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.frame = newFrame
+            self?.layoutIfNeeded()
         }
     }
 
     private func closeSampleList() {
         isOpened = false
-        UIView.animate(withDuration: 1) {
-            self.segmentControl.isHidden = true
-            self.segmentControl.resetSelection()
-        } completion: { value in
-            self.segmentControl.isHidden = false
-            self.segmentControl.removeFromSuperview()
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.segmentControl.isHidden = true
+            self?.segmentControl.resetSelection()
+        } completion: { [weak self] value in
+            self?.segmentControl.isHidden = false
+            self?.segmentControl.removeFromSuperview()
 
-            self.backgroundColor = .clear
-            self.imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.foregroundPrimary), for: .normal)
-            self.nameLabel.isHidden = false
+            self?.backgroundColor = .clear
+            self?.imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.foregroundPrimary), for: .normal)
+            self?.nameLabel.isHidden = false
         }
     }
 

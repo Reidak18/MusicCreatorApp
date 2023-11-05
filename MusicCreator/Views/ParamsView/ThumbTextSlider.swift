@@ -21,8 +21,8 @@ class ThumbTextSlider: UISlider {
     func setBackgroundImage(named: String) {
         guard let trackImage = UIImage(named: named)
         else { return }
-        self.setMinimumTrackImage(trackImage, for:.normal)
-        self.setMaximumTrackImage(trackImage, for:.normal)
+        setMinimumTrackImage(trackImage, for:.normal)
+        setMaximumTrackImage(trackImage, for:.normal)
     }
 
     func setThumbLabel(label: String) {

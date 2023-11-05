@@ -31,11 +31,14 @@ class AudioMixer {
     }
 
     func playMixedAudio(samples: [AudioSample]) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.audioEngine.attach(self.audioMixer)
-            self.audioEngine.connect(self.audioMixer, to: self.audioEngine.outputNode, format: nil)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let engine = self?.audioEngine,
+                  let mixer = self?.audioMixer
+            else { return }
+            engine.attach(mixer)
+            engine.connect(mixer, to: engine.outputNode, format: nil)
             do {
-                try self.audioEngine.start()
+                try engine.start()
             } catch(let error) {
                 print(error)
                 return
@@ -44,8 +47,8 @@ class AudioMixer {
             for sample in samples {
                 // создаем плеер и подключаем к остальным
                 let audioPlayer = AVAudioPlayerNode()
-                self.audioEngine.attach(audioPlayer)
-                self.audioEngine.connect(audioPlayer, to: self.audioMixer, format: nil)
+                engine.attach(audioPlayer)
+                engine.connect(audioPlayer, to: mixer, format: nil)
 
                 // получаем аудиофайл
                 guard let file = try? AVAudioFile(forReading: sample.audioUrl)
@@ -62,10 +65,10 @@ class AudioMixer {
                                                          atRate: file.processingFormat.sampleRate),
                                          completionHandler: {
                     if !sample.isMicrophone {
-                        self.scheduleNext(startTime: startTime,
-                                          delay: 1 / Double(sample.frequency),
-                                          audioFile: file,
-                                          audioPlayer: audioPlayer) }
+                        self?.scheduleNext(startTime: startTime,
+                                           delay: 1 / Double(sample.frequency),
+                                           audioFile: file,
+                                           audioPlayer: audioPlayer) }
                 })
                 audioPlayer.play()
             }
@@ -77,13 +80,18 @@ class AudioMixer {
     }
 
     func recordMuxedAudio(samples: [AudioSample]) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.playMixedAudio(samples: samples)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.playMixedAudio(samples: samples)
+
+            guard let url = self?.audioUrl,
+                  let settings = self?.recordSettings,
+                  let bufferSize = self?.bufferSize
+            else { return }
 
             var audioFile: AVAudioFile
             do {
-                audioFile = try AVAudioFile(forWriting: self.audioUrl,
-                                            settings: self.recordSettings,
+                audioFile = try AVAudioFile(forWriting: url,
+                                            settings: settings,
                                             commonFormat: .pcmFormatFloat32,
                                             interleaved: false)
             }
@@ -92,7 +100,7 @@ class AudioMixer {
                 return
             }
 
-            self.audioMixer.installTap(onBus: 0, bufferSize: self.bufferSize, format: nil, block: { pcmBuffer, when in
+            self?.audioMixer.installTap(onBus: 0, bufferSize: bufferSize, format: nil, block: { pcmBuffer, when in
                 do {
                     try audioFile.write(from: pcmBuffer)
                 }

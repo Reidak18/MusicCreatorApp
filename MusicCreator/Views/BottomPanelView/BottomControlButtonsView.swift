@@ -94,11 +94,11 @@ class BottomControlButtonsView: UIStackView {
         } else {
             recordingSubscriber?.started(.microphoneRecording)
             changeMicroRecordStatus(isRecording: true)
-            audioRecorder.startMicrophoneRecording { error in
+            audioRecorder.startMicrophoneRecording { [weak self] error in
                 DispatchQueue.main.async {
-                    self.changeMicroRecordStatus(isRecording: false)
+                    self?.changeMicroRecordStatus(isRecording: false)
                 }
-                self.recordingSubscriber?.error(.microphoneRecording, error: error)
+                self?.recordingSubscriber?.error(.microphoneRecording, error: error)
             }
         }
     }

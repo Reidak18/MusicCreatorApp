@@ -21,8 +21,8 @@ class UIBlocker {
             let alert = UIAlertController(title: "Отключение UI",
                                           message: "UI будет отключен на время работы функции. Вы можете вернуться в режим редактирования повторным нажатием на кнопку",
                                           preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { _ in
-                self.disableAll(exceptTag: IntConstants.microButtonTag.rawValue)
+            alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { [weak self] _ in
+                self?.disableAll(exceptTag: IntConstants.microButtonTag.rawValue)
                 UserDefaults.standard.set(true, forKey: StringConstants.showDisableAlert.rawValue)
             }))
             return alert

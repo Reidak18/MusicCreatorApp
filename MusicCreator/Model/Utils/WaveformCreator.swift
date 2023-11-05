@@ -42,7 +42,10 @@ class WaveformCreator: WaveformCreatorProtocol {
             case .failure(let error):
                 completionHandler(.failure(error))
             case .success(let powers):
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self
+                    else { return }
+                    
                     let normalized = self.normalizePowers(powers)
                     completionHandler(.success(self.createWaveformFromPovers(powers: normalized, frame: frame)))
                 }

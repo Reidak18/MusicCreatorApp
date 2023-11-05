@@ -143,7 +143,7 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         if isOnePlay {
             stop()
         } else {
-            self.perform(#selector(playAgain), with: nil, afterDelay: 1 / Double(frequency))
+            perform(#selector(playAgain), with: nil, afterDelay: 1 / Double(frequency))
         }
     }
 

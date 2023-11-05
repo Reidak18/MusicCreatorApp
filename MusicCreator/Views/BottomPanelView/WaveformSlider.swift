@@ -37,9 +37,9 @@ class WaveformSlider: UISlider {
     private func setWaveform(url: URL?) {
         guard let url = url
         else {
-            DispatchQueue.main.async {
-                self.setMinimumTrackImage(nil, for: .normal)
-                self.setMaximumTrackImage(nil, for: .normal)
+            DispatchQueue.main.async { [weak self] in
+                self?.setMinimumTrackImage(nil, for: .normal)
+                self?.setMaximumTrackImage(nil, for: .normal)
             }
             return
         }
@@ -50,9 +50,9 @@ class WaveformSlider: UISlider {
             case .failure(let error):
                 print(error)
             case .success(let resultImage):
-                DispatchQueue.main.async {
-                    self.setMinimumTrackImage(resultImage.withTintColor(.customLightGreen), for: .normal)
-                    self.setMaximumTrackImage(resultImage.withTintColor(.white), for: .normal)
+                DispatchQueue.main.async { [weak self] in
+                    self?.setMinimumTrackImage(resultImage.withTintColor(.customLightGreen), for: .normal)
+                    self?.setMaximumTrackImage(resultImage.withTintColor(.white), for: .normal)
                 }
             }
         }

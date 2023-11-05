@@ -39,10 +39,10 @@ class AudioRecorder: AudioRecorderProtocol {
     }
 
     func startMicrophoneRecording(errorHandler: @escaping (RecordMicroError) -> ()) {
-        self.isWorking[.microphoneRecording] = true
+        isWorking[.microphoneRecording] = true
         switchCategory(category: .playAndRecord)
-        microRecording.startRecording(errorHandler: { error in
-            self.isWorking[.microphoneRecording] = false
+        microRecording.startRecording(errorHandler: { [weak self] error in
+            self?.isWorking[.microphoneRecording] = false
             errorHandler(error)
         })
     }

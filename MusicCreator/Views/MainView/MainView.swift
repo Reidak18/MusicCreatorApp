@@ -8,11 +8,6 @@
 import UIKit
 
 class MainView: UIView {
-    var playStopper: PlayStopper? {
-        didSet {
-            paramsView.playStopper = playStopper
-        }
-    }
     var mixTrackPlayer: MixTrackPlayer? {
         didSet {
             bottomPanelView.mixTrackPlayer = mixTrackPlayer
@@ -87,6 +82,10 @@ class MainView: UIView {
 
     func setSamples(samplesNames: Dictionary<MusicInstrument, [String]>) {
         topPanelView.setSamples(samplesNames: samplesNames)
+    }
+
+    func setPlayStopper<Stopper: PlayStopper>(stopper: Stopper) {
+        paramsView.setPlayStopper(stopper: stopper)
     }
 
     func setWaveform(url: URL?) {

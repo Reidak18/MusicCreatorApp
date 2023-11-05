@@ -11,23 +11,17 @@ protocol SessionUpdateListener: AnyObject {
     func update(samples: [AudioSample])
 }
 
-protocol SessionProtocol: AnyObject {
+protocol SessionProtocol: AnyObject, AudioPlayerStateListener {
     func updateSample(sample: AudioSample)
     func removeSample(id: String)
     func getSample(id: String) -> AudioSample?
     func getSamples() -> [AudioSample]
-    func subscribeForUpdates<Listener>(_ listener: Listener) where Listener: SessionUpdateListener
+    func subscribeForUpdates<Listener: SessionUpdateListener>(_ listener: Listener)
 }
 
 class WorkSession: SessionProtocol {
     private var listeners: [SessionUpdateListener] = []
     private var samples: [AudioSample] = []
-    private var player: AudioPlayerProtocol
-
-    init(player: AudioPlayerProtocol) {
-        self.player = player
-        self.player.audioStopSubscriber = self
-    }
 
     func updateSample(sample: AudioSample) {
         if let index = samples.firstIndex(where: { $0.id == sample.id }) {
@@ -67,14 +61,14 @@ class WorkSession: SessionProtocol {
             listener.update(samples: samples)
         }
     }
-}
 
-extension WorkSession: AudioStopListener {
-    func stopPlaying(id: String) {
+    func onStateChanged(id: String, isPlaying: Bool) {
         guard let index = samples.firstIndex(where: { $0.id == id })
-        else { return }
+        else {
+            return
+        }
 
-        samples[index].setIsPlaying(false)
+        samples[index].setIsPlaying(isPlaying)
         updateSample(sample: samples[index])
     }
 }

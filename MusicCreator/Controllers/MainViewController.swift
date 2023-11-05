@@ -21,15 +21,17 @@ class MainViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         database = SamplesDatabase()
         audioPlayer = AudioPlayer()
-        session = WorkSession(player: audioPlayer)
+        session = WorkSession()
         audioMixer = AudioMixer()
         uiBlocker = UIBlocker(parentView: mainView)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         session.subscribeForUpdates(self)
+        audioPlayer.subscribeForUpdates(session)
     }
 
     override func loadView() {
         mainView.setSamples(samplesNames: database.getSamples())
+        mainView.setPlayStopper(stopper: audioPlayer)
 
         audioPlayer.audioProgressSubscriber = self
         audioPlayer.audioChangeSampleSubscriber = self
@@ -39,7 +41,6 @@ class MainViewController: UIViewController {
         mainView.switchViewDelegate = self
         mainView.addMicrophoneRecordSubscriber = self
         mainView.mixTrackPlayer = self
-        mainView.playStopper = self
         view = mainView
     }
 
@@ -59,11 +60,10 @@ class MainViewController: UIViewController {
 
 extension MainViewController: SampleTrackSelector {
     func selectSampleFromLibrary(instrument: MusicInstrument, index: Int) {
-        guard var sample = database.getSample(instrument: instrument, index: index)
+        guard let sample = database.getSample(instrument: instrument, index: index)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        sample.setIsPlaying(true)
         session.updateSample(sample: sample)
         audioPlayer.play(sample: sample)
     }
@@ -119,12 +119,14 @@ extension MainViewController: SlidersChangesListener {
 
 extension MainViewController: SampleActionDelegate {
     func setIsPlaying(id: String, isPlaying: Bool) {
-        guard var sample = session.getSample(id: id)
+        guard let sample = session.getSample(id: id)
         else { return }
 
-        sample.setIsPlaying(isPlaying)
-        session.updateSample(sample: sample)
-        audioPlayer.play(sample: sample)
+        if isPlaying {
+            audioPlayer.play(sample: sample)
+        } else {
+            audioPlayer.stop()
+        }
     }
 
     func setIsMute(id: String, isMute: Bool) {
@@ -141,12 +143,10 @@ extension MainViewController: SampleActionDelegate {
 
     func selectSample(id: String) {
         mainView.switchView(viewType: .params)
-        guard var sample = session.getSample(id: id)
+        guard let sample = session.getSample(id: id)
         else { return }
 
         mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        sample.setIsPlaying(true)
-        session.updateSample(sample: sample)
         audioPlayer.play(sample: sample)
     }
 }
@@ -199,12 +199,6 @@ extension MainViewController: MixTrackPlayer {
         uiBlocker.releaseUI()
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         shareAudio(filename: filename)
-    }
-}
-
-extension MainViewController: PlayStopper {
-    func stop() {
-        audioPlayer.stop()
     }
 }
 

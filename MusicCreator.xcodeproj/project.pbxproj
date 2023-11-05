@@ -45,6 +45,7 @@
 		0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */; };
 		0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */; };
 		0A28FC352AF708A90003EE49 /* UIBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC342AF708A90003EE49 /* UIBlocker.swift */; };
+		0A28FC382AF716BB0003EE49 /* StopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC372AF716BB0003EE49 /* StopButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		0A28FC302AF6D9930003EE49 /* SamplesNamesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesNamesProvider.swift; sourceTree = "<group>"; };
 		0A28FC322AF6F6AE0003EE49 /* LayersProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersProvider.swift; sourceTree = "<group>"; };
 		0A28FC342AF708A90003EE49 /* UIBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlocker.swift; sourceTree = "<group>"; };
+		0A28FC372AF716BB0003EE49 /* StopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 			children = (
 				0A28FB612AF026300003EE49 /* ParamsView.swift */,
 				0A28FB682AF03B750003EE49 /* ThumbTextSlider.swift */,
+				0A28FC372AF716BB0003EE49 /* StopButton.swift */,
 			);
 			path = ParamsView;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A28FB9A2AF2A8420003EE49 /* WaveformCreator.swift in Sources */,
+				0A28FC382AF716BB0003EE49 /* StopButton.swift in Sources */,
 				0A28FC312AF6D9930003EE49 /* SamplesNamesProvider.swift in Sources */,
 				0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */,
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,

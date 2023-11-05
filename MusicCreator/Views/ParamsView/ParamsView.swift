@@ -12,13 +12,8 @@ protocol SlidersChangesListener: AnyObject {
     func frequencyValueUpdated(frequency: Float)
 }
 
-protocol PlayStopper: AnyObject {
-    func stop()
-}
-
 class ParamsView: UIView {
     weak var slidersChangesListener: SlidersChangesListener?
-    weak var playStopper: PlayStopper?
 
     private let volumeSlider: ThumbTextSlider = {
         let slider = ThumbTextSlider()
@@ -42,19 +37,7 @@ class ParamsView: UIView {
         slider.isContinuous = false
         return slider
     }()
-    // кнопка для остановки проигрывания текущего семпла
-    private var stopButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.image = UIImage(systemName: "stop.fill")
-        config.baseBackgroundColor = .foregroundPrimary
-        config.baseForegroundColor = .labelPrimary
-        config.imagePlacement = .all
-        config.cornerStyle = .medium
-        let button = UIButton(configuration: config)
-//        button.isEnabled = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let stopButton = StopButton()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,7 +51,6 @@ class ParamsView: UIView {
         addSubview(volumeSlider)
         frequencySlider.addTarget(self, action: #selector(frequencyValueChanged), for: .valueChanged)
         addSubview(frequencySlider)
-        stopButton.addTarget(self, action: #selector(stopPlaying), for: .touchUpInside)
         addSubview(stopButton)
     }
 
@@ -85,7 +67,7 @@ class ParamsView: UIView {
             frequencySlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: frequencySliderThumbHeight / 2),
 
             stopButton.topAnchor.constraint(equalTo: topAnchor),
-            stopButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stopButton.rightAnchor.constraint(equalTo: rightAnchor),
             stopButton.heightAnchor.constraint(equalTo: stopButton.widthAnchor)
         ])
     }
@@ -95,16 +77,16 @@ class ParamsView: UIView {
         frequencySlider.value = frequency
     }
 
+    func setPlayStopper<Stopper: PlayStopper>(stopper: Stopper) {
+        stopButton.setPlayStopper(stopper: stopper)
+    }
+
     @objc private func volumeValueChanged() {
         slidersChangesListener?.volumeValueUpdated(volume: volumeSlider.value)
     }
 
     @objc private func frequencyValueChanged() {
         slidersChangesListener?.frequencyValueUpdated(frequency: frequencySlider.value)
-    }
-
-    @objc private func stopPlaying() {
-        playStopper?.stop()
     }
 
     required init?(coder: NSCoder) {

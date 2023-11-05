@@ -27,7 +27,7 @@ class UIBlocker: UIBlockerProtocol {
                                           message: "UI будет отключен на время работы функции. Вы можете вернуться в режим редактирования повторным нажатием на кнопку",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { [weak self] _ in
-                self?.disableAll(exceptTag: IntConstants.microButtonTag.rawValue)
+                self?.disableAll(exceptTag: exceptTag)
                 UserDefaults.standard.set(true, forKey: StringConstants.showDisableAlert.rawValue)
             }))
             return alert

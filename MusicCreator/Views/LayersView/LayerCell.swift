@@ -157,7 +157,7 @@ class LayerCell: UITableViewCell {
     }
 
     @objc private func remove() {
-        guard var unwSample = sample
+        guard let unwSample = sample
         else { return }
 
         listener?.removeLayer(id: unwSample.id)

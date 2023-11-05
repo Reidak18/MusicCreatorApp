@@ -45,7 +45,7 @@ class StopButton: UIButton {
 }
 
 extension StopButton: AudioPlayerStateListener {
-    func onStateChanged(id: String, isPlaying: Bool) {
-        isEnabled = isPlaying
+    func onStateChanged(oldId: String?, newSample: AudioSample?) {
+        isEnabled = newSample != nil
     }
 }

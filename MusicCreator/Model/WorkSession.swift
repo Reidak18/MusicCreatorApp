@@ -62,13 +62,17 @@ class WorkSession: SessionProtocol {
         }
     }
 
-    func onStateChanged(id: String, isPlaying: Bool) {
-        guard let index = samples.firstIndex(where: { $0.id == id })
-        else {
-            return
+    func onStateChanged(oldId: String?, newSample: AudioSample?) {
+        if let id = oldId,
+           let index = samples.firstIndex(where: { $0.id == id }) {
+            samples[index].setIsPlaying(false)
         }
 
-        samples[index].setIsPlaying(isPlaying)
-        updateSample(sample: samples[index])
+        if let id = newSample?.id,
+           let index = samples.firstIndex(where: { $0.id == id }) {
+            samples[index].setIsPlaying(true)
+        }
+
+        notifyListeners()
     }
 }

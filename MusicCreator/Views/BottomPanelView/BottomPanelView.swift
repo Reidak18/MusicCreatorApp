@@ -87,8 +87,8 @@ class BottomPanelView: UIStackView {
         }
     }
 
-    func setWaveform(url: URL?) {
-        waveformSlider.setWaveform(url: url)
+    func setSubscribeAdder<Adder: AudioPlayerSubscribeAdder>(adder: Adder) {
+        waveformSlider.setSubscribeAdder(adder: adder)
     }
 
     func setWaveformProgress(progress: Float) {

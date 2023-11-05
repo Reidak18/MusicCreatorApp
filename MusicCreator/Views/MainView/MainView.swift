@@ -86,10 +86,7 @@ class MainView: UIView {
 
     func setPlayStopper<Stopper: PlayStopper>(stopper: Stopper) {
         paramsView.setPlayStopper(stopper: stopper)
-    }
-
-    func setWaveform(url: URL?) {
-        self.bottomPanelView.setWaveform(url: url)
+        bottomPanelView.setSubscribeAdder(adder: stopper)
     }
 
     func setWaveformProgress(progress: Float) {

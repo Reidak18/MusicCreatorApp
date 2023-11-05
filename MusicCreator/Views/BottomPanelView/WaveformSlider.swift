@@ -18,6 +18,10 @@ class WaveformSlider: UISlider {
         setConstraints()
     }
 
+    func setSubscribeAdder<Adder: AudioPlayerSubscribeAdder>(adder: Adder) {
+        adder.subscribeForUpdates(self)
+    }
+
     private func setupView() {
         setThumbImage(UIImage(), for: .normal)
         isUserInteractionEnabled = false
@@ -29,7 +33,7 @@ class WaveformSlider: UISlider {
         heightAnchor.constraint(equalToConstant: UIHeight.waveform.rawValue).isActive = true
     }
 
-    func setWaveform(url: URL?) {
+    private func setWaveform(url: URL?) {
         guard let url = url
         else {
             DispatchQueue.main.async {
@@ -55,5 +59,11 @@ class WaveformSlider: UISlider {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+}
+
+extension WaveformSlider: AudioPlayerStateListener {
+    func onStateChanged(oldId: String?, newSample: AudioSample?) {
+        setWaveform(url: newSample?.audioUrl)
     }
 }

@@ -11,17 +11,16 @@ protocol AudioProgressListener: AnyObject {
     func updateProgress(progress: Float)
 }
 
-protocol AudioChangeSampleListener: AnyObject {
-    func sampleChanged(newSample: AudioSample?)
-}
-
 protocol AudioPlayerStateListener: AnyObject {
-    func onStateChanged(id: String, isPlaying: Bool)
+    func onStateChanged(oldId: String?, newSample: AudioSample?)
 }
 
-protocol PlayStopper: AnyObject {
-    func stop()
+protocol AudioPlayerSubscribeAdder: AnyObject {
     func subscribeForUpdates<Listener: AudioPlayerStateListener>(_ listener: Listener)
+}
+
+protocol PlayStopper: AudioPlayerSubscribeAdder {
+    func stop()
 }
 
 protocol AudioPlayerProtocol: PlayStopper {
@@ -30,12 +29,10 @@ protocol AudioPlayerProtocol: PlayStopper {
     func setFrequency(_ frequency: Float)
     func getPlayingClipId() -> String?
     var audioProgressSubscriber: AudioProgressListener? { get set }
-    var audioChangeSampleSubscriber: AudioChangeSampleListener? { get set }
 }
 
 class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
     weak var audioProgressSubscriber: AudioProgressListener?
-    weak var audioChangeSampleSubscriber: AudioChangeSampleListener?
     private var stateListeners: [AudioPlayerStateListener] = []
     private var frequency: Float = FloatConstants.defaultFrequency.rawValue
     private var playerInstance: AVAudioPlayer?
@@ -53,7 +50,6 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
             return
         }
 
-        playingId = sample.id
         player.delegate = self
         player.numberOfLoops = 0
         player.play()
@@ -64,8 +60,8 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
 
         startDisplayLink()
 
-        audioChangeSampleSubscriber?.sampleChanged(newSample: sample)
-        notifyListeners(id: sample.id, isPlaying: true)
+        notifyListeners(oldId: playingId, newSample: sample)
+        playingId = sample.id
     }
 
     func stop() {
@@ -76,8 +72,7 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
         stopDisplayLink()
         audioProgressSubscriber?.updateProgress(progress: 0)
         NSObject.cancelPreviousPerformRequests(withTarget: self)
-        audioChangeSampleSubscriber?.sampleChanged(newSample: nil)
-        notifyListeners(id: id, isPlaying: false)
+        notifyListeners(oldId: id, newSample: nil)
         playingId = nil
     }
 
@@ -124,9 +119,9 @@ class AudioPlayer: NSObject, AudioPlayerProtocol, PlayStopper {
         displayLink = nil
     }
 
-    private func notifyListeners(id: String, isPlaying: Bool) {
+    private func notifyListeners(oldId: String?, newSample: AudioSample?) {
         for listener in stateListeners {
-            listener.onStateChanged(id: id, isPlaying: isPlaying)
+            listener.onStateChanged(oldId: oldId, newSample: newSample)
         }
     }
 } 

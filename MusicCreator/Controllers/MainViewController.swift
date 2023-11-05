@@ -34,9 +34,9 @@ class MainViewController: UIViewController {
                                                 subscriber: self)
 
         mainView.setLayersProvider(session: session, delegate: self)
-        mainView.selectSampleDelegate = self
-        mainView.slidersChangesListener = self
-        mainView.switchViewDelegate = self
+        mainView.setDatabaseSelector(selector: self)
+        mainView.setSlidersChangesListener(listener: self)
+        mainView.setSwitchViewDelegate(switcher: self)
         view = mainView
     }
 

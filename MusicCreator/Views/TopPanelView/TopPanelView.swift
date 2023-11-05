@@ -8,14 +8,6 @@
 import UIKit
 
 class TopPanelView: UIStackView {
-    public var selectDelegate: SampleTrackSelector? {
-        didSet {
-            guitarButton.selectDelegate = selectDelegate
-            drumsButton.selectDelegate = selectDelegate
-            windButton.selectDelegate = selectDelegate
-        }
-    }
-
     private let guitarButton: InstrumentButtonView = {
         let button = InstrumentButtonView()
         button.setInstrument(.guitar)
@@ -70,6 +62,12 @@ class TopPanelView: UIStackView {
                 windButton.setSamples(samplesNames: samplesNames[instrument, default: []])
             }
         }
+    }
+
+    func setDatabaseSelector<T: SampleTrackSelector>(selector: T) {
+        guitarButton.selectDelegate = selector
+        drumsButton.selectDelegate = selector
+        windButton.selectDelegate = selector
     }
 
     required init(coder: NSCoder) {

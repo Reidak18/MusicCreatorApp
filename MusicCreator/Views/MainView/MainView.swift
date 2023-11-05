@@ -8,26 +8,8 @@
 import UIKit
 
 class MainView: UIView {
-    public var switchViewDelegate: MiddleViewsSwitcher? {
-        didSet {
-            bottomPanelView.switchViewDelegate = switchViewDelegate
-        }
-    }
-    public var selectSampleDelegate: SampleTrackSelector? {
-        didSet {
-            topPanelView.selectDelegate = selectSampleDelegate
-        }
-    }
-    public var slidersChangesListener: SlidersChangesListener? {
-        didSet {
-            paramsView.slidersChangesListener = slidersChangesListener
-        }
-    }
-
     private let stackView = UIStackView()
-
     private let topPanelView = TopPanelView()
-
     private let backgroundView = GradientView()
     private let paramsView = ParamsView()
     private let layersView = LayersView()
@@ -79,6 +61,14 @@ class MainView: UIView {
         bottomPanelView.setAudioPlayerSubscribeAdder(adder: stopper)
     }
 
+    func setSlidersChangesListener<T: SlidersChangesListener>(listener: T) {
+        paramsView.slidersChangesListener = listener
+    }
+
+    func setSwitchViewDelegate<T: MiddleViewsSwitcher>(switcher: T) {
+        bottomPanelView.switchViewDelegate = switcher
+    }
+
     func setRecordProviderAndSubscriber<Provider: SessionSamplesProvider,
                                         Subscriber: RecordingStatusSubscriber>(provider: Provider,
                                                                                subscriber: Subscriber) {
@@ -89,6 +79,10 @@ class MainView: UIView {
     func setLayersProvider<T1: SessionProtocol, T2: SampleActionDelegate>(session: T1, delegate: T2) {
         let provider = LayersProvider(session: session, sampleActionDelegate: delegate)
         layersView.setProvider(provider)
+    }
+
+    func setDatabaseSelector<T: SampleTrackSelector>(selector: T) {
+        topPanelView.setDatabaseSelector(selector: selector)
     }
 
     func switchView(viewType: CurrentViewType) {

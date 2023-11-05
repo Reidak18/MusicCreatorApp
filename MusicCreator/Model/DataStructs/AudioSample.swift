@@ -7,7 +7,7 @@
 
 import AVFAudio
 
-struct AudioSample {
+struct AudioSample: Equatable {
     let id: String
     let name: String
     let audioUrl: URL

@@ -8,9 +8,6 @@
 import UIKit
 
 protocol SampleActionDelegate: AnyObject {
-    func setIsPlaying(id: String, isPlaying: Bool)
-    func setIsMute(id: String, isMute: Bool)
-    func removeSample(id: String)
     func selectSample(id: String)
 }
 

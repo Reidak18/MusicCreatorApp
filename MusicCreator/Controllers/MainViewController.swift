@@ -104,29 +104,6 @@ extension MainViewController: SlidersChangesListener {
 }
 
 extension MainViewController: SampleActionDelegate {
-    func setIsPlaying(id: String, isPlaying: Bool) {
-        guard let sample = session.getSample(id: id)
-        else { return }
-
-        if isPlaying {
-            audioPlayer.play(sample: sample)
-        } else {
-            audioPlayer.stop()
-        }
-    }
-
-    func setIsMute(id: String, isMute: Bool) {
-        guard var sample = session.getSample(id: id)
-        else { return }
-
-        sample.setMute(isMute)
-        session.updateSample(sample: sample)
-    }
-
-    func removeSample(id: String) {
-        session.removeSample(id: id)
-    }
-
     func selectSample(id: String) {
         mainView.switchView(viewType: .params)
         guard let sample = session.getSample(id: id)
@@ -190,9 +167,29 @@ extension MainViewController: MixTrackPlayer {
 
 extension MainViewController: SessionUpdateListener {
     func update(id: String, updatedSample: AudioSample?) {
-        if let id = audioPlayer.getPlayingClipId(),
-           session.getSample(id: id) == nil {
-            audioPlayer.stop()
+        guard let sample = updatedSample
+        else {
+            // семпл был удален
+            if id == audioPlayer.getPlayingClipId() {
+                audioPlayer.stop()
+                mainView.setSlidersParams(volume: FloatConstants.defaultVolume.rawValue,
+                                          frequency: FloatConstants.defaultFrequency.rawValue)
+            }
+            return
         }
+
+        if sample.id == audioPlayer.getPlayingClipId() {
+            if !sample.isPlaying {
+                audioPlayer.stop()
+            }
+        }
+        else {
+            if sample.isPlaying {
+                audioPlayer.play(sample: sample)
+            }
+        }
+
+        mainView.setSlidersParams(volume: sample.volume,
+                                  frequency: sample.frequency)
     }
 }

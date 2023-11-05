@@ -25,12 +25,15 @@ class WorkSession: SessionProtocol {
 
     func updateSample(sample: AudioSample) {
         if let index = samples.firstIndex(where: { $0.id == sample.id }) {
-            samples[index] = sample
+            if samples[index] != sample {
+                samples[index] = sample
+                notifyListeners(id: sample.id, updatedSample: sample)
+            }
         }
         else {
             samples.append(sample)
+            notifyListeners(id: sample.id, updatedSample: sample)
         }
-        notifyListeners(id: sample.id, updatedSample: sample)
     }
 
     func removeSample(id: String) {
@@ -66,13 +69,15 @@ class WorkSession: SessionProtocol {
 extension WorkSession {
     func onStateChanged(oldId: String?, newSample: AudioSample?) {
         if let id = oldId,
-           let index = samples.firstIndex(where: { $0.id == id }) {
+           let index = samples.firstIndex(where: { $0.id == id }),
+           samples[index].isPlaying {
             samples[index].setIsPlaying(false)
             notifyListeners(id: id, updatedSample: samples[index])
         }
 
         if let id = newSample?.id,
-           let index = samples.firstIndex(where: { $0.id == id }) {
+           let index = samples.firstIndex(where: { $0.id == id }),
+           !samples[index].isPlaying {
             samples[index].setIsPlaying(true)
             notifyListeners(id: id, updatedSample: samples[index])
         }

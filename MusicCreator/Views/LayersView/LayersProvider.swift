@@ -56,15 +56,23 @@ extension LayersProvider: UITableViewDelegate {
 
 extension LayersProvider: LayerCellListener {
     func setIsPlaying(id: String, isPlaying: Bool) {
-        sampleActionDelegate?.setIsPlaying(id: id, isPlaying: isPlaying)
+        guard var sample = session?.getSample(id: id)
+        else { return }
+
+        sample.setIsPlaying(isPlaying)
+        session?.updateSample(sample: sample)
     }
 
     func setIsMute(id: String, isMute: Bool) {
-        sampleActionDelegate?.setIsMute(id: id, isMute: isMute)
+        guard var sample = session?.getSample(id: id)
+        else { return }
+
+        sample.setMute(isMute)
+        session?.updateSample(sample: sample)
     }
 
     func removeLayer(id: String) {
-        sampleActionDelegate?.removeSample(id: id)
+        session?.removeSample(id: id)
     }
 }
 

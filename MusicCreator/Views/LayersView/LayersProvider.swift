@@ -7,18 +7,14 @@
 
 import UIKit
 
-protocol SampleActionDelegate: AnyObject {
-    func selectSample(id: String)
-}
-
 class LayersProvider: NSObject {
     var reloadData: (() -> Void)?
     private weak var session: SessionProtocol?
-    private weak var sampleActionDelegate: SampleActionDelegate?
+    private weak var viewSwitcher: MiddleViewsSwitcher?
 
-    init<Provider: SessionProtocol, Delegate: SampleActionDelegate> (session: Provider, sampleActionDelegate: Delegate) {
+    init<Provider: SessionProtocol, Delegate: MiddleViewsSwitcher> (session: Provider, viewSwitcher: Delegate) {
         self.session = session
-        self.sampleActionDelegate = sampleActionDelegate
+        self.viewSwitcher = viewSwitcher
         super.init()
         session.subscribeForUpdates(self)
     }
@@ -51,10 +47,13 @@ extension LayersProvider: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? LayerCell,
               cell.isSelectable(),
-              let cellId = cell.getId()
+              let cellId = cell.getId(),
+              var sample = session?.getSample(id: cellId)
         else { return }
 
-        sampleActionDelegate?.selectSample(id: cellId)
+        sample.setIsPlaying(true)
+        session?.updateSample(sample: sample)
+        viewSwitcher?.switchButtonClicked(to: .params)
     }
 }
 

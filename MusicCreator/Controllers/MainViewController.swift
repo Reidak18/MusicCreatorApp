@@ -84,17 +84,6 @@ extension MainViewController: SlidersChangesListener {
     }
 }
 
-extension MainViewController: SampleActionDelegate {
-    func selectSample(id: String) {
-        mainView.switchView(viewType: .params)
-        guard let sample = session.getSample(id: id)
-        else { return }
-
-        mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        audioPlayer.play(sample: sample)
-    }
-}
-
 extension MainViewController: RecordingStatusSubscriber {
     func started(_ type: RecordingType) {
         audioPlayer.stop()

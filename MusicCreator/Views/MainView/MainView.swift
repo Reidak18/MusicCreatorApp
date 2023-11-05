@@ -72,8 +72,8 @@ class MainView: UIView {
                                                        subscriber: subscriber)
     }
 
-    func setLayersProvider<T1: SessionProtocol, T2: SampleActionDelegate>(session: T1, delegate: T2) {
-        let provider = LayersProvider(session: session, sampleActionDelegate: delegate)
+    func setLayersProvider<T1: SessionProtocol, T2: MiddleViewsSwitcher>(session: T1, delegate: T2) {
+        let provider = LayersProvider(session: session, viewSwitcher: delegate)
         layersView.setProvider(provider)
     }
 

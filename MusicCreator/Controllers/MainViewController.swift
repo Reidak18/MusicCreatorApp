@@ -189,7 +189,7 @@ extension MainViewController: MixTrackPlayer {
 }
 
 extension MainViewController: SessionUpdateListener {
-    func update(samples: [AudioSample]) {
+    func update(id: String, updatedSample: AudioSample?) {
         if let id = audioPlayer.getPlayingClipId(),
            session.getSample(id: id) == nil {
             audioPlayer.stop()

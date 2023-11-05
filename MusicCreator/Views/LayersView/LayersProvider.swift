@@ -69,7 +69,7 @@ extension LayersProvider: LayerCellListener {
 }
 
 extension LayersProvider: SessionUpdateListener {
-    func update(samples: [AudioSample]) {
+    func update(id: String, updatedSample: AudioSample?) {
         reloadData?()
     }
 }

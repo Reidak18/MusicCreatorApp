@@ -77,7 +77,7 @@ class MainView: UIView {
         layersView.setProvider(provider)
     }
 
-    func setDatabaseSelector<T: AddSampleListener>(selector: T) {
+    func setDatabaseSelector<T: SessionProtocolAdder>(selector: T) {
         topPanelView.setDatabaseSelector(selector: selector)
     }
 

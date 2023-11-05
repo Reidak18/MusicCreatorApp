@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
         mainView.setRecordProviderAndSubscriber(provider: session,
                                                 subscriber: self)
         mainView.setLayersProvider(session: session, delegate: self)
-        mainView.setDatabaseSelector(selector: self)
+        mainView.setDatabaseSelector(selector: session)
         mainView.setSlidersChangesListener(listener: self)
         mainView.setSwitchViewDelegate(switcher: self)
         view = mainView
@@ -45,14 +45,6 @@ class MainViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension MainViewController: AddSampleListener {
-    func addSampleFromLibrary(sample: AudioSample) {
-        mainView.setSlidersParams(volume: sample.volume, frequency: sample.frequency)
-        session.updateSample(sample: sample)
-        audioPlayer.play(sample: sample)
     }
 }
 

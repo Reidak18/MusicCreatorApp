@@ -8,12 +8,8 @@
 import Foundation
 import UIKit
 
-protocol AddSampleListener: AnyObject {
-    func addSampleFromLibrary(sample: AudioSample)
-}
-
 class InstrumentButtonView: UIStackView {
-    weak var selectDelegate: AddSampleListener?
+    weak var selectDelegate: SessionProtocolAdder?
     weak var database: SamplesDatabaseProtocol?
     
     private var associatedInstrument: MusicInstrument?
@@ -97,9 +93,11 @@ class InstrumentButtonView: UIStackView {
         preopenSampleList()
 
         guard let instrument = associatedInstrument,
-              let sample = database?.getSample(instrument: instrument, index: 0)
+              var sample = database?.getSample(instrument: instrument, index: 0)
         else { return }
-        selectDelegate?.addSampleFromLibrary(sample: sample)
+
+        sample.setIsPlaying(true)
+        selectDelegate?.updateSample(sample: sample)
     }
 
     @objc private func openInstrumentsList() {
@@ -185,9 +183,10 @@ extension InstrumentButtonView: ItemSelector {
         closeSampleList()
 
         guard let instrument = associatedInstrument,
-              let sample = database?.getSample(instrument: instrument, index: index)
+              var sample = database?.getSample(instrument: instrument, index: index)
         else { return }
 
-        selectDelegate?.addSampleFromLibrary(sample: sample)
+        sample.setIsPlaying(true)
+        selectDelegate?.updateSample(sample: sample)
     }
 }

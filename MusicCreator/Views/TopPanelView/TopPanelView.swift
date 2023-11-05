@@ -72,7 +72,7 @@ class TopPanelView: UIStackView {
         }
     }
 
-    func setDatabaseSelector<T: AddSampleListener>(selector: T) {
+    func setDatabaseSelector<T: SessionProtocolAdder>(selector: T) {
         guitarButton.selectDelegate = selector
         drumsButton.selectDelegate = selector
         windButton.selectDelegate = selector

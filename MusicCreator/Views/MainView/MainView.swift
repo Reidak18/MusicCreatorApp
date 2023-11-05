@@ -89,12 +89,6 @@ class MainView: UIView {
         bottomPanelView.setSubscribeAdder(adder: stopper)
     }
 
-    func setWaveformProgress(progress: Float) {
-        DispatchQueue.main.async {
-            self.bottomPanelView.setWaveformProgress(progress: progress)
-        }
-    }
-
     func setLayersProvider<T1: SessionProtocol, T2: SampleActionDelegate>(session: T1, delegate: T2) {
         let provider = LayersProvider(session: session, sampleActionDelegate: delegate)
         layersView.setProvider(provider)

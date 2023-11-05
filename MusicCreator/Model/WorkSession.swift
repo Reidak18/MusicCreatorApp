@@ -63,16 +63,22 @@ class WorkSession: SessionProtocol {
     }
 
     func onStateChanged(oldId: String?, newSample: AudioSample?) {
+        var hasChanges = false
+
         if let id = oldId,
            let index = samples.firstIndex(where: { $0.id == id }) {
             samples[index].setIsPlaying(false)
+            hasChanges = true
         }
 
         if let id = newSample?.id,
            let index = samples.firstIndex(where: { $0.id == id }) {
             samples[index].setIsPlaying(true)
+            hasChanges = true
         }
 
-        notifyListeners()
+        if hasChanges {
+            notifyListeners()
+        }
     }
 }

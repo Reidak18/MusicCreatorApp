@@ -20,6 +20,7 @@ class WaveformSlider: UISlider {
 
     func setSubscribeAdder<Adder: AudioPlayerSubscribeAdder>(adder: Adder) {
         adder.subscribeForUpdates(self)
+        adder.subscribeForProgressUpdates(self)
     }
 
     private func setupView() {
@@ -65,5 +66,11 @@ class WaveformSlider: UISlider {
 extension WaveformSlider: AudioPlayerStateListener {
     func onStateChanged(oldId: String?, newSample: AudioSample?) {
         setWaveform(url: newSample?.audioUrl)
+    }
+}
+
+extension WaveformSlider: AudioProgressListener {
+    func updateProgress(progress: Float) {
+        value = progress
     }
 }

@@ -33,7 +33,6 @@ class MainViewController: UIViewController {
         mainView.setSamples(samplesNames: database.getSamples())
         mainView.setPlayStopper(stopper: audioPlayer)
 
-        audioPlayer.audioProgressSubscriber = self
         mainView.setLayersProvider(session: session, delegate: self)
         mainView.selectSampleDelegate = self
         mainView.slidersChangesListener = self
@@ -79,12 +78,6 @@ extension MainViewController: MiddleViewsSwitcher {
         }
         mainView.setSlidersParams(volume: volume, frequency: frequency)
         mainView.switchView(viewType: viewType)
-    }
-}
-
-extension MainViewController: AudioProgressListener {
-    func updateProgress(progress: Float) {
-        mainView.setWaveformProgress(progress: progress)
     }
 }
 

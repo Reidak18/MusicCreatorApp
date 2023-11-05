@@ -91,10 +91,6 @@ class BottomPanelView: UIStackView {
         waveformSlider.setSubscribeAdder(adder: adder)
     }
 
-    func setWaveformProgress(progress: Float) {
-        waveformSlider.value = progress
-    }
-
     func switchView(viewType: CurrentViewType) {
         var config = stylesButton.configuration ?? UIButton.Configuration.filled()
         currentViewType = viewType

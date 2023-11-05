@@ -555,7 +555,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7455ZQ2JP5;
+				DEVELOPMENT_TEAM = Y9MR3D8SV3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MusicCreator/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Необходимо для записи с микрофона";
@@ -587,7 +587,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7455ZQ2JP5;
+				DEVELOPMENT_TEAM = Y9MR3D8SV3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MusicCreator/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Необходимо для записи с микрофона";

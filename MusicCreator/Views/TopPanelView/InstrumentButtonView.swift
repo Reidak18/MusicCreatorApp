@@ -145,6 +145,7 @@ class InstrumentButtonView: UIStackView {
         backgroundColor = .customLightGreen
         imageButton.setBackgroundImage(UIImage(named: "Ellipse")?.withTintColor(.customLightGreen), for: .normal)
         segmentControl.setWidth(width: bounds.width)
+        segmentControl.setTableIsHidden(isHidden: true)
         addArrangedSubview(segmentControl)
         layoutIfNeeded()
 
@@ -155,16 +156,20 @@ class InstrumentButtonView: UIStackView {
         UIView.animate(withDuration: 1) { [weak self] in
             self?.frame = newFrame
             self?.layoutIfNeeded()
+        } completion: { [weak self] _ in
+            self?.segmentControl.setTableIsHidden(isHidden: false)
         }
     }
 
     private func closeSampleList() {
         isOpened = false
+        segmentControl.setTableIsHidden(isHidden: true)
         UIView.animate(withDuration: 1) { [weak self] in
             self?.segmentControl.isHidden = true
             self?.segmentControl.resetSelection()
         } completion: { [weak self] value in
             self?.segmentControl.isHidden = false
+            self?.segmentControl.setTableIsHidden(isHidden: false)
             self?.segmentControl.removeFromSuperview()
 
             self?.backgroundColor = .clear

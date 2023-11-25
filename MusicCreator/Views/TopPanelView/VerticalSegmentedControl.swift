@@ -45,6 +45,11 @@ class VerticalSegmentedControl: UITableView {
         reloadData()
     }
 
+    func setTableIsHidden(isHidden: Bool) {
+        dataSource = isHidden ? nil : samplesNamesProvider
+        reloadData()
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

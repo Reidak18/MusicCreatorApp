@@ -117,11 +117,6 @@ class AudioMixer {
         return audioUrl
     }
 
-    private func createRecordUrl(filename: String) -> URL {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsDirectory.appendingPathComponent(filename)
-    }
-
     // считаем время следующего запуска
     private func scheduleNext(startTime: AVAudioFramePosition,
                               delay: TimeInterval,

@@ -43,7 +43,7 @@ class WaveformSlider: UISlider {
             }
             return
         }
-        waveformCreator.drawWaveform(fileUrl: url,
+        WaveformCreator.drawWaveform(fileUrl: url,
                                      numberOfFrames: numberOfFrames,
                                      frame: frame) { result in
             switch(result) {

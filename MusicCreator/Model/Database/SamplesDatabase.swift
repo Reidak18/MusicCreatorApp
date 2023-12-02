@@ -54,6 +54,6 @@ class SamplesDatabase: SamplesDatabaseProtocol {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "wav")
         else { return nil }
 
-        return AudioSample(name: fileName, audioUrl: url)
+        return AudioSample(name: fileName, audioUrl: url, imageName: fileName)
     }
 }

@@ -12,6 +12,7 @@ struct AudioSample: Equatable {
     let name: String
     let audioUrl: URL
     let isMicrophone: Bool
+    let imageName: String
 
     private(set) var volume: Float
     private(set) var frequency: Float
@@ -22,9 +23,10 @@ struct AudioSample: Equatable {
          audioUrl: URL,
          isMicrophone: Bool = false,
          volume: Float = FloatConstants.defaultVolume.rawValue,
-         frequency: Float = FloatConstants.defaultFrequency.rawValue,
+         frequency: Float = FloatConstants.maximumFrequency.rawValue,
          isMute: Bool = false,
-         isPlaying: Bool = false) {
+         isPlaying: Bool = false,
+         imageName: String) {
         self.id = UUID().uuidString
         self.name = name
         self.audioUrl = audioUrl
@@ -33,6 +35,7 @@ struct AudioSample: Equatable {
         self.frequency = frequency
         self.isMute = isMute
         self.isPlaying = isPlaying
+        self.imageName = imageName
     }
 
     mutating func setVolume(_ volume: Float) {

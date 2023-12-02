@@ -48,6 +48,8 @@
 		0A28FC382AF716BB0003EE49 /* StopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC372AF716BB0003EE49 /* StopButton.swift */; };
 		0A28FC3B2AF794160003EE49 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */; };
 		0A28FC3E2AF7E6510003EE49 /* DatabaseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28FC3D2AF7E6510003EE49 /* DatabaseFactory.swift */; };
+		0A5AEFEC2B1AF15A00B4AB0A /* VisualViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AEFEB2B1AF15A00B4AB0A /* VisualViewController.swift */; };
+		0A5AEFEF2B1AF32300B4AB0A /* VisualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5AEFEE2B1AF32300B4AB0A /* VisualView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		0A28FC372AF716BB0003EE49 /* StopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButton.swift; sourceTree = "<group>"; };
 		0A28FC3A2AF794160003EE49 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		0A28FC3D2AF7E6510003EE49 /* DatabaseFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFactory.swift; sourceTree = "<group>"; };
+		0A5AEFEB2B1AF15A00B4AB0A /* VisualViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewController.swift; sourceTree = "<group>"; };
+		0A5AEFEE2B1AF32300B4AB0A /* VisualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +147,7 @@
 		0A28FB592AF0058F0003EE49 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0A5AEFED2B1AF31800B4AB0A /* VisualView */,
 				0A28FBD52AF37FE20003EE49 /* MainView */,
 				0A28FB5E2AF025080003EE49 /* TopPanelView */,
 				0A28FB632AF029FE0003EE49 /* ParamsView */,
@@ -221,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				0A28FB492AEFFFA00003EE49 /* MainViewController.swift */,
+				0A5AEFEB2B1AF15A00B4AB0A /* VisualViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -308,6 +314,14 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
+		0A5AEFED2B1AF31800B4AB0A /* VisualView */ = {
+			isa = PBXGroup;
+			children = (
+				0A5AEFEE2B1AF32300B4AB0A /* VisualView.swift */,
+			);
+			path = VisualView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -393,6 +407,7 @@
 				0A28FC332AF6F6AE0003EE49 /* LayersProvider.swift in Sources */,
 				0A28FB9E2AF2E0220003EE49 /* WaveformSlider.swift in Sources */,
 				0A28FB692AF03B750003EE49 /* ThumbTextSlider.swift in Sources */,
+				0A5AEFEC2B1AF15A00B4AB0A /* VisualViewController.swift in Sources */,
 				0A28FB6C2AF0C81F0003EE49 /* BottomPanelView.swift in Sources */,
 				0A28FC3E2AF7E6510003EE49 /* DatabaseFactory.swift in Sources */,
 				0A28FB4A2AEFFFA00003EE49 /* MainViewController.swift in Sources */,
@@ -412,6 +427,7 @@
 				0A28FB462AEFFFA00003EE49 /* AppDelegate.swift in Sources */,
 				0A28FB6E2AF0D13C0003EE49 /* BottomControlButtonsView.swift in Sources */,
 				0A28FB752AF10A850003EE49 /* GradientView.swift in Sources */,
+				0A5AEFEF2B1AF32300B4AB0A /* VisualView.swift in Sources */,
 				0A28FB482AEFFFA00003EE49 /* SceneDelegate.swift in Sources */,
 				0A28FB602AF0255E0003EE49 /* TopPanelView.swift in Sources */,
 				0A28FB772AF123EE0003EE49 /* Extensions.swift in Sources */,

@@ -65,6 +65,10 @@ class MainView: UIView {
         bottomPanelView.switchViewDelegate = switcher
     }
 
+    func setAudioRecorder<T: AudioRecorderProtocol>(recorder: T) {
+        bottomPanelView.setAudioRecorder(recorder: recorder)
+    }
+
     func setRecordProviderAndSubscriber<Provider: SessionSamplesProvider,
                                         Subscriber: RecordingStatusSubscriber>(provider: Provider,
                                                                                subscriber: Subscriber) {
@@ -89,6 +93,10 @@ class MainView: UIView {
 
     func setSlidersParams(volume: Float, frequency: Float) {
         paramsView.setSlidersParams(volume: volume, frequency: frequency)
+    }
+
+    func changePlayingStatus(isPlaying: Bool) {
+        bottomPanelView.changePlayingStatus(isPlaying: false)
     }
 
     required init?(coder: NSCoder) {

@@ -81,6 +81,10 @@ class BottomPanelView: UIStackView {
         waveformSlider.setSubscribeAdder(adder: adder)
     }
 
+    func setAudioRecorder<T: AudioRecorderProtocol>(recorder: T) {
+        bottomControlButtons.setAudioRecorder(recorder: recorder)
+    }
+
     func setRecordProviderAndSubscriber<Provider: SessionSamplesProvider,
                                         Subscriber: RecordingStatusSubscriber>(provider: Provider,
                                                                                subscriber: Subscriber) {
@@ -100,6 +104,10 @@ class BottomPanelView: UIStackView {
             config.image = UIImage(systemName: "chevron.down")
         }
         stylesButton.configuration = config
+    }
+
+    func changePlayingStatus(isPlaying: Bool) {
+        bottomControlButtons.changePlayingStatus(isPlaying: false)
     }
 
     required init(coder: NSCoder) {

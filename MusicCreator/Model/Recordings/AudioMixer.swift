@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import UIKit
 
 class AudioMixer {
     private let sampleRate = 44100
@@ -16,11 +17,20 @@ class AudioMixer {
     private var audioMixer: AVAudioMixerNode = AVAudioMixerNode()
 
     private let audioUrl: URL
+    private let audioUrlMeta: URL
     private let recordSettings: Dictionary<String, Any>
 
     init() {
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         audioUrl = FileManager.default.getDocumentsPath(filename: filename)
+        if FileManager.default.fileExists(atPath: audioUrl.path) {
+            try! FileManager.default.removeItem(at: audioUrl)
+        }
+        let filenameWithMeta = "\(StringConstants.audioMixRecordingNameChangedMeta.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
+        audioUrlMeta = FileManager.default.getDocumentsPath(filename: filenameWithMeta)
+        if FileManager.default.fileExists(atPath: audioUrlMeta.path) {
+            try! FileManager.default.removeItem(at: audioUrlMeta)
+        }
 
         recordSettings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -114,7 +124,52 @@ class AudioMixer {
     func finishRecordingMixedAudio() -> URL {
         audioEngine.stop()
         audioMixer.removeTap(onBus: 0)
-        return audioUrl
+
+        setMeta(filePath: audioUrl, exportPath: audioUrlMeta, artistName: "ARTIST", coverImageName: "Wind")
+
+        return audioUrlMeta
+    }
+
+    private func setMeta(filePath: URL, exportPath: URL, artistName: String, coverImageName: String) {
+        let asset = AVAsset(url: filePath)
+
+        guard let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else {
+            print("Failed to create AVAssetExportSession with \(filePath)")
+            return
+        }
+
+        let artistMetadata = AVMutableMetadataItem()
+        artistMetadata.key = AVMetadataKey.commonKeyArtist as NSString
+        artistMetadata.keySpace = .common
+        artistMetadata.value = artistName as NSString
+
+        let artworkMetadata = AVMutableMetadataItem()
+        artworkMetadata.key = AVMetadataKey.commonKeyArtwork as NSString
+        artworkMetadata.keySpace = .common
+
+        if let image = UIImage(named: coverImageName),
+           let imageData = image.pngData() {
+            artworkMetadata.value = imageData as NSData
+        } else {
+            print("Can't load image named \(coverImageName)")
+        }
+
+        exporter.outputURL = exportPath
+        exporter.outputFileType = .m4a
+        exporter.metadata = [artistMetadata, artworkMetadata]
+
+        exporter.exportAsynchronously {
+            switch exporter.status {
+            case .completed:
+                print("File saved successfully")
+            case .failed:
+                print("Error when saving file: \(exporter.error ?? NSError())")
+            case .cancelled:
+                print("Saving cancelled")
+            default:
+                break
+            }
+        }
     }
 
     // считаем время следующего запуска

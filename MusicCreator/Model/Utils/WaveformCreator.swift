@@ -16,20 +16,20 @@ enum WaveformCreatorError: Error {
 }
 
 protocol WaveformCreatorProtocol {
-    static func drawWaveform(fileUrl: URL,
-                             numberOfFrames: Int,
-                             frame: CGRect,
-                             completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ())
+    func drawWaveform(fileUrl: URL,
+                      numberOfFrames: Int,
+                      frame: CGRect,
+                      completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ())
 }
 
 class WaveformCreator: WaveformCreatorProtocol {
-    private static let minTraitLength: CGFloat = 2
-    private static let startDrawPos: CGFloat = 6
+    private let minTraitLength: CGFloat = 2
+    private let startDrawPos: CGFloat = 6
 
-    class func drawWaveform(fileUrl: URL,
-                            numberOfFrames: Int,
-                            frame: CGRect,
-                            completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ()) {
+    func drawWaveform(fileUrl: URL,
+                      numberOfFrames: Int,
+                      frame: CGRect,
+                      completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ()) {
         guard let audioFile = try? AVAudioFile(forReading: fileUrl)
         else {
             completionHandler(.failure(.loadAudioFromUrlError("Can't read audio file from \(fileUrl)")))
@@ -42,7 +42,10 @@ class WaveformCreator: WaveformCreatorProtocol {
             case .failure(let error):
                 completionHandler(.failure(error))
             case .success(let powers):
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self
+                    else { return }
+                    
                     let normalized = self.normalizePowers(powers)
                     completionHandler(.success(self.createWaveformFromPovers(powers: normalized, frame: frame)))
                 }
@@ -50,7 +53,7 @@ class WaveformCreator: WaveformCreatorProtocol {
         }
     }
 
-    private class func createWaveformFromPovers(powers: [Float], frame: CGRect) -> UIImage {
+    private func createWaveformFromPovers(powers: [Float], frame: CGRect) -> UIImage {
         let pencil = UIBezierPath()
         let wfLayer = CAShapeLayer()
         let view = UIView(frame: frame)
@@ -78,26 +81,9 @@ class WaveformCreator: WaveformCreatorProtocol {
         return view.asImage()
     }
 
-    class func getPowers(audioFile: AVAudioFile,
-                         numberOfFrames: Int,
-                         completionHandler: @escaping(_ result: Result<[Float], WaveformCreatorError>) -> ()) {
-        calculateAveragePowers(audioFile: audioFile,
-                               numberOfFrames: numberOfFrames) { result in
-            switch(result) {
-            case .failure(let error):
-                completionHandler(.failure(error))
-            case .success(let powers):
-                DispatchQueue.main.async {
-                    let normalized = self.normalizePowers(powers)
-                    completionHandler(.success(normalized))
-                }
-            }
-        }
-    }
-
-    private class func calculateAveragePowers(audioFile: AVAudioFile,
-                                              numberOfFrames: Int,
-                                              completionHandler: @escaping(_ result: Result<[Float], WaveformCreatorError>) -> ()) {
+    private func calculateAveragePowers(audioFile: AVAudioFile,
+                                        numberOfFrames: Int,
+                                        completionHandler: @escaping(_ result: Result<[Float], WaveformCreatorError>) -> ()) {
         let audioFilePFormat = audioFile.processingFormat
         let audioFileLength = audioFile.length
 
@@ -149,7 +135,7 @@ class WaveformCreator: WaveformCreatorProtocol {
         }
     }
 
-    private class func normalizePowers(_ powers: [Float]) -> [Float] {
+    private func normalizePowers(_ powers: [Float]) -> [Float] {
         guard let maxPower = powers.max(),
               let minPower = powers.min()
         else { return powers }

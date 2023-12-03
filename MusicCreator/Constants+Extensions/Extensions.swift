@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import AVFAudio
 
 struct Weak<T> {
     private weak var _value: AnyObject?
@@ -60,17 +59,5 @@ extension FileManager {
     func getDocumentsPath(filename: String) -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return documentsDirectory.appendingPathComponent(filename)
-    }
-}
-
-extension AVAudioPlayerNode {
-    var currentTime: TimeInterval {
-        get {
-            if let nodeTime: AVAudioTime = self.lastRenderTime,
-               let playerTime: AVAudioTime = self.playerTime(forNodeTime: nodeTime) {
-                return Double(playerTime.sampleTime)
-            }
-            return 0
-        }
     }
 }

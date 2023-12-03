@@ -18,8 +18,6 @@ class AudioMixer {
     private let audioUrl: URL
     private let recordSettings: Dictionary<String, Any>
 
-    var players = Dictionary<String, AVAudioPlayerNode>()
-
     init() {
         let filename = "\(StringConstants.audioMixRecordingName.rawValue)\(StringConstants.createdFilesExtension.rawValue)"
         audioUrl = FileManager.default.getDocumentsPath(filename: filename)
@@ -73,7 +71,6 @@ class AudioMixer {
                                            audioPlayer: audioPlayer) }
                 })
                 audioPlayer.play()
-                self?.players[sample.id] = audioPlayer
             }
         }
     }

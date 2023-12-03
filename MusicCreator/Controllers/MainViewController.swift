@@ -13,7 +13,6 @@ class MainViewController: UIViewController {
 
     private var audioPlayer: AudioPlayerProtocol
     private var session: SessionProtocol
-    private let audioRecorder: AudioRecorderProtocol = AudioRecorder()
 
     private var uiBlocker: UIBlockerProtocol
 
@@ -34,15 +33,7 @@ class MainViewController: UIViewController {
         mainView.setDatabaseSelector(selector: session)
         mainView.setSlidersChangesListener(listener: self)
         mainView.setSwitchViewDelegate(switcher: self)
-        mainView.setAudioRecorder(recorder: audioRecorder)
         view = mainView
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        finished(.mixAudioPlaying, url: nil)
-        mainView.changePlayingStatus(isPlaying: false)
     }
 
     private func shareAudio(fileUrl: URL) {
@@ -100,20 +91,13 @@ extension MainViewController: RecordingStatusSubscriber {
         switch type {
         case .microphoneRecording:
             exceptTag = .microButtonTag
-            if let alert = uiBlocker.blockUI(exceptTag: exceptTag.rawValue) {
-                present(alert, animated: true)
-            }
         case .mixAudioPlaying:
-            let visualVC = VisualViewController()
-            visualVC.samples = session.getSamples().filter({ !$0.isMute })
-            visualVC.audioRecorder = audioRecorder
-            navigationController?.pushViewController(visualVC, animated: true)
             exceptTag = .playMixButtonTag
         case .mixAudioRecording:
             exceptTag = .recordButtonTag
-            if let alert = uiBlocker.blockUI(exceptTag: exceptTag.rawValue) {
-                present(alert, animated: true)
-            }
+        }
+        if let alert = uiBlocker.blockUI(exceptTag: exceptTag.rawValue) {
+            present(alert, animated: true)
         }
     }
 
@@ -128,8 +112,7 @@ extension MainViewController: RecordingStatusSubscriber {
             let sample = AudioSample(name: fileUrl.lastPathComponent,
                                      audioUrl: fileUrl,
                                      isMicrophone: true,
-                                     volume: FloatConstants.maximumVolume.rawValue,
-                                     imageName: fileUrl.lastPathComponent)
+                                     volume: FloatConstants.maximumVolume.rawValue)
             session.updateSample(sample: sample)
         case .mixAudioRecording:
             shareAudio(fileUrl: fileUrl)

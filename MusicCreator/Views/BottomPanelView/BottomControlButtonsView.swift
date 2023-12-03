@@ -16,7 +16,7 @@ protocol RecordingStatusSubscriber: AnyObject {
 class BottomControlButtonsView: UIStackView {
     private weak var sampleProvider: SessionSamplesProvider?
     private weak var recordingSubscriber: RecordingStatusSubscriber?
-    private var audioRecorder: AudioRecorderProtocol?
+    private let audioRecorder: AudioRecorderProtocol = AudioRecorder()
 
     private var microButton = UIButton()
     private var playButton = UIButton()
@@ -62,10 +62,6 @@ class BottomControlButtonsView: UIStackView {
         recordingSubscriber = subscriber
     }
 
-    func setAudioRecorder<T: AudioRecorderProtocol>(recorder: T) {
-        audioRecorder = recorder
-    }
-
     private func createConfiguration(_ imageSystemName: String,
                                      scale: UIImage.SymbolScale) -> UIButton.Configuration {
         var config = UIButton.Configuration.filled()
@@ -80,9 +76,6 @@ class BottomControlButtonsView: UIStackView {
     }
 
     @objc private func startMicroRecord() {
-        guard let audioRecorder = audioRecorder
-        else { return }
-
         guard audioRecorder.hasMicrophonePermission()
         else {
             audioRecorder.requestMicrophonePermission()
@@ -111,9 +104,6 @@ class BottomControlButtonsView: UIStackView {
     }
 
     @objc private func playMixedTrack() {
-        guard let audioRecorder = audioRecorder
-        else { return }
-
         if isPlaying {
             audioRecorder.finishPlayingMixedAudio()
             recordingSubscriber?.finished(.mixAudioPlaying, url: nil)
@@ -128,9 +118,6 @@ class BottomControlButtonsView: UIStackView {
     }
 
     @objc private func startMixRecord() {
-        guard let audioRecorder = audioRecorder
-        else { return }
-
         if isRecording {
             let fileUrl = audioRecorder.finishRecordingMixedAudio()
             recordingSubscriber?.finished(.mixAudioRecording, url: fileUrl)
@@ -144,7 +131,7 @@ class BottomControlButtonsView: UIStackView {
         changeMixRecordingStatus(isRecording: isRecording)
     }
 
-    func changePlayingStatus(isPlaying: Bool) {
+    private func changePlayingStatus(isPlaying: Bool) {
         var config = playButton.configuration ?? UIButton.Configuration.filled()
         config.image = UIImage(systemName: isPlaying ? "stop.fill" : "play.fill")
         playButton.configuration = config

@@ -23,25 +23,12 @@ protocol AudioRecorderProtocol {
     func finishPlayingMixedAudio()
     func startRecordingMuxedAudio(samples: [AudioSample])
     func finishRecordingMixedAudio() -> URL
-    var players: Dictionary<String, AVAudioPlayerNode> { get }
 }
 
 class AudioRecorder: AudioRecorderProtocol {
     private let microRecording = MicrophoneRecording()
     private let audioMixer = AudioMixer()
     private var isWorking = Dictionary<RecordingType, Bool>()
-
-    var playersIsPlaying: Dictionary<String, AVAudioPlayerNode> {
-        get {
-            return audioMixer.players
-        }
-    }
-
-    var players: Dictionary<String, AVAudioPlayerNode> {
-        get {
-            return audioMixer.players
-        }
-    }
 
     func hasMicrophonePermission() -> Bool {
         return microRecording.hasPermission()

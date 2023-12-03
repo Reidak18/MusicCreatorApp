@@ -48,7 +48,6 @@ enum CornerRadius: CGFloat {
 enum FontSize: CGFloat {
     case standart = 12
     case title = 16
-    case timer = 32
 }
 
 enum Spacing: CGFloat {

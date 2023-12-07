@@ -55,6 +55,10 @@ class BottomControlButtonsView: UIStackView {
         addArrangedSubview(playButton)
     }
 
+    func setVisualListener<Listener: AudioVisualizer>(listener: Listener) {
+        audioRecorder.setVisualListener(listener: listener)
+    }
+
     func setProviderAndSubscriber<Provider: SessionSamplesProvider,
                                   Subscriber: RecordingStatusSubscriber>(provider: Provider,
                                                                          subscriber: Subscriber) {

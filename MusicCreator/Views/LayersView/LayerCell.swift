@@ -19,6 +19,7 @@ class LayerCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: FontSize.standart.rawValue)
+        label.textColor = .labelPrimary
         return label
     }()
 

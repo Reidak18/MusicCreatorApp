@@ -61,3 +61,22 @@ extension FileManager {
         return documentsDirectory.appendingPathComponent(filename)
     }
 }
+
+extension Array<Float> {
+    func normalized() -> Self {
+        guard let maximum = self.max(),
+              let minimum = self.min()
+        else { return self }
+
+        let difference = maximum - minimum
+
+        var normalized: [Float]
+        if difference != 0 {
+            normalized = self.map({ ($0 - minimum) / difference })
+        } else {
+            normalized = self
+        }
+
+        return normalized
+    }
+}

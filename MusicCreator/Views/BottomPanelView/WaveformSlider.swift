@@ -74,3 +74,20 @@ extension WaveformSlider: AudioProgressListener {
         value = progress
     }
 }
+
+extension WaveformSlider: AudioVisualizer {
+    func update(powers: [Float]) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self
+            else { return }
+
+            let resultImage = waveformCreator.createWaveformFromPovers(powers: powers, frame: frame, twoSide: false)
+            setMinimumTrackImage(resultImage.withTintColor(.customLightGreen), for: .normal)
+            setMaximumTrackImage(resultImage.withTintColor(.white), for: .normal)
+        }
+    }
+
+    func stop() {
+        setWaveform(url: nil)
+    }
+}

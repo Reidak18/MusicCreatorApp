@@ -66,6 +66,8 @@ class BottomPanelView: UIStackView {
         stylesButton.addTarget(self, action: #selector(onStylesButtonClick), for: .touchUpInside)
         buttonsStackView.addArrangedSubview(stylesButton)
         buttonsStackView.addArrangedSubview(bottomControlButtons)
+
+        bottomControlButtons.setVisualListener(listener: waveformSlider)
     }
 
     @objc private func onStylesButtonClick() {

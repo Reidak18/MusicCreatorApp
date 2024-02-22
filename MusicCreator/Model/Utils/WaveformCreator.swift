@@ -20,6 +20,7 @@ protocol WaveformCreatorProtocol {
                       numberOfFrames: Int,
                       frame: CGRect,
                       completionHandler: @escaping(_ result: Result<UIImage, WaveformCreatorError>) -> ())
+    func createWaveformFromPovers(powers: [Float], frame: CGRect, twoSide: Bool) -> UIImage
 }
 
 class WaveformCreator: WaveformCreatorProtocol {
@@ -46,18 +47,18 @@ class WaveformCreator: WaveformCreatorProtocol {
                     guard let self
                     else { return }
                     
-                    let normalized = self.normalizePowers(powers)
-                    completionHandler(.success(self.createWaveformFromPovers(powers: normalized, frame: frame)))
+                    let normalized = powers.normalized()
+                    completionHandler(.success(self.createWaveformFromPovers(powers: normalized, frame: frame, twoSide: true)))
                 }
             }
         }
     }
 
-    private func createWaveformFromPovers(powers: [Float], frame: CGRect) -> UIImage {
+    func createWaveformFromPovers(powers: [Float], frame: CGRect, twoSide: Bool) -> UIImage {
         let pencil = UIBezierPath()
         let wfLayer = CAShapeLayer()
         let view = UIView(frame: frame)
-        var start = CGPoint(x: startDrawPos, y: view.bounds.midY)
+        var start = CGPoint(x: startDrawPos, y: twoSide ? view.bounds.midY : view.bounds.maxY - view.frame.height / 4)
         let step = (view.bounds.width - start.x * 2) / CGFloat(powers.count)
 
         for trait in powers {
@@ -65,8 +66,12 @@ class WaveformCreator: WaveformCreatorProtocol {
             length = max(minTraitLength, length)
 
             pencil.move(to: start)
-            pencil.addLine(to: CGPoint(x: start.x, y: start.y + length))
-            pencil.addLine(to: CGPoint(x: start.x, y: start.y - length))
+            if twoSide {
+                pencil.addLine(to: CGPoint(x: start.x, y: start.y + length))
+                pencil.addLine(to: CGPoint(x: start.x, y: start.y - length))
+            } else {
+                pencil.addLine(to: CGPoint(x: start.x, y: start.y - length * 2))
+            }
             start = CGPoint(x: start.x + step, y: start.y)
         }
 
@@ -133,21 +138,5 @@ class WaveformCreator: WaveformCreatorProtocol {
 
             completionHandler(.success(returnArray))
         }
-    }
-
-    private func normalizePowers(_ powers: [Float]) -> [Float] {
-        guard let maxPower = powers.max(),
-              let minPower = powers.min()
-        else { return powers }
-
-        let diff = maxPower - minPower
-        var normalized: [Float]
-        if diff != 0 {
-            normalized = powers.map({ ($0 - minPower) / diff })
-        } else {
-            normalized = powers
-        }
-
-        return normalized
     }
 }

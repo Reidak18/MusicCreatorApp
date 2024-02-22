@@ -13,7 +13,13 @@ enum RecordingType {
     case mixAudioRecording
 }
 
+protocol AudioVisualizer: AnyObject {
+    func update(powers: [Float])
+    func stop()
+}
+
 protocol AudioRecorderProtocol {
+    func setVisualListener<Listener: AudioVisualizer>(listener: Listener)
     func hasMicrophonePermission() -> Bool
     func requestMicrophonePermission()
     func isRecording(_ type: RecordingType) -> Bool
@@ -26,9 +32,14 @@ protocol AudioRecorderProtocol {
 }
 
 class AudioRecorder: AudioRecorderProtocol {
+    private weak var visualListener: AudioVisualizer?
     private let microRecording = MicrophoneRecording()
     private let audioMixer = AudioMixer()
     private var isWorking = Dictionary<RecordingType, Bool>()
+
+    func setVisualListener<Listener: AudioVisualizer>(listener: Listener) {
+        visualListener = listener
+    }
 
     func hasMicrophonePermission() -> Bool {
         return microRecording.hasPermission()
@@ -60,22 +71,22 @@ class AudioRecorder: AudioRecorderProtocol {
 
     func startPlayingMixedAudio(samples: [AudioSample]) {
         isWorking[.mixAudioPlaying] = true
-        audioMixer.playMixedAudio(samples: samples)
+        audioMixer.playMixedAudio(samples: samples, update: visualListener?.update)
     }
 
     func finishPlayingMixedAudio() {
         isWorking[.mixAudioPlaying] = false
-        audioMixer.finishPlayingMixedAudio()
+        audioMixer.finishPlayingMixedAudio(stop: visualListener?.stop)
     }
 
     func startRecordingMuxedAudio(samples: [AudioSample]) {
         isWorking[.mixAudioRecording] = true
         switchCategory(category: .playAndRecord)
-        audioMixer.recordMuxedAudio(samples: samples)
+        audioMixer.recordMuxedAudio(samples: samples, update: visualListener?.update)
     }
 
     func finishRecordingMixedAudio() -> URL {
-        let url = audioMixer.finishRecordingMixedAudio()
+        let url = audioMixer.finishRecordingMixedAudio(stop: visualListener?.stop)
         switchCategory(category: .playback)
         isWorking[.mixAudioRecording] = false
         return url
